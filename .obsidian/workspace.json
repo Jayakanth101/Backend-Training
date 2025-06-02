@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Backend-Training-Task.md",
+                "file": "Readme.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Backend-Training-Task"
+              "title": "Readme"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Backend-Training-Task.md",
+                "file": "Readme.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Backend-Training-Task"
+              "title": "Backlinks for Readme"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Backend-Training-Task.md",
+                "file": "Readme.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from Backend-Training-Task"
+              "title": "Outgoing links from Readme"
             }
           },
           {
@@ -142,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Backend-Training-Task.md",
+                "file": "Readme.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Backend-Training-Task"
+              "title": "Outline of Readme"
             }
           }
         ]
@@ -168,11 +168,23 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "2b2f89a24adcb042",
+  "active": "4b160abea8953ace",
   "lastOpenFiles": [
-    "Images/Pasted image 20250602193950.png",
+    "Images/Schema-Image.png",
+    "Readme.md",
     "Images/Pasted image 20250602193702.png",
-    "Images",
+    "nest-sample-project-1/tsconfig.json",
+    "nest-sample-project-1/tsconfig.build.json",
+    "nest-sample-project-1/test/jest-e2e.json",
+    "nest-sample-project-1/test/app.e2e-spec.ts",
+    "nest-sample-project-1/test",
+    "nest-sample-project-1/src/users/users.controller.spec.ts",
+    "nest-sample-project-1/src/users/users.service.ts",
+    "nest-sample-project-1/src/users/users.service.spec.ts",
+    "nest-sample-project-1/src/users/users.controller.ts",
+    "nest-sample-project-1/src/users/users.module.ts",
+    "nest-sample-project-1/README.md",
+    "README.md",
     "Pasted image 20250602193950.png",
     "Pasted image 20250602193702.png"
   ]

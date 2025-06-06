@@ -2,8 +2,14 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { WorkItems } from './WorkItems/WorkItems.entity';
-import { WorkItemsModule } from './WorkItems/WorkItems.module';
+import { WorkItem } from './work-items/work-items.entity';
+import { WorkItemsModule } from './work-items/work-items.module';
+import { UsersModule } from './users/users.module';
+import { User } from './users/users.entity';
+import { Planning } from './planning/planning.entity';
+import { PlanningModule } from './planning/planning.module';
+import { DiscussionModule } from './discussion/discussion.module';
+import { Discussion } from './discussion/discussion.entity';
 
 @Module({
     imports: [
@@ -14,9 +20,9 @@ import { WorkItemsModule } from './WorkItems/WorkItems.module';
             username: 'devuser',
             password: 'root',
             database: 'ado_app',
-            entities: [WorkItems],
+            entities: [WorkItem, User, Planning, Discussion],
             synchronize: false,
-        }), WorkItemsModule
+        }), WorkItemsModule, UsersModule, PlanningModule, DiscussionModule
     ],
     controllers: [AppController],
     providers: [AppService],

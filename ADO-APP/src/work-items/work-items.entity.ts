@@ -1,25 +1,10 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
-
-export enum Type {
-    Epic = 'Epic',
-    Feature = 'Feature',
-    Bug = 'Bug',
-    Task = 'Task',
-    UserStory = 'UserStory'
-}
-
-export enum State {
-    New = 'New',
-    Active = 'Active',
-    Resolved = 'Resolved',
-    Closed = 'Closed',
-    Removed = 'Removed'
-}
+import { Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { State, Type } from "./enum/work-items-enum"
+import { Discussion } from "src/discussion/discussion.entity";
 
 @Entity('workitem')
-export class WorkItems {
-
-    @PrimaryColumn({ nullable: false })
+export class WorkItem {
+    @PrimaryColumn()
     id: number;
 
     @Column({
@@ -64,5 +49,8 @@ export class WorkItems {
 
     @Column()
     parentid: number;
+
+    @OneToMany(() => Discussion, discussion => discussion.workitem)
+    discussion: Discussion[]
 
 }

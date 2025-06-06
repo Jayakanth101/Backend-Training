@@ -29,3 +29,18 @@
 - Actively maintained and gaining popularity
 - Less widely adopted but highly recommended by the community
 
+Changes in project:
+
+Variable - camel case
+Class name - pascal case
+Postgres - snake case
+Entity - singular
+table name - plural
+
+Enum - best practices (naming)
+
+Error handling - dto, controller
+
+API documentations:
+Swagger
+

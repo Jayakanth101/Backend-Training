@@ -1,4 +1,4 @@
-import { Get, Post, Controller, Body, Put, Param, Delete, UsePipes, ValidationPipe, NotFoundException } from "@nestjs/common";
+import { Get, Post, Controller, Body, Put, Param, Delete, UsePipes, ValidationPipe } from "@nestjs/common";
 import { WorkItem } from "./work-items.entity";
 import { WorkItemsService } from "./work-items.service";
 import { CreateWorkItemDto } from "./dto/create-work-item-dto";
@@ -17,20 +17,26 @@ export class WorkItemsController {
 
     @Post()
     @UsePipes(new ValidationPipe({ transform: true }))
-
-    async Create(@Body() createWorkItemDto: CreateWorkItemDto): Promise<WorkItem> {
-        return await this.workItemsService.CreateWorkItem(createWorkItemDto);
+    async Create(
+        @Body() createWorkItemDto: CreateWorkItemDto
+    ): Promise<WorkItem> {
+        let workItem = await this.workItemsService.CreateWorkItem(createWorkItemDto);
+        return workItem;
     }
 
-
     @Put(':id')
-    async Update(@Param('id') id: number, @Body() updateWorkItemDto: UpdateWorkItemDto): Promise<string> {
+    async Update(
+        @Param('id') id: number,
+        @Body() updateWorkItemDto: UpdateWorkItemDto
+    ): Promise<string> {
         await this.workItemsService.UpdateWorkItem(id, updateWorkItemDto);
         return `Work item id ${id} had been updated`;
     }
 
     @Delete(':id')
-    async Delete(@Param('id') id: number): Promise<string> {
+    async Delete(
+        @Param('id') id: number
+    ): Promise<string> {
         await this.workItemsService.DeleteWorkItem(id);
         return `Work item id ${id} has been deleted`;
     }

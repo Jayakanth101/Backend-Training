@@ -10,14 +10,11 @@ export class Discussion {
     commentid: number;
 
     @ManyToOne(() => WorkItem, { onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'workitemid' })
     workitem: WorkItem;
-
 
     @ManyToOne(() => User, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'creatorid' })
     creator: User;
-
 
     @Column()
     message: string;

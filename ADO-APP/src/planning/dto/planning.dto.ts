@@ -4,9 +4,6 @@ import { Risk } from "src/work-items/enum/work-items-enum";
 import { Type as Transform } from "class-transformer";
 export class CreatePlanningDto {
 
-    @IsNotEmpty()
-    @IsInt()
-    workitemid: number;
 
     @IsNotEmpty()
     @IsInt()

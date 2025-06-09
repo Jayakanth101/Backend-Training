@@ -1,10 +1,20 @@
-import { Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
+import {
+    Column,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    OneToMany,
+    OneToOne,
+    PrimaryGeneratedColumn
+} from "typeorm";
+
 import { State, Type } from "./enum/work-items-enum"
 import { Discussion } from "src/discussion/discussion.entity";
+import { Planning } from "src/planning/planning.entity";
 
 @Entity('workitem')
 export class WorkItem {
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
     id: number;
 
     @Column({
@@ -47,10 +57,29 @@ export class WorkItem {
     @Column()
     classification: string;
 
-    @Column()
+    @Column({ nullable: true })
     parentid: number;
 
-    @OneToMany(() => Discussion, discussion => discussion.workitem)
-    discussion: Discussion[]
+    @ManyToOne(
+        () => WorkItem, workitem => workitem.childrens,
+        {
+            nullable: true,
+            onDelete: 'SET NULL'
+        }
+    )
+    @JoinColumn({ name: 'parentid' })
+    parent: WorkItem;
+
+    @OneToMany(() => WorkItem, workitem => workitem.parent)
+    childrens: WorkItem[];
+
+
+    @OneToMany(() => Discussion, discussion => discussion.workitem, { cascade: true })
+    @JoinColumn()
+    discussion: Discussion[];
+
+    @OneToOne(() => Planning, planning => planning.workitem, { cascade: true })
+    // @JoinColumn({ name: 'id' })
+    planning: Planning;
 
 }

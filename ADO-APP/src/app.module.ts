@@ -7,7 +7,6 @@ import { WorkItemsModule } from './work-items/work-items.module';
 import { UsersModule } from './users/users.module';
 import { User } from './users/users.entity';
 import { Planning } from './planning/planning.entity';
-import { PlanningModule } from './planning/planning.module';
 import { DiscussionModule } from './discussion/discussion.module';
 import { Discussion } from './discussion/discussion.entity';
 
@@ -21,8 +20,10 @@ import { Discussion } from './discussion/discussion.entity';
             password: 'root',
             database: 'ado_app',
             entities: [WorkItem, User, Planning, Discussion],
-            synchronize: false,
-        }), WorkItemsModule, UsersModule, PlanningModule, DiscussionModule
+            synchronize: true,
+            logging: true,
+            logger: 'advanced-console'
+        }), WorkItemsModule, UsersModule, DiscussionModule
     ],
     controllers: [AppController],
     providers: [AppService],

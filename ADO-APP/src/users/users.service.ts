@@ -28,6 +28,7 @@ export class UsersService {
             throw new InternalServerErrorException(`Unexpected error during user creation: ${error}`);
         }
     }
+
     async findOneById(id: number): Promise<User | null> {
         const user = this.userRepository.findOneBy({ id });
         if (!user) {

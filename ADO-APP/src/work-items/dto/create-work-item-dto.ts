@@ -5,7 +5,6 @@ import { CreatePlanningDto } from 'src/planning/dto/planning.dto';
 
 export class CreateWorkItemDto {
 
-
     @IsNotEmpty()
     @IsEnum(Type)
     type: Type;
@@ -19,34 +18,29 @@ export class CreateWorkItemDto {
     state: State;
 
     @IsNotEmpty()
-    @TransformType(() => Date)
-    @IsDate()
-    startdate: Date;
+    @IsString()
+    area_path: string;
+
+    @IsNotEmpty()
+    @IsString()
+    iteration: string;
 
     @IsNotEmpty()
     @IsNumber()
     createdby: number;
 
-    @IsNotEmpty()
-    @TransformType(() => Date)
-    @IsDate()
-    targetdate: Date;
-
     @IsString()
     description: string;
 
+    @IsOptional()
     @IsNotEmpty()
     @IsNumber()
-    assignto: number;
+    assigned_to: number;
 
     @IsNotEmpty()
     @TransformType(() => Date)
     @IsDate()
-    activitydate: Date;
-
-    @IsNotEmpty()
-    @IsString()
-    areapath: string;
+    activity_date: Date;
 
     @IsNotEmpty()
     @IsString()
@@ -61,5 +55,6 @@ export class CreateWorkItemDto {
     @ValidateNested()
     @NestedType(() => CreatePlanningDto)
     planning: CreatePlanningDto;
+
 }
 

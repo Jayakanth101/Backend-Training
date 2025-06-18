@@ -4,7 +4,6 @@ import { User } from './users.entity';
 import { Get, Post, Body } from '@nestjs/common';
 import { CreateUserDto } from './dto/users.dto';
 import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
-import { strict } from 'assert';
 
 @Controller('user')
 export class UsersController {

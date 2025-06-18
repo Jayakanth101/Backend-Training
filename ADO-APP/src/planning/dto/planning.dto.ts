@@ -1,36 +1,40 @@
-import { IsDate, IsEnum, IsInt, IsNotEmpty } from "class-validator"
+import { IsDate, IsEnum, IsInt, IsNotEmpty, IsOptional } from "class-validator"
 import { Risk } from "src/work-items/enum/work-items-enum";
-
 import { Type as Transform } from "class-transformer";
-export class CreatePlanningDto {
 
+export class CreatePlanningDto {
 
     @IsNotEmpty()
     @IsInt()
     priority: number;
 
+    @IsOptional()
     @IsNotEmpty()
     @IsEnum(Risk)
     risk: Risk;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsInt()
     effort: number;
 
-    @IsNotEmpty()
+    @IsOptional()
+    @IsInt()
+    storypoint: number;
+
+    @IsOptional()
     @IsInt()
     businessvalue: number;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsInt()
     timecriticality: number;
 
-    @IsNotEmpty()
+    @IsOptional()
     @Transform(() => Date)
     @IsDate()
     startdate: Date;
 
-    @IsNotEmpty()
+    @IsOptional()
     @Transform(() => Date)
     @IsDate()
     targetdate: Date;

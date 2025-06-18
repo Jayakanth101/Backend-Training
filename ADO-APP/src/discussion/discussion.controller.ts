@@ -10,7 +10,7 @@ export class DiscussionController {
     constructor(private readonly discussionService: DiscussionService) { }
 
     @Post()
-    async Create(@Body() createDiscussionDto: CreateDiscussionDto): Promise<Discussion> {
+    async createDiscussion(@Body() createDiscussionDto: CreateDiscussionDto): Promise<Discussion> {
         return this.discussionService.createComment(createDiscussionDto);
     }
 

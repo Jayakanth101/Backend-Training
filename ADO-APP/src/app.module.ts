@@ -9,6 +9,16 @@ import { User } from './users/users.entity';
 import { Planning } from './planning/planning.entity';
 import { DiscussionModule } from './discussion/discussion.module';
 import { Discussion } from './discussion/discussion.entity';
+import { TagModule } from './tags/tag.module';
+
+
+
+import { Tags } from './tags/tag.entity';
+import { ProjectEntity } from './tables/project/project.entity';
+import { ProjectMemberEntity } from './tables/project-member/project-member.entity';
+import { EpicEntity } from './tables/epic/epic.entity';
+import { FeatureEntity } from './tables/feature/feature.entity';
+import { UserStoryEntity } from './tables/user-story/user-story.entity';
 
 @Module({
     imports: [
@@ -19,11 +29,11 @@ import { Discussion } from './discussion/discussion.entity';
             username: 'devuser',
             password: 'root',
             database: 'ado_app',
-            entities: [WorkItem, User, Planning, Discussion],
+            entities: [WorkItem, User, Planning, Discussion, Tags, ProjectEntity, ProjectMemberEntity, EpicEntity, FeatureEntity, UserStoryEntity],
             synchronize: true,
             logging: true,
             logger: 'advanced-console'
-        }), WorkItemsModule, UsersModule, DiscussionModule
+        }), WorkItemsModule, UsersModule, DiscussionModule, TagModule
     ],
     controllers: [AppController],
     providers: [AppService],

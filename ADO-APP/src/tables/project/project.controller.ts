@@ -1,4 +1,4 @@
-import { UsePipes, ValidationPipe, Body, Controller, Post, Get, Param } from "@nestjs/common";
+import { Put, UsePipes, ValidationPipe, Body, Controller, Post, Get, Param } from "@nestjs/common";
 import { ProjectEntity } from "./project.entity";
 import { ProjectService } from "./project.service";
 import { ProjectEntityDto } from "./dto/project.dto";
@@ -23,7 +23,7 @@ export class ProjectController {
         return this.projectService.findAllProjects();
     }
 
-    @Post(':id')
+    @Put(':id')
     async updateProject(
         @Param('id') id: number,
         @Body() updated_project: ProjectEntityDto

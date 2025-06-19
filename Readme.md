@@ -29,6 +29,7 @@
 - Actively maintained and gaining popularity
 - Less widely adopted but highly recommended by the community
 
+## Second review
 Changes in project:
 
 Variable - camel case
@@ -43,4 +44,28 @@ Error handling - dto, controller
 
 API documentations:
 Swagger
+
+
+## Third review
+
+- [x] User table: User , email, etc...
+- [x] Relation
+- [x] Project table
+- [x] Boards table
+- [x] Sprints table
+- [x] Epic extends workitem
+- [ ] Attachments table used by (comment section)
+- [x] Have a base class for all the work items
+- [x] Function name : camel case
+- [ ] Any end points -> should have 5 standard (get, post, put, delete) endpoints - dynamic queries 
+- [ ] Efficient way to serve data to front end
+- [ ] Test cases - mock data - test db - possible scenarios - spec file
+- [ ] Jwt in nest js. Access token, reference token.
+- [ ] Role based access (guards)
+- [ ] Api documentation must
+
+| Epic                                                                                                                                                                                                                                                                                                                     | Feature | User story                                  | Task                                                                      | Bug |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- | ------------------------------------------- | ------------------------------------------------------------------------- | --- |
+| - Title<br>- State<br>- Reason<br>- Area<br>- Iteration<br>- Tag<br>- Comments<br>- Description<br>- Discussion<br>- Assigne<br>- Planning<br>	- Priority<br>	- Risk<br>	- Effort<br>	- Business Value<br>	- Time Criticality<br>	- StartDate<br>	- Target Date<br>- Classification<br>- Parent (Optional)<br>- Children | ------  | - Acceptance criteria<br>- story points<br> | - Original estimates<br>- Remainig<br>- Completed<br>- Implementation<br> |     |
+
 

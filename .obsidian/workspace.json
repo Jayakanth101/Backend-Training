@@ -20,8 +20,37 @@
               "icon": "lucide-file",
               "title": "Readme"
             }
+          },
+          {
+            "id": "f97d1ff9906e3796",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "ADO End points.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "ADO End points"
+            }
+          },
+          {
+            "id": "589824063220a8e0",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Entity relations.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Entity relations"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -168,19 +197,28 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "2b2f89a24adcb042",
+  "active": "f97d1ff9906e3796",
   "lastOpenFiles": [
-    "ADO-APP/src/discussion/discussion.service.ts~",
-    "ADO-APP/src/app.module.ts~",
-    "ADO-APP/src/discussion/discussion.module.ts~",
-    "ADO-APP/src/discussion/dto/update-dicussion.dto.ts~",
-    "ADO-APP/src/discussion/discussion.controller.ts~",
-    "ADO-APP/dist/discussion/dto/update-dicussion.dto.d.ts",
-    "ADO-APP/dist/discussion/dto/update-dicussion.dto.js",
-    "ADO-APP/dist/discussion/dto/update-dicussion.dto.js.map",
-    "ADO-APP/src/discussion/dto/update-dicussion.dto.ts",
-    "ADO-APP/dist/discussion/dto/create-discussion.dto.d.ts",
-    "ADO-APP/dist/discussion/dto/create-discussion.dto.js",
+    "ADO-APP/dist/tables/sprints/sprints.entity.js.map",
+    "ADO-APP/dist/tables/sprints/sprints.entity.js",
+    "ADO-APP/dist/tables/sprints/sprints.entity.d.ts",
+    "ADO-APP/dist/tables/sprints",
+    "ADO-APP/src/tables/sprints/sprints.entity.ts",
+    "ADO-APP/src/tables/sprints",
+    "ADO-APP/src/tables/project-member/project-member.controller.ts~",
+    "ADO-APP/dist/tables/project-member/dto/project-member-role.dto.d.ts",
+    "ADO-APP/dist/tables/project-member/dto/project-member-role.dto.js",
+    "ADO-APP/dist/tables/project-member/dto/project-member-role.dto.js.map",
+    "ADO-APP/src/tables/project-member/dto/project-member-role.dto.ts",
+    "ADO End points.md",
+    "Readme.md",
+    "ADO-APP/node_modules/swagger-ui-dist/favicon-32x32.png",
+    "ADO-APP/node_modules/swagger-ui-dist/favicon-16x16.png",
+    "ADO-APP/node_modules/swagger-ui-dist/README.md",
+    "ADO-APP/node_modules/@scarf/scarf/README.md",
+    "ADO-APP/node_modules/@microsoft/tsdoc/README.md",
+    "ADO-APP/node_modules/@microsoft/tsdoc/CHANGELOG.md",
+    "ADO-APP/node_modules/@nestjs/swagger/README.md",
     "ADO-APP/node_modules/class-transformer/README.md",
     "ADO-APP/node_modules/class-validator/README.md",
     "ADO-APP/node_modules/@types/validator/README.md",
@@ -190,7 +228,6 @@
     "ADO-APP/node_modules/libphonenumber-js/METADATA.md",
     "ADO-APP/node_modules/libphonenumber-js/CHANGELOG.md",
     "Images/Schema-Image.png",
-    "Readme.md",
     "Images/Pasted image 20250602193702.png",
     "nest-sample-project-1/README.md",
     "README.md",

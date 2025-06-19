@@ -11,7 +11,7 @@ export class TagService {
         @InjectRepository(Tags)
         private TagRepo: Repository<Tags>) { }
 
-    async CreateTag(dto: CreateTagDto): Promise<Tags> {
+    async createTag(dto: CreateTagDto): Promise<Tags> {
         const newTag = this.TagRepo.create(dto);
         return await this.TagRepo.save(newTag);
     }
@@ -23,6 +23,10 @@ export class TagService {
         }
         await this.TagRepo.delete(id);
         return `Comment ${id} is deleted`;
+    }
+
+    async getAllTags(workItemId: number): Promise<Tags[]> {
+        return await this.TagRepo.findBy({ id: workItemId });
     }
 
 }

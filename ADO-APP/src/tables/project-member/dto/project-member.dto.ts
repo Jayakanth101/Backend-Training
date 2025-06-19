@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { ProjectEntityDto } from "src/tables/project/dto/project.dto";
 
 export class ProjectMemberDto {
@@ -8,7 +8,15 @@ export class ProjectMemberDto {
     user_id: number;
 
     @IsNotEmpty()
-    project: ProjectEntityDto;
+    @IsNumber()
+    project_id: number;
+
+    // @IsNotEmpty()
+    // project: ProjectEntityDto;
+
+    @IsNotEmpty()
+    @IsString()
+    role: string;
 
 }
 

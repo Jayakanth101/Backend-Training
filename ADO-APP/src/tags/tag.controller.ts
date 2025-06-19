@@ -1,4 +1,4 @@
-import { Body, HttpStatus, Controller, Post, UsePipes, ValidationPipe, HttpException, Delete, Param, Put } from "@nestjs/common";
+import { Body, HttpStatus, Controller, Post, UsePipes, ValidationPipe, HttpException, Delete, Param, Put, Get } from "@nestjs/common";
 import { TagService } from "./tag.service";
 import { CreateTagDto } from "./dto/create-tag-dto";
 import { Tags } from "./tag.entity";
@@ -10,9 +10,9 @@ export class TagController {
 
     @Post()
     @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
-    async CreateTag(@Body() tagDto: CreateTagDto): Promise<Tags> {
+    async createTag(@Body() tagDto: CreateTagDto): Promise<Tags> {
         try {
-            return await this.tagService.CreateTag(tagDto);
+            return await this.tagService.createTag(tagDto);
         }
         catch (error) {
             if (error.code === '23505' || error.message.includes('duplicate key')) {
@@ -26,6 +26,11 @@ export class TagController {
                 HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
+    }
+
+    @Get(':workitemId')
+    async getAllWorkitems(@Param('workItemId') workItemId: number): Promise<Tags[]> {
+        return await this.tagService.getAllTags(workItemId);
     }
 
     @Delete(':id')

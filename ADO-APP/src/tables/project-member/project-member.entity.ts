@@ -1,5 +1,5 @@
 import { User } from "src/users/users.entity";
-import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany, Column } from "typeorm"
 import { ProjectEntity } from "../project/project.entity";
 import { WorkItem } from "src/work-items/work-items.entity";
 
@@ -24,6 +24,9 @@ export class ProjectMemberEntity {
     )
     @JoinColumn({ name: 'project_id' })
     project: ProjectEntity;
+
+    @Column()
+    role: string;
 
     @OneToMany(() => WorkItem, (workItem) => workItem.assignedTo, { nullable: true })
     assignedWorkItems: WorkItem[]

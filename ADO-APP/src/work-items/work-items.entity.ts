@@ -19,6 +19,7 @@ import { Planning } from "src/planning/planning.entity";
 import { ProjectEntity } from "src/tables/project/project.entity";
 import { ProjectMemberEntity } from "src/tables/project-member/project-member.entity";
 import { User } from "src/users/users.entity";
+import { SprintEntity } from "src/tables/sprints/sprints.entity";
 
 @Entity('workitem')
 @TableInheritance({ column: { type: "varchar", name: "inheritance_type" } })
@@ -75,11 +76,20 @@ export class WorkItem {
     iteration: string;
 
     @BeforeInsert()
-    setIteration() {
+    setIeration() {
         if (!this.iteration) {
             this.iteration = this.area_path;
         }
     }
+
+    @Column({ type: 'timestamp' })
+    updated_at: Date;
+
+    @Column({ type: 'timestamp' })
+    created_at: Date;
+
+    @Column({ type: 'timestamp' })
+    completed_at: Date;
 
     @OneToMany(() => Discussion, discussion => discussion.workitem, { cascade: true })
     @JoinColumn()
@@ -105,5 +115,11 @@ export class WorkItem {
     @OneToOne(() => Planning, (planning) => planning.work_item, { cascade: true })
     @JoinColumn({ name: 'planning_id' })
     planning: Planning;
+
+    @ManyToOne(() => SprintEntity, (sprint) => sprint.workitems, { onDelete: 'SET NULL' })
+    sprint: SprintEntity;
+
+    @Column({ nullable: true })
+    sprint_id: number;
 
 }

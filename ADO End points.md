@@ -12,7 +12,17 @@ Projects: `{Base url}/project`
 
 WorkItems: `{Base url}/workitem`
 - POST: To create a workitem.
-- GET (id): Get an workitem using id.
+- Query parameters:
+	- GET (id): Get an workitem using id.
+	- GET (type): Get an workitem using types.
+	- GET (assign_to): Get an workitem by using assignee.
+	- GET (states): Get an workitem by using states.
+	- GET(Area): Get an workitem by using area
+	- GET (tags): Filter workitem using tags
+	- GET (recently_updated): Filter it by recently updated workitems.
+	- GET (recently_completed): Filter it by recently completed workitems.
+	- GET (recently_created): Filter it by recently created workitems.
+	- GET (keyword): Filter it by keywords.
 - GET: To get all workitems.
 - PUT (id): To update a workitem by using it's id.
 - DELETE (id): To delete a workitem by using id.

@@ -6,6 +6,10 @@ export class ProjectEntityDto {
     @IsString()
     project_name: string;
 
+    @IsOptional()
+    @IsString()
+    project_description: string;
+
     @IsNotEmpty()
     @IsNumber()
     project_creator_id: number;

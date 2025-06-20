@@ -2,6 +2,7 @@ import { WorkItem } from "src/work-items/work-items.entity";
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ProjectMemberEntity } from "../project-member/project-member.entity";
 import { User } from "src/users/users.entity";
+import { SprintEntity } from "../sprints/sprints.entity";
 
 @Entity('project')
 export class ProjectEntity {
@@ -10,7 +11,13 @@ export class ProjectEntity {
     project_id: number;
 
     @Column()
+    project_description: string;
+
+    @Column()
     project_name: string;
+
+    @OneToMany(() => SprintEntity, (sprint) => sprint.project)
+    sprints: SprintEntity[]
 
     @OneToMany(() => WorkItem, (workitem) => workitem.project, { cascade: true })
     work_items: WorkItem[];
@@ -20,4 +27,5 @@ export class ProjectEntity {
 
     @OneToMany(() => ProjectMemberEntity, (pm) => pm.project, { cascade: true })
     members: ProjectMemberEntity[];
+
 }

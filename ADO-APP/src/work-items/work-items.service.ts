@@ -1,9 +1,7 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { WorkItem } from "./work-items.entity";
 import { Repository } from "typeorm";
-import { CreateWorkItemDto } from "./dto/create-work-item-dto";
-import { UpdateWorkItemDto } from "./dto/update-work-item-dto";
 import { Planning } from "src/planning/planning.entity";
 import { Type } from "./enum/work-items-enum";
 import { FeatureEntity } from "src/tables/feature/feature.entity";
@@ -14,11 +12,11 @@ import { TaskDto } from "src/tables/task/dto/task.dto";
 import { EpicEntity } from "src/tables/epic/epic.entity";
 import { UserStoryEntity } from "src/tables/user-story/user-story.entity";
 import { TaskEntity } from "src/tables/task/task.entity";
-import { defaultMaxListeners } from "events";
 import { UpdateFeatureDto } from "src/tables/feature/dto/update-feature.dto";
 import { UpdateEpicDto } from "src/tables/epic/dto/update-epic.dto";
 import { UpdateUserStoryDto } from "src/tables/user-story/dto/update-user-story.dto";
 import { UpdateTaskDto } from "src/tables/task/dto/update-task.dto";
+import { WorkItemFilterDto } from "./dto/work-item-filter.dto";
 
 @Injectable()
 export class WorkItemsService {
@@ -31,8 +29,8 @@ export class WorkItemsService {
         private PlanningRepository: Repository<Planning>
     ) { }
 
-    findAll(): Promise<WorkItem[]> {
-        return this.WorkItemsRepository.find();
+    async findAll(): Promise<WorkItem[]> {
+        return await this.WorkItemsRepository.find();
     }
 
     async CreateWorkItem(dto: FeatureDto | EpicDto | UserStoryDto | TaskDto
@@ -100,6 +98,73 @@ export class WorkItemsService {
             throw new NotFoundException(`workitem with id ${id} not found`);
         }
         return workItem;
+    }
+
+    async getFilteredWorkItems(filterDto: WorkItemFilterDto) {
+        const {
+            id,
+            type,
+            assigned_to,
+            state,
+            area_path,
+            tags,
+            recently_updated,
+            recently_created,
+            recently_completed,
+            keyword
+        } = filterDto;
+
+        const query = this.WorkItemsRepository.createQueryBuilder('workitem');
+
+        if (id) {
+            query.andWhere('workitem.id = :id', { id });
+        }
+
+        if (type) {
+            query.andWhere('workitem.type = :type', { type });
+        }
+
+        if (assigned_to) {
+            query.andWhere('workitem.assigned_to = :assigned_to', { assigned_to });
+        }
+
+        if (state) {
+            query.andWhere('workitem.state = :state', { state });
+        }
+
+        if (area_path) {
+            query.andWhere('workitem.area_path= :area_path', { area_path });
+        }
+
+        if (tags) {
+            const tagArray = tags.map((tag) => tag.tagname);
+            query.leftJoin('workitem.tags', 'tags')
+                .andWhere('tags.name IN (:...tagArray)', { tagArray })
+        }
+
+        const oneDayAgo = new Date();
+        oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+
+        if (recently_created) {
+            query.andWhere('workitem.created_at > :createdAfter',
+                { createdAfter: oneDayAgo });
+            query.orderBy('workitem.created_at', 'DESC');
+        }
+        if (recently_updated) {
+            query.andWhere('workitem.updated_at> :updatedAfter',
+                { updatedAfter: oneDayAgo });
+            query.orderBy('workitem.updated_at', 'DESC');
+        }
+        if (recently_completed) {
+            query.andWhere('workitem.completed_at > :completedAfter',
+                { completedAfter: oneDayAgo });
+            query.orderBy('workitem.completed_at', 'DESC');
+        }
+        if (keyword) {
+            query.andWhere('workitem.title ILIKE :keyword OR workitem.description ILIKE :keyword', { keyword: '%${keyword}%' });
+        }
+
+        return await query.getMany();
     }
 
     async DeleteWorkItem(id: number): Promise<void> {

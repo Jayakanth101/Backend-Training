@@ -8,7 +8,8 @@ import {
     Delete,
     UsePipes,
     ValidationPipe,
-    UseInterceptors
+    UseInterceptors,
+    Query
 } from "@nestjs/common";
 
 import { WorkItem } from "./work-items.entity";
@@ -16,6 +17,7 @@ import { WorkItemsService } from "./work-items.service";
 import { CreateWorkItemDto } from "./dto/create-work-item-dto";
 import { UpdateWorkItemDto } from "./dto/update-work-item-dto";
 import { WorkItemTransformInterceptor } from "./interceptor/work-item.interceptor";
+import { WorkItemFilterDto } from "./dto/work-item-filter.dto";
 
 @Controller('workitems')
 export class WorkItemsController {
@@ -26,6 +28,11 @@ export class WorkItemsController {
     @Get()
     async findAllWorkItems(): Promise<WorkItem[]> {
         return this.workItemsService.findAll();
+    }
+
+    @Get()
+    async getFilteredWorkItems(@Query() filterDto: WorkItemFilterDto) {
+        return this.workItemsService.getFilteredWorkItems(filterDto);
     }
 
     @UseInterceptors(WorkItemTransformInterceptor)

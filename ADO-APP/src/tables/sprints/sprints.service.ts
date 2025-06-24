@@ -19,7 +19,7 @@ export class SprintService {
         if (!project) throw new BadRequestException('Project not found');
         const sprint = this.repo.create({
             ...sprintDto,
-            project,
+            project: { project_id: sprintDto.project_id },
             location: sprintDto.location || project.project_name,
         });
         return await this.repo.save(sprint);

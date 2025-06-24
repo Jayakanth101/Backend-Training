@@ -1,4 +1,4 @@
-import { IsDate, IsNotEmpty, IsOptional, IsString } from 'class-validator'
+import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator'
 
 export class SprintDto {
 
@@ -16,4 +16,8 @@ export class SprintDto {
     @IsOptional()
     @IsDate()
     end_date?: Date;
+
+    @IsNotEmpty()
+    @IsNumber()
+    project_id: number;
 }

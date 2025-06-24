@@ -20,6 +20,7 @@ import { ProjectEntity } from "src/tables/project/project.entity";
 import { ProjectMemberEntity } from "src/tables/project-member/project-member.entity";
 import { User } from "src/users/users.entity";
 import { SprintEntity } from "src/tables/sprints/sprints.entity";
+import { Type as TransformType } from "class-transformer";
 
 @Entity('workitem')
 @TableInheritance({ column: { type: "varchar", name: "inheritance_type" } })
@@ -49,6 +50,7 @@ export class WorkItem {
         (user) => user.created_workitems,
         { eager: true },
     )
+    @TransformType(() => Number)
     @JoinColumn({ name: 'created_by' })
     created_by: User;
 
@@ -75,12 +77,12 @@ export class WorkItem {
     @Column({ nullable: true })
     iteration: string;
 
-    @BeforeInsert()
-    setIeration() {
-        if (!this.iteration) {
-            this.iteration = this.area_path;
-        }
-    }
+    // @BeforeInsert()
+    // setIeration() {
+    //     if (!this.iteration) {
+    //         this.iteration = this.area_path;
+    //     }
+    // }
 
     @Column({ type: 'timestamp' })
     updated_at: Date;

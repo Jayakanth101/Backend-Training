@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/users.dto';
 import { ConflictException, InternalServerErrorException } from '@nestjs/common';
 
-
 @Injectable()
 export class UsersService {
     constructor(
@@ -30,7 +29,7 @@ export class UsersService {
     }
 
     async findOneById(id: number): Promise<User | null> {
-        const user = this.userRepository.findOneBy({ id });
+        const user = await this.userRepository.findOneBy({ id });
         if (!user) {
             throw new NotFoundException(`User with Id ${id} not found`);
         }
@@ -38,7 +37,7 @@ export class UsersService {
     }
 
     async findOneByName(name: string): Promise<User | null> {
-        const user = this.userRepository.findOne({ where: { displayname: name } });
+        const user = await this.userRepository.findOne({ where: { displayname: name } });
         if (!user) {
             throw new NotFoundException(`User with id not found`);
         }

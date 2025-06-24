@@ -10,7 +10,7 @@ export class ProjectEntity {
     @PrimaryGeneratedColumn()
     project_id: number;
 
-    @Column()
+    @Column({ nullable: true })
     project_description: string;
 
     @Column()

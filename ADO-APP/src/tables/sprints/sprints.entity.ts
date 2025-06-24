@@ -12,6 +12,9 @@ export class SprintEntity {
     @ManyToOne(() => ProjectEntity, (project) => project.sprints)
     project: ProjectEntity;
 
+    @Column()
+    project_id: number;
+
     @OneToMany(() => WorkItem, (workitem) => workitem.sprint)
     workitems: WorkItem[];
 
@@ -26,4 +29,5 @@ export class SprintEntity {
 
     @Column({ default: '' })
     location: string;
+
 }

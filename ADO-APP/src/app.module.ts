@@ -11,14 +11,17 @@ import { DiscussionModule } from './discussion/discussion.module';
 import { Discussion } from './discussion/discussion.entity';
 import { TagModule } from './tags/tag.module';
 
-
-
 import { Tags } from './tags/tag.entity';
 import { ProjectEntity } from './tables/project/project.entity';
 import { ProjectMemberEntity } from './tables/project-member/project-member.entity';
 import { EpicEntity } from './tables/epic/epic.entity';
 import { FeatureEntity } from './tables/feature/feature.entity';
 import { UserStoryEntity } from './tables/user-story/user-story.entity';
+import { SprintEntity } from './tables/sprints/sprints.entity';
+import { SprintsModule } from './tables/sprints/sprints.module';
+import { ProjectModule } from './tables/project/project.module';
+
+const entity_arr = [WorkItem, User, Planning, Discussion, Tags, ProjectEntity, ProjectMemberEntity, EpicEntity, FeatureEntity, UserStoryEntity, SprintEntity];
 
 @Module({
     imports: [
@@ -29,11 +32,11 @@ import { UserStoryEntity } from './tables/user-story/user-story.entity';
             username: 'devuser',
             password: 'root',
             database: 'ado_app',
-            entities: [WorkItem, User, Planning, Discussion, Tags, ProjectEntity, ProjectMemberEntity, EpicEntity, FeatureEntity, UserStoryEntity],
+            entities: entity_arr,
             synchronize: true,
             logging: true,
             logger: 'advanced-console'
-        }), WorkItemsModule, UsersModule, DiscussionModule, TagModule
+        }), WorkItemsModule, UsersModule, DiscussionModule, TagModule, SprintsModule, ProjectModule
     ],
     controllers: [AppController],
     providers: [AppService],

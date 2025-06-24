@@ -1,4 +1,4 @@
-import { IsArray, IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator'
+import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator'
 import { Type as TransformType, Type as NestedType } from 'class-transformer'
 import { Type, State } from '../enum/work-items-enum';
 import { CreatePlanningDto } from 'src/planning/dto/planning.dto';
@@ -21,7 +21,7 @@ export class CreateWorkItemDto {
     @IsString()
     area_path: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     iteration: string;
 
@@ -56,5 +56,11 @@ export class CreateWorkItemDto {
     @NestedType(() => CreatePlanningDto)
     planning: CreatePlanningDto;
 
+    constructor(partial: Partial<CreateWorkItemDto>) {
+        Object.assign(this, partial);
+        if (!this.iteration) {
+            this.iteration = this.area_path;
+        }
+    }
 }
 

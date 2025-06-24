@@ -12,6 +12,7 @@ export class ProjectEntityDto {
 
     @IsNotEmpty()
     @IsNumber()
+    @Type(() => Number)
     project_creator_id: number;
 
 

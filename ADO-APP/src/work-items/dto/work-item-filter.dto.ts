@@ -22,15 +22,15 @@ export class WorkItemFilterDto {
     tags?: Tags[]
 
     @IsOptional()
-    recently_updated?: true;
+    recently_updated?: boolean;
 
     @IsOptional()
-    recently_created?: true;
+    recently_created?: boolean;
 
     @IsOptional()
-    recently_completed?: true;
+    recently_completed?: boolean;
 
     @IsOptional()
     @IsString()
-    keyword?: true;
+    keyword?: string;
 }

@@ -109,14 +109,14 @@ export class WorkItem {
     classification: string;
 
     @ManyToOne(() => WorkItem, (parent) => parent.childrens, { nullable: true })
-    parent: WorkItem;
+    parent: WorkItem | null;
 
     @OneToMany(() => WorkItem, (child) => child.parent, { nullable: true })
     childrens: WorkItem[];
 
     @OneToOne(() => Planning, (planning) => planning.work_item, { cascade: true })
     @JoinColumn({ name: 'planning_id' })
-    planning: Planning;
+    planning: Planning | null;
 
     @ManyToOne(() => SprintEntity, (sprint) => sprint.workitems, { onDelete: 'SET NULL' })
     sprint: SprintEntity;

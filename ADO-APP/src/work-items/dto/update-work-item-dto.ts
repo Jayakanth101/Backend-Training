@@ -5,5 +5,5 @@ import { CreatePlanningDto } from "src/planning/dto/planning.dto"
 
 export class UpdateWorkItemDto extends PartialType(CreateWorkItemDto) {
     @TransformType(() => CreatePlanningDto)
-    planning?: CreatePlanningDto | undefined
+    planning?: CreatePlanningDto | null;
 }

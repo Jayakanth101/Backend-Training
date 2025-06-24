@@ -16,7 +16,7 @@ export class ProjectEntity {
     @Column()
     project_name: string;
 
-    @OneToMany(() => SprintEntity, (sprint) => sprint.project)
+    @OneToMany(() => SprintEntity, (sprint) => sprint.project, { nullable: true })
     sprints: SprintEntity[]
 
     @OneToMany(() => WorkItem, (workitem) => workitem.project, { cascade: true })

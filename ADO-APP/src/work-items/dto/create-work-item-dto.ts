@@ -49,12 +49,12 @@ export class CreateWorkItemDto {
     @IsOptional()
     @IsNotEmpty()
     @IsNumber()
-    parentid: number;
+    parentid: number | null;
 
     @IsOptional()
     @ValidateNested()
     @NestedType(() => CreatePlanningDto)
-    planning: CreatePlanningDto;
+    planning: CreatePlanningDto | null;
 
     constructor(partial: Partial<CreateWorkItemDto>) {
         Object.assign(this, partial);

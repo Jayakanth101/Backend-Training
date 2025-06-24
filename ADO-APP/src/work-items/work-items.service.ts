@@ -37,7 +37,6 @@ export class WorkItemsService {
     ): Promise<WorkItem> {
 
         let entity: WorkItem;
-        console.log("--->");
 
         switch (dto.type) {
             case Type.Epic:
@@ -167,12 +166,14 @@ export class WorkItemsService {
         return await query.getMany();
     }
 
-    async DeleteWorkItem(id: number): Promise<void> {
+    async DeleteWorkItem(id: number): Promise<string> {
         const existing = await this.WorkItemsRepository.findOneBy({ id });
         if (!existing) {
             throw new NotFoundException(`workitem with id ${id} not found`);
         }
         await this.WorkItemsRepository.delete(id);
+
+        return `Successfully deleted ${id}`;
     }
 
 }

@@ -48,3 +48,11 @@ Sprint: `{Base url}/sprint`
 - GET: All listed sprints
 - DELETE (id): Delete a sprint by using sprint id.
 - POST: To create a sprint in sprint table
+
+
+
+
+
+## Note:
+- Need to validate project id whether it is available or not.
+- Need to validate the user before creating the project.

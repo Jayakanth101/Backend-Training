@@ -1,9 +1,9 @@
 import { Repository, ServerClosedEvent } from "typeorm";
-import { UsersService } from "./users.service"
-import { User } from "./users.entity";
+import { UsersService } from "../users.service"
+import { User } from "../users.entity";
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
-import { CreateUserDto } from "./dto/users.dto";
+import { CreateUserDto } from "../dto/users.dto";
 import { ConflictException, InternalServerErrorException } from "@nestjs/common";
 
 describe('UsersService', () => {
@@ -57,7 +57,6 @@ describe('UsersService', () => {
             expect(repo.save).toHaveBeenCalledWith(mockUser);
             expect(result).toEqual(mockUser);
         });
-
         it('it should throw ConflictException on duplicate', async () => {
             jest.spyOn(repo, 'save').mockRejectedValueOnce({ code: '23505' });
             await expect(service.create({} as any)).rejects.toThrow(ConflictException);
@@ -101,5 +100,7 @@ describe('UsersService', () => {
             expect(repo.delete).toHaveBeenCalledWith(1);
         });
     });
+
+
 
 });

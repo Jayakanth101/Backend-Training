@@ -1,25 +1,16 @@
-import { Repository, ServerClosedEvent } from "typeorm";
+import { Repository } from "typeorm";
 import { UsersService } from "../users.service"
 import { User } from "../users.entity";
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { CreateUserDto } from "../dto/users.dto";
 import { ConflictException, InternalServerErrorException } from "@nestjs/common";
+import { mockUser } from "src/mock-datas";
 
 describe('UsersService', () => {
     let service: UsersService;
     let repo: Repository<User>;
 
-    const mockUser: User = {
-        id: 1,
-        displayname: "Maddy",
-        email: "maddy@gmail.com",
-        password: "password",
-        created_projects: [],
-        assigned_projects: [],
-        project_memberships: [],
-        created_workitems: [],
-    };
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -103,4 +94,4 @@ describe('UsersService', () => {
 
 
 
-});
+}); 

@@ -1,36 +1,17 @@
 import { Repository } from "typeorm";
 import { ProjectService } from "../project.service"
 import { ProjectEntity } from "../project.entity";
-import { User } from "src/users/users.entity";
 import { Test } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { ProjectEntityDto } from "../dto/project.dto";
+import { mockUser, mockProject } from "src/mock-datas";
 
 
 describe('ProjectService', () => {
     let service: ProjectService;
     let repo: Repository<ProjectEntity>;
 
-    const mockUser: User = {
-        id: 1,
-        displayname: 'Alice',
-        email: 'alice@example.com',
-        password: 'securePass123',
-        created_projects: [],
-        assigned_projects: [],
-        project_memberships: [],
-        created_workitems: [],
-    }
 
-    const mockProject: ProjectEntity = {
-        project_id: 3,
-        project_description: "Testing project",
-        project_name: "CRUD app",
-        sprints: [],
-        work_items: [],
-        members: [],
-        project_creator: mockUser
-    }
     const mockProjects: ProjectEntity[] = [
         { project_id: 1, project_name: 'Alpha', project_description: 'Test A', work_items: [], sprints: [], project_creator: mockUser, members: [] },
         { project_id: 2, project_name: 'Beta', project_description: 'Test B', work_items: [], sprints: [], project_creator: mockUser, members: [] }
@@ -123,4 +104,4 @@ describe('ProjectService', () => {
     });
 
 
-})
+});

@@ -3,13 +3,14 @@ import { Repository } from "typeorm";
 import { ProjectMemberEntity } from "./project-member.entity";
 import { ProjectMemberDto } from "./dto/project-member.dto";
 import { ProjectMemberResponseDto } from "./dto/project-member-response.dtp";
-import { User } from "src/users/users.entity";
-import { measureMemory } from "vm";
 import { MembersProjectResponseDto } from "./dto/members-project-response.dto";
+import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()
 export class ProjectMemberService {
-    constructor(private readonly repo: Repository<ProjectMemberEntity>) { }
+    constructor(
+        @InjectRepository(ProjectMemberEntity)
+        private readonly repo: Repository<ProjectMemberEntity>) { }
 
 
     async createProjectMember(memberDto: ProjectMemberDto): Promise<string> {
@@ -18,7 +19,6 @@ export class ProjectMemberService {
 
         return `User ${memberDto.user_id} added as a ${memberDto.role} to the project ${memberDto.project_id}`;
     }
-
 
     async getAllProjectMembers(projectId: number): Promise<ProjectMemberResponseDto[]> {
         const members = await this.repo.find({

@@ -1,5 +1,4 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
-import { ProjectMemberEntity } from "./project-member.entity";
 import { ProjectMemberService } from "./project-member.service";
 import { ProjectMemberDto } from "./dto/project-member.dto";
 import { ProjectMemberResponseDto } from "./dto/project-member-response.dtp";

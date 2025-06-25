@@ -20,6 +20,7 @@ import { UserStoryEntity } from './tables/user-story/user-story.entity';
 import { SprintEntity } from './tables/sprints/sprints.entity';
 import { SprintsModule } from './tables/sprints/sprints.module';
 import { ProjectModule } from './tables/project/project.module';
+import { ProjectMemberModule } from './tables/project-member/project-member.module';
 
 const entity_arr = [WorkItem, User, Planning, Discussion, Tags, ProjectEntity, ProjectMemberEntity, EpicEntity, FeatureEntity, UserStoryEntity, SprintEntity];
 
@@ -36,7 +37,7 @@ const entity_arr = [WorkItem, User, Planning, Discussion, Tags, ProjectEntity, P
             synchronize: true,
             logging: true,
             logger: 'advanced-console'
-        }), WorkItemsModule, UsersModule, DiscussionModule, TagModule, SprintsModule, ProjectModule
+        }), WorkItemsModule, UsersModule, DiscussionModule, TagModule, SprintsModule, ProjectModule, ProjectMemberModule
     ],
     controllers: [AppController],
     providers: [AppService],

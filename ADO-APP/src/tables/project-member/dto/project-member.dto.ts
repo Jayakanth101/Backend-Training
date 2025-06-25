@@ -1,5 +1,4 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
-import { ProjectEntityDto } from "src/tables/project/dto/project.dto";
+import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class ProjectMemberDto {
 

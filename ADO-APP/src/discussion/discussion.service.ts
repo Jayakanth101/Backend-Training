@@ -45,7 +45,6 @@ export class DiscussionService {
                 commentid,
                 workitem: { id: workitemid }
             },
-            relations: ['workitem']
         });
 
         if (!comment) {

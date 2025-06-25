@@ -308,7 +308,7 @@ describe('WorkItem', () => {
             const resultString = `Successfully deleted ${mockWorkitem.id}`;
             expect(result).toEqual(resultString);
         })
-    })
+    });
 
 });
 

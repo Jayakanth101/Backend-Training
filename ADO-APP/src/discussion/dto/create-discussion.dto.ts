@@ -16,11 +16,11 @@ export class CreateDiscussionDto {
     creatorid: number;
 
     @IsString()
-    message: string;
+    message?: string;
 
     @IsNotEmpty()
     @TransformType(() => Date)
     @IsDate()
-    createdat: Date;
+    createdat?: Date;
 
 }

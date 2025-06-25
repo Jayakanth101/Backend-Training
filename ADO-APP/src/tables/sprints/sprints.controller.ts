@@ -20,7 +20,7 @@ export class SprintsController {
 
     @Delete()
     async deleteSprint(sprintid: number) {
-        return await this.service.delteSprint(sprintid);
+        return await this.service.deleteSprint(sprintid);
     }
 
     @Get(':id')

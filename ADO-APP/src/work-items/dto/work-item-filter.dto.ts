@@ -32,5 +32,5 @@ export class WorkItemFilterDto {
 
     @IsOptional()
     @IsString()
-    keyword?: string;
+    keyword?: string | null;
 }

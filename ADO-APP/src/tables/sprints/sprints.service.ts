@@ -42,7 +42,7 @@ export class SprintService {
         return await this.repo.find();
     }
 
-    async deleteSprint(sprint_id: number) {
+    async deleteSprint(sprint_id: number): Promise<string> {
         if (!sprint_id || typeof sprint_id !== 'number') {
             throw new BadRequestException('Invalid sprint_id');
         }
@@ -50,7 +50,8 @@ export class SprintService {
         const sprint = await this.repo.findOneBy({ id: sprint_id });
         if (!sprint) throw new BadRequestException(`Sprint with id ${sprint_id} does not exist`);
 
-        return await this.repo.delete(sprint_id);
+        await this.repo.delete(sprint_id);
+        return `Successfully deleted sprint with id ${sprint_id}`;
     }
 
     async getSprintById(sprint_id: number): Promise<SprintEntity | null> {

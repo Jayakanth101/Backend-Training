@@ -18,8 +18,8 @@ export class SprintsController {
         return await this.service.getAllSprint();
     }
 
-    @Delete()
-    async deleteSprint(sprintid: number) {
+    @Delete(':id')
+    async deleteSprint(sprintid: number): Promise<string> {
         return await this.service.deleteSprint(sprintid);
     }
 
@@ -31,6 +31,6 @@ export class SprintsController {
     @Put(':id')
     async updateSprintName(@Param('id', ParseIntPipe) projectId: number,
         @Body() dto: UpdateSprintDto): Promise<SprintEntity> {
-        return this.updateSprintName(projectId, dto);
+        return this.service.updateSprint(projectId, dto);
     }
 }

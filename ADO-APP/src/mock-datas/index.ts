@@ -7,7 +7,7 @@ export * from './data/mock.sprint.data'
 export * from './data/mock.tag.data'
 export * from './data/mock.user.data';
 export * from './data/mock.work-item.data'
-
+export * from './data/mock.discussion.data'
 
 //dto exports
 export * from './dto/mock.members-project-response.dto'
@@ -20,3 +20,8 @@ export * from './dto/mock.update-work-item.dto'
 export * from './dto/mock.work-item.dto'
 export * from './dto/mock.work-items.dto'
 export * from './dto/mock.sprint.dto'
+export * from './dto/mock.create-discussion.dto'
+export * from './dto/mock.workitem.filter.dto'
+export * from './dto/mock.project.dto'
+export * from './dto/mock.update-project-member-role.dto'
+export * from './dto/mock.update-sprint.dto'

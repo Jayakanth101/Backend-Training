@@ -5,19 +5,10 @@ import { DiscussionService } from '../discussion.service';
 import { Discussion } from '../discussion.entity';
 import { WorkItem } from 'src/work-items/work-items.entity';
 import { User } from 'src/users/users.entity';
-import { CreateDiscussionDto } from '../dto/create-discussion.dto';
 import { UpdateDiscussionDto } from '../dto/update-dicussion.dto';
 import { NotFoundException } from '@nestjs/common';
-import { mockUser, mockProject, mockProjectMemberEntity, mockSprint, mockWorkitem } from 'src/mock-datas';
+import { mockUser, mockCreateDiscussionDto, mockWorkitem, mockDiscussion } from 'src/mock-datas';
 
-
-const mockCreateDiscussion: CreateDiscussionDto = {
-    commentid: 1,
-    workitemid: 1,
-    creatorid: 1,
-    message: 'This work is done',
-    createdat: new Date(),
-};
 
 const mockUpdateDiscussionDto: UpdateDiscussionDto = {
     message: 'This work is done by jhon',
@@ -64,33 +55,27 @@ describe('DiscussionService', () => {
         mockWorkitemRepo.findOneBy.mockResolvedValue(mockWorkitem);
         mockUserRepo.findOneBy.mockResolvedValue(mockUser);
 
-        const createdEntity = {
-            message: mockCreateDiscussion.message,
-            createdat: mockCreateDiscussion.createdat,
-            workitem: mockWorkitem,
-            creator: mockUser,
-        };
-
+        const createdEntity = mockDiscussion;
         mockDiscussionRepo.create.mockReturnValue(createdEntity);
         mockDiscussionRepo.save.mockResolvedValue(createdEntity);
 
-        const result = await service.createComment(mockCreateDiscussion);
+        const result = await service.createComment(mockCreateDiscussionDto);
 
-        expect(mockDiscussionRepo.create).toHaveBeenCalledWith(createdEntity);
+        expect(mockDiscussionRepo.create).toHaveBeenCalledWith(mockCreateDiscussionDto);
         expect(mockDiscussionRepo.save).toHaveBeenCalledWith(createdEntity);
         expect(result).toEqual(createdEntity);
     });
 
     it('should find a comment by id', async () => {
-        mockDiscussionRepo.findOneBy.mockResolvedValue(mockCreateDiscussion);
-        const result = await service.findOne(mockCreateDiscussion.commentid);
+        mockDiscussionRepo.findOneBy.mockResolvedValue(mockCreateDiscussionDto);
+        const result = await service.findOne(mockCreateDiscussionDto.commentid);
 
-        expect(mockDiscussionRepo.findOneBy).toHaveBeenCalledWith({ commentid: mockCreateDiscussion.commentid });
-        expect(result).toEqual(mockCreateDiscussion);
+        expect(mockDiscussionRepo.findOneBy).toHaveBeenCalledWith({ commentid: mockCreateDiscussionDto.commentid });
+        expect(result).toEqual(mockCreateDiscussionDto);
     });
 
     it('should find all discussions by workitem id', async () => {
-        const discussions = [mockCreateDiscussion];
+        const discussions = [mockCreateDiscussionDto];
         mockDiscussionRepo.find.mockResolvedValue(discussions);
 
         const result = await service.findWorkItemDiscussion(mockWorkitem.id);
@@ -105,15 +90,15 @@ describe('DiscussionService', () => {
 
     describe('updateComment()', () => {
         it('should update the comment if found', async () => {
-            const updated = { ...mockCreateDiscussion, ...mockUpdateDiscussionDto };
+            const updated = { ...mockCreateDiscussionDto, ...mockUpdateDiscussionDto };
 
-            mockDiscussionRepo.findOne.mockResolvedValue(mockCreateDiscussion);
+            mockDiscussionRepo.findOne.mockResolvedValue(mockCreateDiscussionDto);
             mockDiscussionRepo.save.mockResolvedValue(updated);
 
-            const result = await service.updateComment(mockWorkitem.id, mockCreateDiscussion.commentid, mockUpdateDiscussionDto);
+            const result = await service.updateComment(mockWorkitem.id, mockCreateDiscussionDto.commentid, mockUpdateDiscussionDto);
 
             expect(mockDiscussionRepo.findOne).toHaveBeenCalledWith({
-                where: { commentid: mockCreateDiscussion.commentid, workitem: { id: mockWorkitem.id } },
+                where: { commentid: mockCreateDiscussionDto.commentid, workitem: { id: mockWorkitem.id } },
             });
             expect(mockDiscussionRepo.save).toHaveBeenCalledWith(updated);
             expect(result).toEqual(updated);
@@ -123,9 +108,9 @@ describe('DiscussionService', () => {
             mockDiscussionRepo.findOne.mockResolvedValue(null);
 
             await expect(
-                service.updateComment(mockWorkitem.id, mockCreateDiscussion.commentid, mockUpdateDiscussionDto)
+                service.updateComment(mockWorkitem.id, mockCreateDiscussionDto.commentid, mockUpdateDiscussionDto)
             ).rejects.toThrowError(new NotFoundException(
-                `Comment ${mockCreateDiscussion.commentid} not found in WorkItem ${mockWorkitem.id}`
+                `Comment ${mockCreateDiscussionDto.commentid} not found in WorkItem ${mockWorkitem.id}`
             ));
         });
     });

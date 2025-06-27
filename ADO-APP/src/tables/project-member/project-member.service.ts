@@ -13,11 +13,11 @@ export class ProjectMemberService {
         private readonly repo: Repository<ProjectMemberEntity>) { }
 
 
-    async createProjectMember(memberDto: ProjectMemberDto): Promise<string> {
+    async createProjectMember(memberDto: ProjectMemberDto): Promise<ProjectMemberEntity> {
         const result = this.repo.create(memberDto);
-        await this.repo.save(result);
+        return await this.repo.save(result);
 
-        return `User ${memberDto.user_id} added as a ${memberDto.role} to the project ${memberDto.project_id}`;
+
     }
 
     async getAllProjectMembers(projectId: number): Promise<ProjectMemberResponseDto[]> {

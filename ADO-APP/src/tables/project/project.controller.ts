@@ -1,4 +1,4 @@
-import { Put, UsePipes, ValidationPipe, Body, Controller, Post, Get, Param } from "@nestjs/common";
+import { Put, UsePipes, ValidationPipe, Body, Controller, Post, Get, Param, Delete } from "@nestjs/common";
 import { ProjectEntity } from "./project.entity";
 import { ProjectService } from "./project.service";
 import { ProjectEntityDto } from "./dto/project.dto";
@@ -29,6 +29,12 @@ export class ProjectController {
         @Body() updated_project: ProjectEntityDto
     ): Promise<ProjectEntity> {
         return await this.projectService.updateProject(id, updated_project);
+    }
+
+    @Delete(':id')
+    async deleteProject(@Param('id') id: number): Promise<string> {
+        await this.projectService.deleteProject(id);
+        return `Successfully project id ${id} deleted`;
     }
 
 }

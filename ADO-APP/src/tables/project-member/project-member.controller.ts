@@ -4,6 +4,7 @@ import { ProjectMemberDto } from "./dto/project-member.dto";
 import { ProjectMemberResponseDto } from "./dto/project-member-response.dtp";
 import { MembersProjectResponseDto } from "./dto/members-project-response.dto";
 import { UpdateProjectMemberRoleDto } from "./dto/project-member-role.dto";
+import { ProjectMemberEntity } from "./project-member.entity";
 
 
 @Controller('members')
@@ -11,7 +12,7 @@ export class ProjectMemberController {
     constructor(private readonly projectMemberService: ProjectMemberService) { }
 
     @Post()
-    async createProject(@Body() dto: ProjectMemberDto): Promise<string> {
+    async createProject(@Body() dto: ProjectMemberDto): Promise<ProjectMemberEntity> {
         return await this.projectMemberService.createProjectMember(dto);
     }
 

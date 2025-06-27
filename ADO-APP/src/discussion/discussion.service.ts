@@ -29,12 +29,7 @@ export class DiscussionService {
         const creator = await this.userRepo.findOneBy({ id: createDiscussionDto.creatorid });
         if (!creator) throw new NotFoundException(`User with id ${createDiscussionDto.creatorid} not found`);
 
-        const comment = this.discussionRepository.create({
-            message: createDiscussionDto.message,
-            createdat: createDiscussionDto.createdat || new Date(),
-            workitem: workItem,
-            creator: creator
-        });
+        const comment = this.discussionRepository.create(createDiscussionDto);
 
         return await this.discussionRepository.save(comment);
     }

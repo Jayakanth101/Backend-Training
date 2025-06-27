@@ -59,9 +59,8 @@ export class WorkItemsController {
     async updateWorkItem(
         @Param('id') id: number,
         @Body() updateWorkItemDto: UpdateWorkItemDto
-    ): Promise<string> {
-        await this.workItemsService.UpdateWorkItem(id, updateWorkItemDto);
-        return `Work item id ${id} had been updated`;
+    ): Promise<WorkItem> {
+        return await this.workItemsService.UpdateWorkItem(id, updateWorkItemDto);
     }
 
     @Delete(':id')

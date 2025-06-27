@@ -22,11 +22,14 @@ export class TagService {
             throw new NotFoundException(`comment with id ${id} not found`);
         }
         await this.TagRepo.delete(id);
-        return `Comment ${id} is deleted`;
+        return `Tag ${id} is deleted`;
     }
 
     async getAllTags(workItemId: number): Promise<Tags[]> {
-        return await this.TagRepo.findBy({ id: workItemId });
+        return await this.TagRepo.createQueryBuilder('tag')
+            .leftJoin('tag.workitems', 'workitem')
+            .where('workitem.id = :workItemId', { workItemId })
+            .getMany();
     }
 
 }

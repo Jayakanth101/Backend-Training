@@ -18,6 +18,7 @@ export class UsersController {
             throw new BadRequestException('Display name already exists');
         }
         return this.usersService.create(createUserDto);
+
     }
 
     @Get()

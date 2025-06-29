@@ -1,5 +1,5 @@
-import { CreatePlanningDto } from "src/planning/dto/planning.dto"
-import { Risk } from "src/work-items/enum/work-items-enum"
+import { CreatePlanningDto } from "../../planning/dto/planning.dto"
+import { Risk } from "../../work-items/enum/work-items-enum"
 
 export const mockPlanningDto: CreatePlanningDto = {
     priority: 1,

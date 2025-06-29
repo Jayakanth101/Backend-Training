@@ -13,7 +13,7 @@ import {
     mockProjectMemberResponseDto,
     mockProjectMembers,
     mockMembersProjectResponseDto,
-} from "src/mock-datas";
+} from "../../../mock-datas";
 
 describe('ProjectMemberService', () => {
     let service: ProjectMemberService;

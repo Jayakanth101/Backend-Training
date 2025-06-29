@@ -1,4 +1,4 @@
-import { SprintEntity } from "src/tables/sprints/sprints.entity"
+import { SprintEntity } from "../../tables/sprints/sprints.entity"
 import { mockProject } from "./mock.project.data"
 
 export const mockSprint: SprintEntity = {

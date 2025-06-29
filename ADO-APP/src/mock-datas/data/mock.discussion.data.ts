@@ -1,4 +1,4 @@
-import { Discussion } from "src/discussion/discussion.entity";
+import { Discussion } from "../../discussion/discussion.entity";
 import { mockWorkitem } from "./mock.work-item.data";
 import { mockUser } from "./mock.user.data";
 

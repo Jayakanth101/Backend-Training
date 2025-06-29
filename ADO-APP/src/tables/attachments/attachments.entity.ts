@@ -1,5 +1,5 @@
 import { trace } from "console";
-import { Discussion } from "src/discussion/discussion.entity";
+import { Discussion } from "../../discussion/discussion.entity";
 import { ChildEntity, Column, PrimaryGeneratedColumn, ManyToMany } from "typeorm"
 
 

@@ -17,7 +17,9 @@ export class UsersService {
     }
 
     async create(userDto: CreateUserDto): Promise<User> {
+        console.log("Inside the service");
         try {
+            console.log("Inside the servcie try");
             const user = this.userRepository.create(userDto);
             return await this.userRepository.save(user);
         } catch (error) {
@@ -38,9 +40,6 @@ export class UsersService {
 
     async findOneByName(name: string): Promise<User | null> {
         const user = await this.userRepository.findOne({ where: { displayname: name } });
-        if (!user) {
-            throw new NotFoundException(`User with id not found`);
-        }
         return user;
     }
 

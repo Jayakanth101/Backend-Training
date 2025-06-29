@@ -1,5 +1,5 @@
-import { User } from "src/users/users.entity";
-import { WorkItem } from "src/work-items/work-items.entity";
+import { User } from "../users/users.entity";
+import { WorkItem } from "../work-items/work-items.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
 
 

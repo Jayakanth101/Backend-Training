@@ -1,4 +1,4 @@
-import { UpdateSprintDto } from "src/tables/sprints/dto/update-sprint.dto"
+import { UpdateSprintDto } from "../../tables/sprints/dto/update-sprint.dto"
 export const mockUpdateSprintDto: UpdateSprintDto = {
     sprint_name: "Sprint 1",
     location: "Paris",

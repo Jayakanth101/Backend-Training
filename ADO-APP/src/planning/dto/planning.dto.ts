@@ -1,5 +1,5 @@
 import { IsDate, IsEnum, IsInt, IsNotEmpty, IsOptional } from "class-validator"
-import { Risk } from "src/work-items/enum/work-items-enum";
+import { Risk } from "../../work-items/enum/work-items-enum";
 import { Type as Transform } from "class-transformer";
 
 export class CreatePlanningDto {

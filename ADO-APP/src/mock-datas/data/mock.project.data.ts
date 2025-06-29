@@ -1,4 +1,4 @@
-import { ProjectEntity } from "src/tables/project/project.entity"
+import { ProjectEntity } from "../../tables/project/project.entity"
 import { mockUser } from "./mock.user.data"
 
 export const mockProject: ProjectEntity = {

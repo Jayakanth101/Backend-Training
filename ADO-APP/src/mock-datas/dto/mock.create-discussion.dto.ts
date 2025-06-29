@@ -1,4 +1,4 @@
-import { CreateDiscussionDto } from "src/discussion/dto/create-discussion.dto";
+import { CreateDiscussionDto } from "../../discussion/dto/create-discussion.dto";
 import { mockWorkitem } from "../data/mock.work-item.data";
 import { mockUser } from "../data/mock.user.data";
 
@@ -8,5 +8,5 @@ export const mockCreateDiscussionDto: CreateDiscussionDto = {
     workitemid: mockWorkitem.id,
     creatorid: mockUser.id,
     message: "First comment",
-    createdat: new Date(''),
+    createdat: new Date('2020-02-02'),
 }

@@ -13,13 +13,13 @@ import {
 } from "typeorm";
 
 import { State, Type } from "./enum/work-items-enum"
-import { Discussion } from "src/discussion/discussion.entity";
-import { Tags } from "src/tags/tag.entity";
-import { Planning } from "src/planning/planning.entity";
-import { ProjectEntity } from "src/tables/project/project.entity";
-import { ProjectMemberEntity } from "src/tables/project-member/project-member.entity";
-import { User } from "src/users/users.entity";
-import { SprintEntity } from "src/tables/sprints/sprints.entity";
+import { Discussion } from "../discussion/discussion.entity";
+import { Tags } from "../tags/tag.entity";
+import { Planning } from "../planning/planning.entity";
+import { ProjectEntity } from "../tables/project/project.entity";
+import { ProjectMemberEntity } from "../tables/project-member/project-member.entity";
+import { User } from "../users/users.entity";
+import { SprintEntity } from "../tables/sprints/sprints.entity";
 import { Type as TransformType } from "class-transformer";
 
 @Entity('workitem')
@@ -35,6 +35,7 @@ export class WorkItem {
         enum: Type,
     })
     type: Type;
+
 
     @Column()
     title: string;
@@ -63,10 +64,7 @@ export class WorkItem {
         { nullable: true }
     )
     @JoinColumn({ name: 'assigned_to' })
-    assignedTo: ProjectMemberEntity;
-
-    @Column({ nullable: true })
-    assigned_to: number;
+    assignedTo: ProjectMemberEntity | null;
 
     @Column({ type: 'timestamp' })
     activity_date: Date;
@@ -76,13 +74,6 @@ export class WorkItem {
 
     @Column({ nullable: true })
     iteration: string;
-
-    // @BeforeInsert()
-    // setIeration() {
-    //     if (!this.iteration) {
-    //         this.iteration = this.area_path;
-    //     }
-    // }
 
     @Column({ type: 'timestamp' })
     updated_at: Date;

@@ -1,14 +1,16 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator"
+import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator"
 import { Type } from "class-transformer";
-import { ProjectMemberDto } from "src/tables/project-member/dto/project-member.dto";
+import { ProjectMemberDto } from "../../../tables/project-member/dto/project-member.dto";
 
 export class ProjectEntityDto {
+
+    @IsNotEmpty()
     @IsString()
     project_name: string;
 
     @IsOptional()
     @IsString()
-    project_description: string;
+    project_description?: string;
 
     @IsNotEmpty()
     @IsNumber()
@@ -17,6 +19,8 @@ export class ProjectEntityDto {
 
 
     @IsOptional()
+    @IsArray()
+    @ValidateNested({ each: true })
     @Type(() => ProjectMemberDto)
-    members: ProjectMemberDto[];
+    members?: ProjectMemberDto[];
 }

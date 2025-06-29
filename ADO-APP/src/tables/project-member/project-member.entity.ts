@@ -1,7 +1,7 @@
-import { User } from "src/users/users.entity";
+import { User } from "../../users/users.entity";
 import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany, Column } from "typeorm"
 import { ProjectEntity } from "../project/project.entity";
-import { WorkItem } from "src/work-items/work-items.entity";
+import { WorkItem } from "../../work-items/work-items.entity";
 
 @Entity('project_member')
 export class ProjectMemberEntity {

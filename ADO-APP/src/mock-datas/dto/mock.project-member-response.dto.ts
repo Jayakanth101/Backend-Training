@@ -1,4 +1,4 @@
-import { ProjectMemberResponseDto } from "src/tables/project-member/dto/project-member-response.dtp";
+import { ProjectMemberResponseDto } from "../../tables/project-member/dto/project-member-response.dtp";
 
 export const mockProjectMemberResponseDto: ProjectMemberResponseDto = {
     user_id: 1,

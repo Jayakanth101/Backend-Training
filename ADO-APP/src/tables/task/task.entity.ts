@@ -1,8 +1,7 @@
-import { WorkItem } from "src/work-items/work-items.entity";
+import { WorkItem } from "../../work-items/work-items.entity";
 import { Entity, Column, ChildEntity } from "typeorm"
 
 @ChildEntity()
-@Entity('task_entity')
 export class TaskEntity extends WorkItem {
 
     @Column({ nullable: true })

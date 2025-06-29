@@ -1,4 +1,4 @@
-import { BadRequestException, Controller, Delete, Param } from '@nestjs/common';
+import { BadRequestException, Controller, Delete, Param, ParseIntPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './users.entity';
 import { Get, Post, Body } from '@nestjs/common';
@@ -12,6 +12,7 @@ export class UsersController {
 
     @Post()
     async create(@Body() createUserDto: CreateUserDto): Promise<User> {
+        console.log("create user req rececived");
 
         const existing = await this.usersService.findOneByName(createUserDto.displayname);
         if (existing) {
@@ -32,13 +33,8 @@ export class UsersController {
     }
 
     @Get(':id')
-    async findOne(@Param('id') id: number): Promise<User | null> {
-        try {
-            return this.usersService.findOneById(id);
-        }
-        catch (err) {
-            throw new ExceptionsHandler(err);
-        }
+    async findOne(@Param('id', ParseIntPipe) id: number): Promise<User | null> {
+        return this.usersService.findOneById(id);
     }
 
 

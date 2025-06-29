@@ -1,10 +1,7 @@
 import { Test } from "@nestjs/testing";
-import { WorkItem } from "../work-items.entity";
 import { WorkItemsController } from "../work-items.controller";
 import { WorkItemsService } from "../work-items.service";
-import { mockUpdateWorkItemDto, mockWorkitem, mockWorkItemDto, mockWorkitemFilterDto, mockWorkitems } from "src/mock-datas";
-import { State } from "../enum/work-items-enum";
-import { UpdateWorkItemDto } from "../dto/update-work-item-dto";
+import { mockUpdateWorkItemDto, mockWorkitem, mockWorkItemDto, mockWorkitemFilterDto, mockWorkitems } from "../../mock-datas";
 
 describe('', () => {
     const mockWorkitemService = {

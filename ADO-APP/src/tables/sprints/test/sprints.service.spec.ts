@@ -2,9 +2,9 @@ import { Test } from "@nestjs/testing";
 import { SprintEntity } from "../sprints.entity";
 import { SprintService } from "../sprints.service";
 import { getRepositoryToken } from "@nestjs/typeorm";
-import { ProjectService } from "src/tables/project/project.service";
-import { ProjectEntity } from "src/tables/project/project.entity";
-import { mockProject, mockSprint, mockSprintDto } from "src/mock-datas";
+import { ProjectService } from "../../../tables/project/project.service";
+import { ProjectEntity } from "../../../tables/project/project.entity";
+import { mockProject, mockSprint, mockSprintDto } from "../../../mock-datas";
 
 describe('SprintService', () => {
     let mockService: SprintService;

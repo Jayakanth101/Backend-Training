@@ -2,22 +2,27 @@ import { BadRequestException, Injectable, NotFoundException } from "@nestjs/comm
 import { InjectRepository } from "@nestjs/typeorm";
 import { WorkItem } from "./work-items.entity";
 import { Repository } from "typeorm";
-import { Planning } from "src/planning/planning.entity";
+import { Planning } from "../planning/planning.entity";
 import { Type } from "./enum/work-items-enum";
-import { FeatureEntity } from "src/tables/feature/feature.entity";
-import { FeatureDto } from "src/tables/feature/dto/feature.dto";
-import { EpicDto } from "src/tables/epic/dto/epic.dto";
-import { UserStoryDto } from "src/tables/user-story/dto/user-story.dto";
-import { TaskDto } from "src/tables/task/dto/task.dto";
-import { EpicEntity } from "src/tables/epic/epic.entity";
-import { UserStoryEntity } from "src/tables/user-story/user-story.entity";
-import { TaskEntity } from "src/tables/task/task.entity";
-import { UpdateFeatureDto } from "src/tables/feature/dto/update-feature.dto";
-import { UpdateEpicDto } from "src/tables/epic/dto/update-epic.dto";
-import { UpdateUserStoryDto } from "src/tables/user-story/dto/update-user-story.dto";
-import { UpdateTaskDto } from "src/tables/task/dto/update-task.dto";
+import { FeatureEntity } from "../tables/feature/feature.entity";
+import { FeatureDto } from "../tables/feature/dto/feature.dto";
+import { EpicDto } from "../tables/epic/dto/epic.dto";
+import { UserStoryDto } from "../tables/user-story/dto/user-story.dto";
+import { TaskDto } from "../tables/task/dto/task.dto";
+import { EpicEntity } from "../tables/epic/epic.entity";
+import { UserStoryEntity } from "../tables/user-story/user-story.entity";
+import { TaskEntity } from "../tables/task/task.entity";
+import { UpdateFeatureDto } from "../tables/feature/dto/update-feature.dto";
+import { UpdateEpicDto } from "../tables/epic/dto/update-epic.dto";
+import { UpdateUserStoryDto } from "../tables/user-story/dto/update-user-story.dto";
+import { UpdateTaskDto } from "../tables/task/dto/update-task.dto";
 import { WorkItemFilterDto } from "./dto/work-item-filter.dto";
-
+import { User } from "../../src/users/users.entity";
+import { ProjectMemberEntity } from "../../src/tables/project-member/project-member.entity";
+import { ProjectEntity } from "../../src/tables/project/project.entity";
+import { Bug } from "../../src/tables/bug/bug.entity";
+import { WorkItemResponseDto } from "./dto/work-item-response.dto";
+import { plainToInstance } from "class-transformer";
 @Injectable()
 export class WorkItemsService {
 
@@ -26,40 +31,85 @@ export class WorkItemsService {
         private WorkItemsRepository: Repository<WorkItem>,
 
         @InjectRepository(Planning)
-        private PlanningRepository: Repository<Planning>
+        private PlanningRepository: Repository<Planning>,
+
+        @InjectRepository(User)
+        private userRepo: Repository<User>,
+
+        @InjectRepository(ProjectMemberEntity)
+        private memberRepo: Repository<ProjectMemberEntity>,
+
+        @InjectRepository(ProjectEntity)
+        private projectRepo: Repository<ProjectEntity>,
+
+        @InjectRepository(EpicEntity)
+        private epicRepo: Repository<EpicEntity>,
+
+        @InjectRepository(Bug)
+        private bugRepo: Repository<Bug>,
+
+        @InjectRepository(FeatureEntity)
+        private featureRepo: Repository<FeatureEntity>,
+
+        @InjectRepository(UserStoryEntity)
+        private userStoryRepo: Repository<UserStoryEntity>,
+
+        @InjectRepository(TaskEntity)
+        private taskRepo: Repository<TaskEntity>,
+
     ) { }
 
     async findAll(): Promise<WorkItem[]> {
         return await this.WorkItemsRepository.find();
     }
 
-    async CreateWorkItem(dto: FeatureDto | EpicDto | UserStoryDto | TaskDto
-    ): Promise<WorkItem> {
+    async CreateWorkItem(dto: EpicDto | TaskDto | FeatureDto | UserStoryDto): Promise<WorkItem> {
+        const user = await this.userRepo.findOne({ where: { id: dto.created_by } });
+        if (!user) throw new BadRequestException(`User not found`);
 
-        let entity: WorkItem;
+        const project = await this.projectRepo.findOne({ where: { project_id: dto.project_id } });
+        if (!project) throw new BadRequestException(`Project not found`);
+
+        const assignee = dto.assigned_to
+            ? await this.memberRepo.findOne({ where: { id: dto.assigned_to } })
+            : null;
+
+        const now = new Date();
+        const base_props = {
+            ...dto,
+            created_at: now,
+            updated_at: now,
+            completed_at: now,
+            created_by: user,
+            project: project,
+            assignedTo: assignee ?? null,
+        };
 
         switch (dto.type) {
-            case Type.Epic:
-                console.log("epic");
-                entity = Object.assign(new EpicEntity(), dto);
-                break;
-            case Type.Feature:
-                console.log("feature");
-                entity = Object.assign(new FeatureEntity(), dto);
-                break;
-            case Type.UserStory:
-                console.log("user-story");
-                entity = Object.assign(new UserStoryEntity(), dto);
-                break;
-            case Type.Task:
-                console.log("task");
-                entity = Object.assign(new TaskEntity(), dto);
-                break;
+            case Type.Epic: {
+                const entity = this.epicRepo.create(base_props);
+                return await this.epicRepo.save(entity);
+            }
+            case Type.Feature: {
+                const entity = this.featureRepo.create(base_props);
+                return await this.featureRepo.save(entity);
+            }
+            case Type.UserStory: {
+                const entity = this.userStoryRepo.create(base_props);
+                return await this.userStoryRepo.save(entity);
+            }
+            case Type.Task: {
+                const entity = this.taskRepo.create(base_props);
+                return await this.taskRepo.save(entity);
+            }
+            case Type.Bug: {
+                const entity = this.bugRepo.create(base_props);
+                return await this.bugRepo.save(entity);
+            }
             default:
                 throw new BadRequestException("Invalid work item type");
         }
-        const workitem = this.WorkItemsRepository.create(entity);
-        return await this.WorkItemsRepository.save(workitem);
+
     }
 
     async UpdateWorkItem(
@@ -99,7 +149,7 @@ export class WorkItemsService {
         return workItem;
     }
 
-    async getFilteredWorkItems(filterDto: WorkItemFilterDto) {
+    async getFilteredWorkItems(filterDto: WorkItemFilterDto): Promise<WorkItemResponseDto[]> {
         const {
             id,
             type,
@@ -113,7 +163,10 @@ export class WorkItemsService {
             keyword
         } = filterDto;
 
-        const query = this.WorkItemsRepository.createQueryBuilder('workitem');
+        console.log("Hello");
+        const query = this.WorkItemsRepository.createQueryBuilder('workitem')
+            .leftJoinAndSelect('workitem.assignedTo', 'assignedTo')
+            .leftJoinAndSelect('workitem.created_by', 'created_by');
 
         if (id) {
             query.andWhere('workitem.id = :id', { id });
@@ -163,7 +216,9 @@ export class WorkItemsService {
             query.andWhere('workitem.title ILIKE :keyword OR workitem.description ILIKE :keyword', { keyword: '%${keyword}%' });
         }
 
-        return await query.getMany();
+        const result = await query.getMany();
+        console.log("----------->", result);
+        return plainToInstance(WorkItemResponseDto, result, { excludeExtraneousValues: true, });
     }
 
     async DeleteWorkItem(id: number): Promise<string> {

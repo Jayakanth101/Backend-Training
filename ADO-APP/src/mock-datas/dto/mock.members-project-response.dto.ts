@@ -1,4 +1,4 @@
-import { MembersProjectResponseDto } from "src/tables/project-member/dto/members-project-response.dto";
+import { MembersProjectResponseDto } from "../../tables/project-member/dto/members-project-response.dto";
 import { mockProject } from "../data/mock.project.data";
 
 export const mockMembersProjectResponseDto: MembersProjectResponseDto = {

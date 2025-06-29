@@ -1,6 +1,6 @@
 import { IsOptional, IsString } from 'class-validator'
 import { State, Type } from '../enum/work-items-enum';
-import { Tags } from 'src/tags/tag.entity';
+import { Tags } from '../../tags/tag.entity';
 
 export class WorkItemFilterDto {
     @IsOptional()

@@ -1,10 +1,7 @@
 import { Test } from "@nestjs/testing";
 import { SprintsController } from "../sprints.controller";
 import { SprintService } from "../sprints.service";
-import { UpdateSprintDto } from "../dto/update-sprint.dto";
-import { mockProject, mockSprint, mockSprintDto, mockUpdateSprintDto } from "src/mock-datas";
-import { rmSync } from "fs";
-import { async } from "rxjs";
+import { mockProject, mockSprint, mockSprintDto, mockUpdateSprintDto } from "../../../mock-datas";
 
 describe('SprintsController', () => {
 

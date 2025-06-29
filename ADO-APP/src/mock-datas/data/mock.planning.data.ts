@@ -1,6 +1,6 @@
-import { Planning } from "src/planning/planning.entity"
+import { Planning } from "../../planning/planning.entity"
 import { mockWorkitem } from "./mock.work-item.data"
-import { Risk } from "src/work-items/enum/work-items-enum"
+import { Risk } from "../../work-items/enum/work-items-enum"
 
 export const mockPlanning: Planning = {
     planning_id: 1,

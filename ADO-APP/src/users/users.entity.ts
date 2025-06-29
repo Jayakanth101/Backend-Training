@@ -1,7 +1,7 @@
-import { ProjectMemberEntity } from "src/tables/project-member/project-member.entity";
-import { ProjectEntity } from "src/tables/project/project.entity";
-import { WorkItem } from "src/work-items/work-items.entity";
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany, ManyToOne } from "typeorm";
+import { ProjectMemberEntity } from "../tables/project-member/project-member.entity";
+import { ProjectEntity } from "../tables/project/project.entity";
+import { WorkItem } from "../work-items/work-items.entity";
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 
 
 @Entity('User')
@@ -24,7 +24,7 @@ export class User {
 
     @OneToMany(
         () => WorkItem,
-        (workitem) => workitem.assigned_to,
+        (workitem) => workitem.assignedTo,
         { nullable: true }
     )
     assigned_projects: WorkItem[];

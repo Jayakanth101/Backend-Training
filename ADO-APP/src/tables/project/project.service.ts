@@ -4,6 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { ProjectEntityDto } from "./dto/project.dto";
 import { ProjectUpdateDto } from "./dto/project-update.dto";
+import { User } from "../../users/users.entity";
 
 
 @Injectable()
@@ -11,9 +12,17 @@ export class ProjectService {
     constructor(
         @InjectRepository(ProjectEntity)
         private ProjectRepository: Repository<ProjectEntity>,
+        @InjectRepository(User)
+        private UserRepository: Repository<User>,
     ) { }
 
     async createProject(dto: ProjectEntityDto): Promise<ProjectEntity> {
+        const id = dto.project_creator_id;
+        const user = this.UserRepository.findOneBy({ id });
+        if (!user) {
+            throw new NotFoundException(`User not found`);
+        }
+
         const project = this.ProjectRepository.create(dto);
         return await this.ProjectRepository.save(project);
     }

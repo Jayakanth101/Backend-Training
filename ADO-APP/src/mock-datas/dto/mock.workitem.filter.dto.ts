@@ -1,5 +1,5 @@
-import { WorkItemFilterDto } from "src/work-items/dto/work-item-filter.dto";
-import { State, Type } from "src/work-items/enum/work-items-enum";
+import { WorkItemFilterDto } from "../../work-items/dto/work-item-filter.dto";
+import { State, Type } from "../../work-items/enum/work-items-enum";
 export const mockWorkitemFilterDto: WorkItemFilterDto = {
     id: 1,
     type: Type.Epic,

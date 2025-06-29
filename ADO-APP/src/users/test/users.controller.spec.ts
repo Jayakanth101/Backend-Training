@@ -1,8 +1,8 @@
 import { Test } from "@nestjs/testing";
 import { UsersController } from "../users.controller";
 import { UsersService } from "../users.service";
-import { mockCreateUserDto } from "src/mock-datas/dto/mock.crate-user.dto";
-import { mockUser } from "src/mock-datas";
+import { mockCreateUserDto } from "../../mock-datas/dto/mock.crate-user.dto";
+import { mockUser } from "../../mock-datas";
 import { mock } from "node:test";
 import { CreateUserDto } from "../dto/users.dto";
 import { BadRequestException } from "@nestjs/common";

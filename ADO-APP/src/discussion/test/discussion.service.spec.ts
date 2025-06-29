@@ -3,11 +3,11 @@ import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { DiscussionService } from '../discussion.service';
 import { Discussion } from '../discussion.entity';
-import { WorkItem } from 'src/work-items/work-items.entity';
-import { User } from 'src/users/users.entity';
+import { WorkItem } from '../../work-items/work-items.entity';
+import { User } from '../../users/users.entity';
 import { UpdateDiscussionDto } from '../dto/update-dicussion.dto';
 import { NotFoundException } from '@nestjs/common';
-import { mockUser, mockCreateDiscussionDto, mockWorkitem, mockDiscussion } from 'src/mock-datas';
+import { mockUser, mockCreateDiscussionDto, mockWorkitem, mockDiscussion } from '../../mock-datas';
 
 
 const mockUpdateDiscussionDto: UpdateDiscussionDto = {

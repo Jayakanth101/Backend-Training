@@ -1,5 +1,5 @@
 export const mockCreateUserDto = {
-    displayname: "Alen",
-    email: "alen@gmail.com",
+    displayname: `Alen${Date.now()}`,
+    email: `alen${Date.now()}@gmail.com`,
     password: "password"
 }

@@ -1,4 +1,4 @@
-import { ProjectMemberEntity } from "src/tables/project-member/project-member.entity"
+import { ProjectMemberEntity } from "../../tables/project-member/project-member.entity"
 import { mockUser } from "./mock.user.data"
 import { mockProject } from "./mock.project.data"
 

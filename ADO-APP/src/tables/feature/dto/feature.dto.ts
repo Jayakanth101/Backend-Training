@@ -1,3 +1,3 @@
-import { CreateWorkItemDto } from "src/work-items/dto/create-work-item-dto";
+import { CreateWorkItemDto } from "../../../work-items/dto/create-work-item-dto";
 
 export class FeatureDto extends CreateWorkItemDto { }

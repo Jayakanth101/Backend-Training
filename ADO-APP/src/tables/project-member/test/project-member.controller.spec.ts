@@ -1,8 +1,7 @@
 import { Test } from "@nestjs/testing";
 import { ProjectMemberController } from "../project-member.controller";
 import { ProjectMemberService } from "../project-member.service";
-import { mockMembersProjectResponseDto, mockProject, mockProjectdto, mockProjectMemberDto, mockProjectMemberResponseDto, mockUpdateProjectMemberRoleDto, mockUser } from "src/mock-datas";
-import { async } from "rxjs";
+import { mockMembersProjectResponseDto, mockProject, mockProjectMemberDto, mockProjectMemberResponseDto, mockUpdateProjectMemberRoleDto, mockUser } from "../../../mock-datas";
 
 describe('ProjectMemeberController()', () => {
     const mockProjectMemberService = {

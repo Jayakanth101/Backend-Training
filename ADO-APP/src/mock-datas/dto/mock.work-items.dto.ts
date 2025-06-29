@@ -1,6 +1,6 @@
-import { WorkItem } from "src/work-items/work-items.entity"
-import { Type } from "src/work-items/enum/work-items-enum"
-import { State } from "src/work-items/enum/work-items-enum"
+import { WorkItem } from "../../work-items/work-items.entity"
+import { Type } from "../../work-items/enum/work-items-enum"
+import { State } from "../../work-items/enum/work-items-enum"
 import { mockUser } from "../data/mock.user.data"
 import { mockProjectMemberEntity } from "../data/mock.project-member.data"
 import { mockSprint } from "../data/mock.sprint.data"
@@ -13,15 +13,14 @@ export const mockWorkitems: WorkItem[] = [{
     state: State.New,
     created_by: mockUser,
     description: "Sample workitem",
-    assigned_to: 1,
-    activity_date: new Date(''),
+    activity_date: new Date('2025-02-02'),
     area_path: "ado",
     iteration: "ado",
     assignedTo: mockProjectMemberEntity,
     sprint_id: 1,
-    updated_at: new Date(''),
-    created_at: new Date(''),
-    completed_at: new Date(''),
+    updated_at: new Date('2025-02-02'),
+    created_at: new Date('2025-02-02'),
+    completed_at: new Date('2025-02-02'),
     discussion: [],
     tags: [],
     childrens: [],

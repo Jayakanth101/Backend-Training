@@ -4,17 +4,19 @@ import { ProjectEntity } from "../project.entity";
 import { Test } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { ProjectEntityDto } from "../dto/project.dto";
-import { mockUser, mockProject } from "src/mock-datas";
+import { mockUser, mockProject } from "../../../mock-datas";
+import { User } from "../../../users/users.entity";
 
 
 describe('ProjectService', () => {
     let service: ProjectService;
     let repo: Repository<ProjectEntity>;
+    let userRepo: Repository<User>;
 
 
     const mockProjects: ProjectEntity[] = [
         { project_id: 1, project_name: 'Alpha', project_description: 'Test A', work_items: [], sprints: [], project_creator: mockUser, members: [] },
-        { project_id: 2, project_name: 'Beta', project_description: 'Test B', work_items: [], sprints: [], project_creator: mockUser, members: [] }
+        // { project_id: 2, project_name: 'Beta', project_description: 'Test B', work_items: [], sprints: [], project_creator: mockUser, members: [] }
     ];
     const updatedMockProject: ProjectEntity = {
         ...mockProject,
@@ -28,6 +30,9 @@ describe('ProjectService', () => {
         delete: jest.fn(),
         find: jest.fn(),
     };
+    const mockUserRepo = {
+        findOneBy: jest.fn()
+    };
 
     beforeEach(async () => {
         const module = await Test.createTestingModule({
@@ -36,7 +41,12 @@ describe('ProjectService', () => {
                 {
                     provide: getRepositoryToken(ProjectEntity),
                     useValue: mockProjectRepo,
+                },
+                {
+                    provide: getRepositoryToken(User),
+                    useValue: mockUserRepo,
                 }
+
             ]
         }).compile();
 
@@ -44,6 +54,7 @@ describe('ProjectService', () => {
         repo = module.
             get<Repository<ProjectEntity>>
             (getRepositoryToken(ProjectEntity));
+        userRepo = module.get<Repository<User>>(getRepositoryToken(User));
     });
 
     describe('create()', () => {
@@ -55,14 +66,18 @@ describe('ProjectService', () => {
                 members: []
             }
 
+            jest.spyOn(userRepo, 'findOneBy').mockResolvedValue(mockUser);
             jest.spyOn(repo, 'create').mockReturnValue(mockProject as any);
             jest.spyOn(repo, 'save').mockResolvedValue(mockProject as any);
 
             const result = await service.createProject(dto);
+
+            expect(userRepo.findOneBy).toHaveBeenCalledWith({ id: dto.project_creator_id });
             expect(repo.create).toHaveBeenCalledWith(dto);
             expect(repo.save).toHaveBeenCalledWith(mockProject);
             expect(result).toEqual(mockProject)
         });
+
 
         it('it should get a project by Id', async () => {
             jest.spyOn(repo, 'findOne').mockResolvedValueOnce(mockProject as any);

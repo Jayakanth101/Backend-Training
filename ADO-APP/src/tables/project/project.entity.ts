@@ -1,7 +1,7 @@
-import { WorkItem } from "src/work-items/work-items.entity";
+import { WorkItem } from "../../work-items/work-items.entity";
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ProjectMemberEntity } from "../project-member/project-member.entity";
-import { User } from "src/users/users.entity";
+import { User } from "../../users/users.entity";
 import { SprintEntity } from "../sprints/sprints.entity";
 
 @Entity('project')

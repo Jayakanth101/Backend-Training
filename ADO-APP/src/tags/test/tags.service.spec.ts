@@ -3,8 +3,8 @@ import { Tags } from "../tag.entity"
 import { TagService } from "../tag.service"
 import { getRepositoryToken } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
-import { mockTag } from "src/mock-datas/data/mock.tag.data"
-import { mockTagDto } from "src/mock-datas/dto/mock.tag.dto"
+import { mockTag } from "../../mock-datas/data/mock.tag.data"
+import { mockTagDto } from "../../mock-datas/dto/mock.tag.dto"
 
 describe('TagService', () => {
     let service: TagService;
@@ -56,6 +56,6 @@ describe('TagService', () => {
         expect(mockTagRepo.findOneBy).toHaveBeenCalledWith({ id: mockTag.id });
         expect(mockTagRepo.delete).toHaveBeenCalledWith(mockTag.id);
 
-        expect(result).toEqual(`Comment ${mockTag.id} is deleted`);
+        expect(result).toEqual(`Tag ${mockTag.id} is deleted`);
     });
 });

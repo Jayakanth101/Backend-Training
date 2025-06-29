@@ -1,6 +1,6 @@
 import { Column, Entity, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm"
-import { Risk } from "src/work-items/enum/work-items-enum";
-import { WorkItem } from "src/work-items/work-items.entity";
+import { Risk } from "../work-items/enum/work-items-enum";
+import { WorkItem } from "../work-items/work-items.entity";
 
 @Entity('planning')
 export class Planning {

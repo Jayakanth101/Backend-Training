@@ -5,7 +5,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { CreateUserDto } from "../dto/users.dto";
 import { ConflictException, InternalServerErrorException } from "@nestjs/common";
-import { mockUser } from "src/mock-datas";
+import { mockUser } from "../../mock-datas";
 
 describe('UsersService', () => {
     let service: UsersService;

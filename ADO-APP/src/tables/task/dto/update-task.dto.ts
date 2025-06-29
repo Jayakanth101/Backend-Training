@@ -1,4 +1,4 @@
-import { UpdateWorkItemDto } from "src/work-items/dto/update-work-item-dto";
+import { UpdateWorkItemDto } from "../../../work-items/dto/update-work-item-dto";
 
 export class UpdateTaskDto extends UpdateWorkItemDto { }
 

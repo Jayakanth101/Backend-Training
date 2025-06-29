@@ -1,7 +1,7 @@
 import { Test } from "@nestjs/testing"
 import { TagController } from "../tag.controller"
 import { TagService } from "../tag.service"
-import { mockTag, mockTagDto, mockWorkitem } from "src/mock-datas"
+import { mockTag, mockTagDto, mockWorkitem } from "../../mock-datas"
 
 describe('TagController', () => {
 

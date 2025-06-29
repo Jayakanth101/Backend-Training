@@ -1,4 +1,4 @@
-import { WorkItem } from "src/work-items/work-items.entity";
+import { WorkItem } from "../../work-items/work-items.entity";
 import { Entity } from "typeorm"
 
 

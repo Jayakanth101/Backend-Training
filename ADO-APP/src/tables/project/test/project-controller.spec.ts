@@ -1,8 +1,8 @@
 import { Test } from "@nestjs/testing"
 import { ProjectController } from "../project.controller"
 import { ProjectService } from "../project.service"
-import { mockProject, mockProjectdto } from "src/mock-datas"
-import { mockUpdateProjectDto } from "src/mock-datas/dto/mock.update-project.dto"
+import { mockProject, mockProjectdto } from "../../../mock-datas"
+import { mockUpdateProjectDto } from "../../../mock-datas/dto/mock.update-project.dto"
 
 describe('ProjectController()', () => {
 

@@ -1,4 +1,4 @@
-import { WorkItem } from "src/work-items/work-items.entity";
+import { WorkItem } from "../work-items/work-items.entity";
 import { Entity, Column, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('tags')

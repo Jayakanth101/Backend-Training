@@ -18,6 +18,7 @@ import { CreateWorkItemDto } from "./dto/create-work-item-dto";
 import { UpdateWorkItemDto } from "./dto/update-work-item-dto";
 import { WorkItemTransformInterceptor } from "./interceptor/work-item.interceptor";
 import { WorkItemFilterDto } from "./dto/work-item-filter.dto";
+import { WorkItemResponseDto } from "./dto/work-item-response.dto";
 
 @Controller('workitems')
 export class WorkItemsController {
@@ -31,7 +32,8 @@ export class WorkItemsController {
     }
 
     @Get()
-    async getFilteredWorkItems(@Query() filterDto: WorkItemFilterDto) {
+    async getFilteredWorkItems(@Query() filterDto: WorkItemFilterDto): Promise<WorkItemResponseDto[]> {
+        console.log("controller");
         return this.workItemsService.getFilteredWorkItems(filterDto);
     }
 

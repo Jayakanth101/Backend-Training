@@ -1,4 +1,4 @@
-import { ProjectEntityDto } from "src/tables/project/dto/project.dto";
+import { ProjectEntityDto } from "../../tables/project/dto/project.dto";
 
 export const mockProjectdto: ProjectEntityDto = {
     project_name: "mock-project",

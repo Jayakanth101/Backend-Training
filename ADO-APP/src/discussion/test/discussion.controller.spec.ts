@@ -1,7 +1,7 @@
 import { Test } from "@nestjs/testing";
 import { DiscussionService } from "../discussion.service"
 import { DiscussionController } from "../discussion.controller";
-import { mockCreateDiscussionDto, mockDiscussion, mockWorkitem } from "src/mock-datas";
+import { mockCreateDiscussionDto, mockDiscussion, mockWorkitem } from "../../mock-datas";
 
 describe('DiscussonController', () => {
     let controller: DiscussionController;

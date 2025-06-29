@@ -35,6 +35,7 @@ const entity_arr = [WorkItem, User, Planning, Discussion, Tags, ProjectEntity, P
             database: 'ado_app',
             entities: entity_arr,
             synchronize: true,
+            dropSchema: true,
             logging: true,
             logger: 'advanced-console'
         }), WorkItemsModule, UsersModule, DiscussionModule, TagModule, SprintsModule, ProjectModule, ProjectMemberModule

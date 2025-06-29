@@ -19,7 +19,7 @@ export class TagService {
     async deleteTag(id: number): Promise<string> {
         const existing = await this.TagRepo.findOneBy({ id });
         if (!existing) {
-            throw new NotFoundException(`comment with id ${id} not found`);
+            throw new NotFoundException(`Tag with id ${id} not found`);
         }
         await this.TagRepo.delete(id);
         return `Tag ${id} is deleted`;

@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { WorkItem } from "./work-items.entity";
-import { Repository } from "typeorm";
+import { Repository, In } from "typeorm";
 import { Planning } from "../planning/planning.entity";
 import { Type } from "./enum/work-items-enum";
 import { FeatureEntity } from "../tables/feature/feature.entity";
@@ -23,6 +23,7 @@ import { ProjectEntity } from "../../src/tables/project/project.entity";
 import { Bug } from "../../src/tables/bug/bug.entity";
 import { WorkItemResponseDto } from "./dto/work-item-response.dto";
 import { plainToInstance } from "class-transformer";
+import { Tags } from "../../src/tags/tag.entity";
 @Injectable()
 export class WorkItemsService {
 
@@ -57,6 +58,9 @@ export class WorkItemsService {
         @InjectRepository(TaskEntity)
         private taskRepo: Repository<TaskEntity>,
 
+        @InjectRepository(Tags)
+        private tagRepo: Repository<Tags>,
+
     ) { }
 
     async findAllByProjectId(project_id: number): Promise<{ Work_item: WorkItem[] }> {
@@ -75,7 +79,7 @@ export class WorkItemsService {
         return { Work_item: work_items };
     }
 
-    async CreateWorkItem(dto: EpicDto | TaskDto | FeatureDto | UserStoryDto): Promise<{ Work_item: WorkItem, Message: string }> {
+    async createWorkItem(dto: EpicDto | TaskDto | FeatureDto | UserStoryDto): Promise<{ Work_item: WorkItem, Message: string }> {
         const user = await this.userRepo.findOne({ where: { id: dto.created_by } });
         if (!user) throw new BadRequestException(`User not found`);
 
@@ -86,6 +90,10 @@ export class WorkItemsService {
             ? await this.memberRepo.findOne({ where: { id: dto.assigned_to } })
             : null;
 
+        const tags = dto.tag_ids?.length
+            ? await this.tagRepo.findBy({ id: In(dto.tag_ids) })
+            : [];
+
         const now = new Date();
         const base_props = {
             ...dto,
@@ -94,6 +102,7 @@ export class WorkItemsService {
             completed_at: now,
             created_by: user,
             project,
+            tags,
             assignedTo: assignee ?? null,
         };
 

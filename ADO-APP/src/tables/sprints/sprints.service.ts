@@ -18,7 +18,7 @@ export class SprintService {
         private readonly ProjectRepo: Repository<ProjectEntity>
     ) { }
 
-    async createSprint(project_id: number, sprintDto: SprintDto): Promise<SprintEntity> {
+    async createSprint(project_id: number, sprintDto: SprintDto): Promise<{ Sprint: SprintEntity, Message: string }> {
 
         const project = await this.ProjectRepo.findOneBy({ project_id: project_id });
         if (!project) throw new NotFoundException(`Project with id ${project_id} not found`);
@@ -33,14 +33,16 @@ export class SprintService {
             location: sprintDto.location || project.project_name,
         });
 
-        return await this.repo.save(sprint);
+        const savedSprint = await this.repo.save(sprint);
+        return { Sprint: savedSprint, Message: `Sprint ${savedSprint.id} created successfully` }
     }
 
-    async getAllSprint(): Promise<SprintEntity[]> {
-        return await this.repo.find();
+    async getAllSprint(): Promise<{ Sprint: SprintEntity[] }> {
+        const sprints = await this.repo.find();
+        return { Sprint: sprints }
     }
 
-    async deleteSprint(sprint_id: number): Promise<string> {
+    async deleteSprint(sprint_id: number): Promise<{ Message: string }> {
         if (!sprint_id || typeof sprint_id !== 'number') {
             throw new BadRequestException('Invalid sprint_id');
         }
@@ -49,10 +51,10 @@ export class SprintService {
         if (!sprint) throw new BadRequestException(`Sprint with id ${sprint_id} does not exist`);
 
         await this.repo.delete(sprint_id);
-        return `Successfully deleted sprint with id ${sprint_id}`;
+        return { Message: `Successfully deleted sprint with id ${sprint_id}` };
     }
 
-    async getSprintById(sprint_id: number): Promise<SprintEntity | null> {
+    async getSprintById(sprint_id: number): Promise<{ Sprint: SprintEntity }> {
         if (!sprint_id || typeof sprint_id !== 'number') {
             throw new BadRequestException('Invalid sprint_id');
         }
@@ -60,19 +62,19 @@ export class SprintService {
         const sprint = await this.repo.findOneBy({ id: sprint_id });
         if (!sprint) throw new BadRequestException(`Sprint with id ${sprint_id} not found`);
 
-        return sprint;
+        return { Sprint: sprint };
     }
-    async getSprintByProjectId(project_id: number): Promise<SprintEntity | null> {
+    async getSprintByProjectId(project_id: number): Promise<{ Sprint: SprintEntity }> {
         if (!project_id || typeof project_id !== 'number') {
             throw new BadRequestException("Invalid project id");
         }
         const sprint = await this.repo.findOneBy({ project_id: project_id });
         if (!sprint) throw new BadRequestException(`Sprint with id ${project_id} not found`);
 
-        return sprint;
+        return { Sprint: sprint };
     }
 
-    async updateSprint(sprintId: number, dto: UpdateSprintDto): Promise<SprintEntity> {
+    async updateSprint(sprintId: number, dto: UpdateSprintDto): Promise<{ Sprint: SprintEntity, Message: string }> {
         if (!sprintId || typeof sprintId !== 'number') {
             throw new BadRequestException('Invalid sprintId');
         }
@@ -111,7 +113,8 @@ export class SprintService {
         if (dto.start_date !== undefined) sprint.start_date = dto.start_date;
         if (dto.end_date !== undefined) sprint.end_date = dto.end_date;
 
-        return await this.repo.save(sprint);
+        const updatedSprint = await this.repo.save(sprint);
+        return { Sprint: updatedSprint, Message: `Sprint ID ${sprintId} updated successfully` };
     }
 }
 

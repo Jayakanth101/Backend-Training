@@ -54,7 +54,7 @@ export class WorkItemsController {
 
         let workItem =
             await this.workItemsService.
-                CreateWorkItem(createWorkItemDto);
+                createWorkItem(createWorkItemDto);
 
         return workItem;
     }

@@ -10,17 +10,13 @@ export class DiscussionController {
     constructor(private readonly discussionService: DiscussionService) { }
 
     @Post()
-    async createDiscussion(@Body() createDiscussionDto: CreateDiscussionDto): Promise<Discussion> {
+    async createDiscussion(@Body() createDiscussionDto: CreateDiscussionDto): Promise<{ Discussion: Discussion, Message: string }> {
         return this.discussionService.createComment(createDiscussionDto);
     }
 
-
     @Get('workitem/:id')
-    async getCommentsByWorkItem(@Param('id') workitemid: number): Promise<Discussion[]> {
-        const comments: Discussion[] = await this.discussionService.findWorkItemDiscussion(workitemid);
-        if (comments.length == 0) {
-            throw new NotFoundException(`No comments found in this workitem ${workitemid}`);
-        }
+    async getCommentsByWorkItem(@Param('id') workitemid: number): Promise<{ Discussion: Discussion[] }> {
+        const comments = await this.discussionService.findWorkItemDiscussion(workitemid);
         return comments;
     }
 
@@ -29,8 +25,8 @@ export class DiscussionController {
         @Param('workitemid') workitemid: number,
         @Param('commentid') commentid: number,
         @Body() createDiscussionDto: CreateDiscussionDto
-    ): Promise<Discussion> {
-        return this.discussionService.updateComment(workitemid, commentid, createDiscussionDto);
+    ): Promise<{ Discussion: Discussion, Message: string }> {
+        return await this.discussionService.updateComment(workitemid, commentid, createDiscussionDto);
 
     }
 

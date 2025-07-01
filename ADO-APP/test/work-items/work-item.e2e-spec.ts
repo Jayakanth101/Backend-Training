@@ -52,15 +52,15 @@ describe("workItemModule E2E", () => {
         it("should return a workitem by state", async () => {
             const workItem = await TestHelper.createWorkitem(app, mockWorkitemFilterDto);
             const res = await request(server).get("/workitems").query({ state: "New" });
-            console.log("---> ", res.body[0]);
             expect(res.status).toBe(200);
             expect(res.body[0].state).toBe("New");
         });
         it("should return a workitem by assignee", async () => {
             const workItem = await TestHelper.createWorkitem(app, mockWorkitemFilterDto);
             const res = await request(server).get("/workitems").query({ assigned_to: mockWorkitemFilterDto.assigned_to });
-            // console.log("---> ", res.body[0]);
+
             expect(res.status).toBe(200);
+
             expect(res.body.length).toBeGreaterThan(0);
             expect(Array.isArray(res.body)).toBe(true);
             expect(res.body[0]?.assignedTo?.id).toBe(mockWorkitemFilterDto.assigned_to);

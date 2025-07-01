@@ -2,6 +2,7 @@ import { IsArray, IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Va
 import { Type as TransformType, Type as NestedType } from 'class-transformer'
 import { Type, State } from '../enum/work-items-enum';
 import { CreatePlanningDto } from '../../planning/dto/planning.dto';
+import { Tags } from '../../../src/tags/tag.entity';
 
 export class CreateWorkItemDto {
 
@@ -28,7 +29,6 @@ export class CreateWorkItemDto {
     @IsOptional()
     @IsString()
     iteration: string;
-
 
     @IsNotEmpty()
     @IsNumber()

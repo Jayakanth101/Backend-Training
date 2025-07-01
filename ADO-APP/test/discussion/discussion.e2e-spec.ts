@@ -9,7 +9,6 @@
 // import { WorkItemsModule } from "../../src/work-items/work-items.module";
 // import { User } from "src/users/users.entity";
 //
-// console.log('E2E Test: discussion.e2e-spec.ts running...');
 // describe('discussionModule()', () => {
 //
 //     let app: INestApplication;
@@ -26,8 +25,6 @@
 //     it("POST/ /discussion", async () => {
 //         const createdUser = await TestHelper.createUser(app);
 //         const createdWorkItem = await TestHelper.createWorkitem(app);
-//         console.log("user id: ", createdUser.body.id);
-//         console.log("work item id: ", createdUser.body.id);
 //         workItemId = createdUser.body.id;
 //
 //         const mockDiscussion: CreateDiscussionDto = { ...mockCreateDiscussionDto, workitemid: createdWorkItem.body.id, creatorid: createdUser.body.id }
@@ -35,14 +32,12 @@
 //         const res = await request(app.getHttpServer())
 //             .post('/discussion')
 //             .send(mockDiscussion);
-//         console.log("The discussion create res body: ", res.body);
 //         expect(res.status).toBe(201);
 //     });
 //
 //     // it("GET/ /discussion", async () => {
 //     //     const res = await request(app.getHttpServer())
 //     //         .get(`/discussion/workitem/${workItemId}`);
-//     //     console.log("The get discussion: ", res.body);
 //     //     expect(res.status).toEqual(200);
 //     // });
 // });

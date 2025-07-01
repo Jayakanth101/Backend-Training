@@ -21,8 +21,9 @@ import { SprintEntity } from './tables/sprints/sprints.entity';
 import { SprintsModule } from './tables/sprints/sprints.module';
 import { ProjectModule } from './tables/project/project.module';
 import { ProjectMemberModule } from './tables/project-member/project-member.module';
+import { TaskEntity } from './tables/task/task.entity';
 
-const entity_arr = [WorkItem, User, Planning, Discussion, Tags, ProjectEntity, ProjectMemberEntity, EpicEntity, FeatureEntity, UserStoryEntity, SprintEntity];
+const entity_arr = [WorkItem, User, Planning, Discussion, Tags, ProjectEntity, ProjectMemberEntity, EpicEntity, TaskEntity, FeatureEntity, UserStoryEntity, SprintEntity];
 
 @Module({
     imports: [

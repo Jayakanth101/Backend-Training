@@ -16,18 +16,29 @@ export class AllExceptionsFilter implements ExceptionFilter {
         let status = HttpStatus.INTERNAL_SERVER_ERROR;
         let message = 'Internal server error';
 
+        // Handle HttpException (like BadRequest, NotFound, etc.)
         if (exception instanceof HttpException) {
             status = exception.getStatus();
-            const exceptionResponse = exception.getResponse();
-            message =
-                typeof exceptionResponse === 'string'
-                    ? exceptionResponse
-                    : (exceptionResponse as any).message || message;
+            const responseBody = exception.getResponse();
+
+            if (typeof responseBody === 'string') {
+                message = responseBody;
+            } else if (typeof responseBody === 'object' && responseBody !== null) {
+                message = (responseBody as any).message ?? message;
+            }
         }
 
-        response.status(status).json({
-            message: Array.isArray(message) ? message.join(', ') : message,
-        });
+        // Handle general Errors (e.g. TypeORM errors, etc.)
+        else if (exception instanceof Error) {
+            message = exception.message;
+        }
+
+        // Normalize message if it's an array
+        if (Array.isArray(message)) {
+            message = message.join(', ');
+        }
+
+        response.status(status).json({ message });
     }
 }
 

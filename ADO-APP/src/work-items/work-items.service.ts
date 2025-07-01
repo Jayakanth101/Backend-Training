@@ -119,7 +119,6 @@ export class WorkItemsService {
                 createdWorkItem = await this.userStoryRepo.save(this.userStoryRepo.create(base_props));
                 break;
             case Type.Task:
-                console.log("About to save the task item");
                 createdWorkItem = await this.taskRepo.save(this.taskRepo.create(base_props));
                 break;
             case Type.Bug:

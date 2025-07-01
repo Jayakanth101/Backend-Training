@@ -75,7 +75,6 @@ export class ProjectService {
                 throw new NotFoundException(`Project not found`);
             }
 
-            console.log("Updating: ", savedProject);
             return { project: savedProject, message: "Project updated successfully" };
         }
         catch (err) {
@@ -87,12 +86,10 @@ export class ProjectService {
     }
 
     async deleteProject(project_id: number): Promise<{ message: string }> {
-        console.log("Deleting the project");
 
         try {
             const project = await this.ProjectRepository.findOneBy({ project_id: project_id });
             if (!project) {
-                console.log("Not found");
                 throw new NotFoundException(`Project not found`);
             }
 

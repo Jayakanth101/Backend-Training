@@ -2,6 +2,7 @@ import {
     Body,
     Controller,
     Post,
+    Put,
     UsePipes,
     ValidationPipe,
     Delete,
@@ -13,7 +14,7 @@ import {
 import { TagService } from "./tag.service";
 import { CreateTagDto } from "./dto/create-tag-dto";
 import { Tags } from "./tag.entity";
-import { WorkItem } from "../../src/work-items/work-items.entity";
+import { UpdateTagDto } from "./dto/update-tag-dto";
 
 @Controller('tag')
 export class TagController {
@@ -31,10 +32,20 @@ export class TagController {
         return await this.tagService.getAllTags(workItemId);
     }
 
-    @Delete(':id')
-    @HttpCode(200)
-    async delete(@Param('id', ParseIntPipe) id: number): Promise<{ Message: string }> {
-        return await this.tagService.deleteTag(id);
+    @Put(':id')
+    async updateTag(
+        @Param('id', ParseIntPipe) tagId: number,
+        @Body() mockTagdata: UpdateTagDto
+    ): Promise<{ Tag: Tags, Message: string }> {
+        return await this.tagService.updateTag(tagId, mockTagdata);
+    }
+
+    @Delete(':tagId/workitem/:workItemId')
+    async removeTagFromWorkItem(
+        @Param('tagId', ParseIntPipe) tagId: number,
+        @Param('workItemId', ParseIntPipe) workItemId: number
+    ): Promise<{ message: string }> {
+        return await this.tagService.removeTagFromWorkItem(tagId, workItemId);
     }
 
 }

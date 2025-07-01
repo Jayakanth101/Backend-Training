@@ -1,4 +1,5 @@
 import { INestApplication, ValidationPipe } from "@nestjs/common";
+import { AllExceptionsFilter } from "../src/all-exceptions.filter";
 import { Test, TestingModule } from "@nestjs/testing";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { WorkItem } from "../src/work-items/work-items.entity";
@@ -37,6 +38,7 @@ export async function createTestApp(modules: any[]): Promise<INestApplication> {
     const app = module.createNestApplication();
 
     app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true, forbidNonWhitelisted: true }));
+    app.use(new AllExceptionsFilter());
     app.useLogger(['error', 'warn', 'log', 'debug', 'verbose']);
     await app.init();
     return app;

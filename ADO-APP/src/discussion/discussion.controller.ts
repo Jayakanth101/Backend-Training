@@ -11,14 +11,12 @@ export class DiscussionController {
 
     @Post()
     async createDiscussion(@Body() createDiscussionDto: CreateDiscussionDto): Promise<Discussion> {
-        console.log("From discussion controller: ", createDiscussionDto.workitemid, createDiscussionDto.creatorid);
         return this.discussionService.createComment(createDiscussionDto);
     }
 
 
     @Get('workitem/:id')
     async getCommentsByWorkItem(@Param('id') workitemid: number): Promise<Discussion[]> {
-        console.log("work item id from discussion controller: ", workitemid);
         const comments: Discussion[] = await this.discussionService.findWorkItemDiscussion(workitemid);
         if (comments.length == 0) {
             throw new NotFoundException(`No comments found in this workitem ${workitemid}`);

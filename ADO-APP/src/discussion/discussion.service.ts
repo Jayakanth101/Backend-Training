@@ -30,10 +30,7 @@ export class DiscussionService {
         const creator = await this.userRepo.findOneBy({ id: createDiscussionDto.creatorid });
         if (!creator) throw new NotFoundException(`User with id ${createDiscussionDto.creatorid} not found`);
 
-        console.log("From discussion service: ", workItem.id, creator.id);
-        console.log("From discussion service: ", createDiscussionDto.workitemid, createDiscussionDto.creatorid);
         const comment = this.discussionRepository.create({ ...createDiscussionDto, workitem: workItem, creator: creator });
-        console.log("Comments form discussion service: ", comment);
 
         return await this.discussionRepository.save(comment);
     }
@@ -63,7 +60,6 @@ export class DiscussionService {
     }
 
     async findWorkItemDiscussion(workitemid: number): Promise<Discussion[]> {
-        console.log("work item id from discussion service: ", workitemid);
         return await this.discussionRepository.find({
             where: { workitem: { id: workitemid } },
             relations: ['creator'],

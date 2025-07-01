@@ -53,8 +53,6 @@ export class SprintService {
     }
 
     async getSprintById(sprint_id: number): Promise<SprintEntity | null> {
-        console.log(typeof sprint_id);
-        console.log(sprint_id);
         if (!sprint_id || typeof sprint_id !== 'number') {
             throw new BadRequestException('Invalid sprint_id');
         }

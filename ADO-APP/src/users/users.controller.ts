@@ -1,46 +1,53 @@
-import { BadRequestException, Controller, Delete, Param, ParseIntPipe } from '@nestjs/common';
+import {
+    BadRequestException,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    ParseIntPipe,
+    Post,
+    Body,
+    Put,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from './users.entity';
-import { Get, Post, Body } from '@nestjs/common';
 import { CreateUserDto } from './dto/users.dto';
-import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
+import { UpdateUserDto } from './dto/users-update.dto';
+import { User } from './users.entity';
 
 @Controller('user')
 export class UsersController {
-
     constructor(private readonly usersService: UsersService) { }
 
     @Post()
-    async create(@Body() createUserDto: CreateUserDto): Promise<User> {
-
+    async create(@Body() createUserDto: CreateUserDto): Promise<{ user: any }> {
         const existing = await this.usersService.findOneByName(createUserDto.displayname);
-        if (existing) {
-            throw new BadRequestException('Display name already exists');
+        if (existing.user) {
+            throw new BadRequestException({ message: 'Display name already exists' });
         }
         return this.usersService.create(createUserDto);
-
     }
 
     @Get()
-    async findAll(): Promise<User[]> {
-        try {
-            return this.usersService.findAll();
-        }
-        catch (err) {
-            throw new ExceptionsHandler(err);
-        }
+    async findAll(): Promise<{ users: any[] }> {
+        return this.usersService.findAll();
     }
 
     @Get(':id')
-    async findOne(@Param('id', ParseIntPipe) id: number): Promise<User | null> {
+    async findOne(@Param('id', ParseIntPipe) id: number): Promise<{ user: any }> {
         return this.usersService.findOneById(id);
     }
 
-
-    @Delete(':id')
-    async Delete(@Param('id') id: number): Promise<string> {
-        await this.usersService.DeleteUser(id);
-        return `User ${id} has been deleted`;
+    @Put(':id')
+    async updateUser(
+        @Param('id', ParseIntPipe) id: number,
+        @Body() updateUser: UpdateUserDto,
+    ): Promise<{ user: User }> {
+        return this.usersService.updateUser(id, updateUser);
     }
 
+    @Delete(':id')
+    async delete(@Param('id', ParseIntPipe) id: number): Promise<{ message: string }> {
+        return this.usersService.deleteUser(id);
+    }
 }
+

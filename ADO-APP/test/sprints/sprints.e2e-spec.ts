@@ -86,7 +86,6 @@ describe("Sprint module - E2E testing", () => {
             const mockData = { ...mockUpdateSprintDto };
 
             const res = await request(server).put(`/sprint/${sprintId}`).send(mockData);
-            console.log(res.body);
             expect(res.status).toBe(200);
             expect(res.body.sprint_name).toBe(mockData.sprint_name);
             expect(new Date(res.body.start_date)).toEqual(mockData.start_date);

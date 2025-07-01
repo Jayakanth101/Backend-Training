@@ -17,9 +17,7 @@ export class UsersService {
     }
 
     async create(userDto: CreateUserDto): Promise<User> {
-        console.log("Inside the service");
         try {
-            console.log("Inside the servcie try");
             const user = this.userRepository.create(userDto);
             return await this.userRepository.save(user);
         } catch (error) {

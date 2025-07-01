@@ -4,33 +4,33 @@ import { Tags } from '../../tags/tag.entity';
 
 export class WorkItemFilterDto {
     @IsOptional()
-    id?: number;
+    id: number;
 
     @IsOptional()
-    type?: Type;
+    type: Type;
 
     @IsOptional()
-    assigned_to?: number;
+    assigned_to: number;
 
     @IsOptional()
-    state?: State;
+    state: State;
 
     @IsOptional()
-    area_path?: string;
+    area_path: string;
 
     @IsOptional()
-    tags?: Tags[]
+    tags: Tags[]
 
     @IsOptional()
-    recently_updated?: boolean;
+    recently_updated: boolean;
 
     @IsOptional()
-    recently_created?: boolean;
+    recently_created: boolean;
 
     @IsOptional()
-    recently_completed?: boolean;
+    recently_completed: boolean;
 
     @IsOptional()
     @IsString()
-    keyword?: string | null;
+    keyword: string | null;
 }

@@ -117,6 +117,7 @@ export class WorkItemsService {
         dto: UpdateFeatureDto | UpdateEpicDto | UpdateUserStoryDto | UpdateTaskDto
     ): Promise<WorkItem> {
 
+
         const workItem = await this.WorkItemsRepository.
             findOne({ where: { id }, relations: ['planning'] });
 
@@ -134,6 +135,21 @@ export class WorkItemsService {
                     ...dto.planning,
                 });
             }
+        }
+        if (workItem instanceof TaskEntity) {
+            return this.taskRepo.save(workItem);
+        }
+        if (workItem instanceof FeatureEntity) {
+            return this.featureRepo.save(workItem);
+        }
+        if (workItem instanceof UserStoryEntity) {
+            return this.userStoryRepo.save(workItem);
+        }
+        if (workItem instanceof EpicEntity) {
+            return this.epicRepo.save(workItem);
+        }
+        if (workItem instanceof Bug) {
+            return this.bugRepo.save(workItem);
         }
         return this.WorkItemsRepository.save(workItem);
     }
@@ -163,7 +179,8 @@ export class WorkItemsService {
             keyword
         } = filterDto;
 
-        console.log("Hello");
+        console.log("--->", filterDto);
+
         const query = this.WorkItemsRepository.createQueryBuilder('workitem')
             .leftJoinAndSelect('workitem.assignedTo', 'assignedTo')
             .leftJoinAndSelect('workitem.created_by', 'created_by');
@@ -217,7 +234,6 @@ export class WorkItemsService {
         }
 
         const result = await query.getMany();
-        console.log("----------->", result);
         return plainToInstance(WorkItemResponseDto, result, { excludeExtraneousValues: true, });
     }
 

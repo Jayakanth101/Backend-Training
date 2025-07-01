@@ -12,7 +12,6 @@ export class UsersController {
 
     @Post()
     async create(@Body() createUserDto: CreateUserDto): Promise<User> {
-        console.log("create user req rececived");
 
         const existing = await this.usersService.findOneByName(createUserDto.displayname);
         if (existing) {

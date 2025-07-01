@@ -9,6 +9,7 @@
   "moduleNameMapper": {
     "^src/(.*)$": "<rootDir>/src/$1"
   },
+ "modulePathIgnorePatterns": ["./discussion/", "./tags/" ], 
   "modulePaths": ["<rootDir>"],   
   "globals": {
     "ts-jest": {

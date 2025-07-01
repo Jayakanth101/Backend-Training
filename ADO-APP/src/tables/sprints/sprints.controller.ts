@@ -19,13 +19,17 @@ export class SprintsController {
     }
 
     @Delete(':id')
-    async deleteSprint(sprintid: number): Promise<string> {
+    async deleteSprint(@Param('id', ParseIntPipe) sprintid: number): Promise<string> {
         return await this.service.deleteSprint(sprintid);
     }
 
     @Get(':id')
-    async getSprintById(sprint_id: number): Promise<SprintEntity | null> {
+    async getSprintById(@Param('id', ParseIntPipe) sprint_id: number): Promise<SprintEntity | null> {
         return await this.service.getSprintById(sprint_id);
+    }
+    @Get('/project/:id')
+    async getSprintByProjectId(@Param('id', ParseIntPipe) project_id: number): Promise<SprintEntity | null> {
+        return await this.service.getSprintByProjectId(project_id);
     }
 
     @Put(':id')

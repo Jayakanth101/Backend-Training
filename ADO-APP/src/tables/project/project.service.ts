@@ -5,7 +5,7 @@ import { Repository } from "typeorm";
 import { ProjectEntityDto } from "./dto/project.dto";
 import { ProjectUpdateDto } from "./dto/project-update.dto";
 import { User } from "../../users/users.entity";
-
+import { InternalServerErrorException } from '@nestjs/common';
 
 @Injectable()
 export class ProjectService {
@@ -17,14 +17,23 @@ export class ProjectService {
     ) { }
 
     async createProject(dto: ProjectEntityDto): Promise<ProjectEntity> {
-        const id = dto.project_creator_id;
-        const user = this.UserRepository.findOneBy({ id });
-        if (!user) {
-            throw new NotFoundException(`User not found`);
-        }
+        try {
+            const id = dto.project_creator_id;
+            const user = this.UserRepository.findOneBy({ id });
+            if (!user) {
+                throw new NotFoundException(`User not found`);
+            }
 
-        const project = this.ProjectRepository.create(dto);
-        return await this.ProjectRepository.save(project);
+            const project = this.ProjectRepository.create(dto);
+            return await this.ProjectRepository.save(project);
+        }
+        catch (err) {
+            if (err) {
+                throw new err;
+            }
+            throw new InternalServerErrorException(`Unexpected error during project creation: ${err}`);
+
+        }
     }
 
     async findProject(project_id: number): Promise<ProjectEntity | null> {

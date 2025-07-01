@@ -1,4 +1,4 @@
-import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator'
+import { IsArray, IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator'
 import { Type as TransformType, Type as NestedType } from 'class-transformer'
 import { Type, State } from '../enum/work-items-enum';
 import { CreatePlanningDto } from '../../planning/dto/planning.dto';
@@ -27,7 +27,7 @@ export class CreateWorkItemDto {
 
     @IsOptional()
     @IsString()
-    iteration?: string;
+    iteration: string;
 
 
     @IsNotEmpty()
@@ -40,7 +40,7 @@ export class CreateWorkItemDto {
     @IsNotEmpty()
     @TransformType(() => Date)
     @IsDate()
-    udpated_at: Date;
+    updated_at: Date;
 
     @IsNotEmpty()
     @TransformType(() => Date)
@@ -56,7 +56,7 @@ export class CreateWorkItemDto {
     @IsOptional()
     @IsNotEmpty()
     @IsNumber()
-    assigned_to?: number;
+    assigned_to: number;
 
     @IsNotEmpty()
     @TransformType(() => Date)
@@ -77,6 +77,16 @@ export class CreateWorkItemDto {
     @NestedType(() => CreatePlanningDto)
     planning: CreatePlanningDto | null;
 
+    @IsOptional()
+    @IsNumber()
+    sprint_id: number;
+
+    @IsOptional()
+    @IsArray()
+    @IsNumber({}, { each: true })
+    tag_ids: number[];
+
+
     constructor(partial: Partial<CreateWorkItemDto>) {
         Object.assign(this, partial);
         if (!this.iteration) {
@@ -84,4 +94,3 @@ export class CreateWorkItemDto {
         }
     }
 }
-

@@ -10,5 +10,6 @@ export default {
     },
     collectCoverageFrom: ['src/**/*.(t|j)s'],
     coverageDirectory: './coverage',
+    moduleDirectories: ['users']
 };
 

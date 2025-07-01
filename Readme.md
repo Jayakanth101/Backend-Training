@@ -54,15 +54,15 @@ Swagger
 - [x] Boards table
 - [x] Sprints table
 - [x] Epic extends workitem
-- [ ] Attachments table used by (comment section)
+- [x] Attachments table used by (comment section)
 - [x] Have a base class for all the work items
 - [x] Function name : camel case
 - [ ] Any end points -> should have 5 standard (get, post, put, delete) endpoints - dynamic queries 
-- [ ] Efficient way to serve data to front end
-- [ ] Test cases - mock data - test db - possible scenarios - spec file
-- [ ] Jwt in nest js. Access token, reference token.
-- [ ] Role based access (guards)
-- [ ] Api documentation must
+- [x] Efficient way to serve data to front end
+- [x] Test cases - mock data - test db - possible scenarios - spec file
+- [x] Jwt in nest js. Access token, reference token.
+- [x] Role based access (guards)
+- [x] Api documentation must
 
 | Epic                                                                                                                                                                                                                                                                                                                     | Feature | User story                                  | Task                                                                      | Bug |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- | ------------------------------------------- | ------------------------------------------------------------------------- | --- |

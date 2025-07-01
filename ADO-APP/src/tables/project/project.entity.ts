@@ -19,13 +19,13 @@ export class ProjectEntity {
     @OneToMany(() => SprintEntity, (sprint) => sprint.project, { nullable: true })
     sprints: SprintEntity[]
 
-    @OneToMany(() => WorkItem, (workitem) => workitem.project, { cascade: true })
+    @OneToMany(() => WorkItem, (workitem) => workitem.project, { cascade: true, nullable: true })
     work_items: WorkItem[];
 
-    @ManyToOne(() => User, (user) => user.created_projects, { cascade: true })
+    @ManyToOne(() => User, (user) => user.created_projects, { cascade: true, nullable: true })
     project_creator: User;
 
-    @OneToMany(() => ProjectMemberEntity, (pm) => pm.project, { cascade: true })
+    @OneToMany(() => ProjectMemberEntity, (pm) => pm.project, { cascade: true, nullable: true })
     members: ProjectMemberEntity[];
 
 }

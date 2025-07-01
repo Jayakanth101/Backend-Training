@@ -12,7 +12,7 @@ export class ProjectMemberController {
     constructor(private readonly projectMemberService: ProjectMemberService) { }
 
     @Post()
-    async createProject(@Body() dto: ProjectMemberDto): Promise<ProjectMemberEntity> {
+    async createProjectMembership(@Body() dto: ProjectMemberDto): Promise<ProjectMemberEntity> {
         return await this.projectMemberService.createProjectMember(dto);
     }
 
@@ -33,7 +33,7 @@ export class ProjectMemberController {
         @Param('userId', ParseIntPipe) userId: number,
         @Body() roleDto: UpdateProjectMemberRoleDto
     ): Promise<ProjectMemberDto> {
-        return await this.projectMemberService.updateProjectMembership(projectId, userId, roleDto.role)
+        return await this.projectMemberService.updateProjectMembership(projectId, userId, roleDto);
     }
 
     @Delete(':projectId/:userId')

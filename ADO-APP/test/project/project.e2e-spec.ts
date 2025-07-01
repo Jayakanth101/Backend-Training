@@ -20,29 +20,19 @@ describe("ProjectModule E2E", () => {
         projectRepo = app.get<Repository<ProjectEntity>>(getRepositoryToken(ProjectEntity));
     });
 
-    // beforeEach(async () => {
-    //     await projectRepo.clear();
-    // });
-
-    afterAll(async () => {
-        await app.close();
-    });
-    //
     describe("POST/ /project", () => {
         it('should create a project successfully', async () => {
             const res = await TestHelper.createProject(app, mockProjectdto);
-            expect(res.status).toBe(201);
 
             expect(res.body).toHaveProperty("project_id");
+            expect(res.status).toBe(201);
         });
-
         it('should fail with invalid data (missing required field)', async () => {
             const invalidDto: Partial<typeof mockProjectdto> = { ...mockProjectdto };
             delete invalidDto.project_name;
 
             const res = await TestHelper.createProject(app, invalidDto);
-            console.log("**", invalidDto);
-            console.log("=====>", res.body);
+
             expect(res.status).toBe(400);
             expect(res.body.message).toContain("project_name must be a string");
         });
@@ -55,6 +45,7 @@ describe("ProjectModule E2E", () => {
             const id = createdProject.body.project_id;
 
             const res = await request(server).get(`/project/${id}`);
+            expect(res.body).toHaveProperty("project_id");
             expect(res.status).toBe(200);
             expect(res.body.project_id).toBe(id);
         });
@@ -77,7 +68,6 @@ describe("ProjectModule E2E", () => {
         it('should update a project details by ID', async () => {
             const created_project = await TestHelper.createProject(app, mockProjectdto);
             const projectId = created_project.body.project_id;
-            console.log("The project id: ", projectId);
 
             const res = await request(server).put(`/project/${projectId}`).send(mockUpdateProjectDto);
             expect(res.status).toBe(200);
@@ -105,13 +95,11 @@ describe("ProjectModule E2E", () => {
 
             const projectId: number = created_project.body.project_id;
             const res = await request(server).delete(`/project/${projectId}`);
-            console.log(res.body);
             expect(res.status).toBe(200);
         });
 
         it("should return 404 for non-existing project", async () => {
             const res = await request(server).delete("/project/9999");
-            console.log(res.body);
             expect(res.status).toBe(404);
         });
     });

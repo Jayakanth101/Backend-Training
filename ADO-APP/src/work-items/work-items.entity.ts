@@ -88,7 +88,7 @@ export class WorkItem {
     @JoinColumn()
     discussion: Discussion[];
 
-    @ManyToMany(() => Tags, (tag) => tag.workitems)
+    @ManyToMany(() => Tags, (tag) => tag.workitems, { nullable: true })
     @JoinTable()
     tags: Tags[]
 
@@ -114,5 +114,6 @@ export class WorkItem {
 
     @Column({ nullable: true })
     sprint_id: number;
+
 
 }

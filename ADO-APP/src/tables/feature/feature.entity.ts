@@ -1,8 +1,8 @@
 import { WorkItem } from "../../work-items/work-items.entity";
-import { Entity } from "typeorm"
+import { ChildEntity, Entity } from "typeorm"
 
 
-@Entity('feature')
+@ChildEntity()
 export class FeatureEntity extends WorkItem {
 }
 

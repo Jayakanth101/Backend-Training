@@ -4,7 +4,9 @@ import { SprintService } from "../sprints.service";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { ProjectService } from "../../../tables/project/project.service";
 import { ProjectEntity } from "../../../tables/project/project.entity";
-import { mockProject, mockSprint, mockSprintDto } from "../../../mock-datas";
+import { mockProject, mockSprint, mockSprintDto, mockUser } from "../../../mock-datas";
+import { UsersService } from "../../../../src/users/users.service";
+import { User } from "../../../../src/users/users.entity";
 
 describe('SprintService', () => {
     let mockService: SprintService;
@@ -27,6 +29,8 @@ describe('SprintService', () => {
         find: jest.fn()
     };
 
+    const mockUserRepo = {}
+
     beforeEach(async () => {
         const module = await Test.createTestingModule({
             providers: [
@@ -39,7 +43,13 @@ describe('SprintService', () => {
                 {
                     provide: getRepositoryToken(ProjectEntity),
                     useValue: mockProjectRepo
-                }
+                },
+                UsersService,
+                {
+                    provide: getRepositoryToken(User),
+                    useValue: mockUserRepo
+                },
+
             ]
         }).compile();
 

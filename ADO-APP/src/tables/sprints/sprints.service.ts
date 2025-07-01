@@ -6,6 +6,7 @@ import { SprintEntity } from "./sprints.entity";
 import { SprintDto } from "./dto/sprints.dto";
 import { ProjectEntity } from "../project/project.entity";
 import { UpdateSprintDto } from "./dto/update-sprint.dto";
+import { NotFoundException } from "@nestjs/common";
 
 @Injectable()
 export class SprintService {
@@ -18,16 +19,13 @@ export class SprintService {
     ) { }
 
     async createSprint(project_id: number, sprintDto: SprintDto): Promise<SprintEntity> {
-        if (!project_id || typeof project_id !== 'number') {
-            throw new BadRequestException('Invalid or missing project_id');
-        }
+
+        const project = await this.ProjectRepo.findOneBy({ project_id: project_id });
+        if (!project) throw new NotFoundException(`Project with id ${project_id} not found`);
 
         if (!sprintDto.sprint_name || sprintDto.sprint_name.trim() === '') {
             throw new BadRequestException('Sprint name is required');
         }
-
-        const project = await this.ProjectRepo.findOneBy({ project_id });
-        if (!project) throw new BadRequestException('Project not found');
 
         const sprint = this.repo.create({
             ...sprintDto,
@@ -55,12 +53,23 @@ export class SprintService {
     }
 
     async getSprintById(sprint_id: number): Promise<SprintEntity | null> {
+        console.log(typeof sprint_id);
+        console.log(sprint_id);
         if (!sprint_id || typeof sprint_id !== 'number') {
             throw new BadRequestException('Invalid sprint_id');
         }
 
         const sprint = await this.repo.findOneBy({ id: sprint_id });
         if (!sprint) throw new BadRequestException(`Sprint with id ${sprint_id} not found`);
+
+        return sprint;
+    }
+    async getSprintByProjectId(project_id: number): Promise<SprintEntity | null> {
+        if (!project_id || typeof project_id !== 'number') {
+            throw new BadRequestException("Invalid project id");
+        }
+        const sprint = await this.repo.findOneBy({ project_id: project_id });
+        if (!sprint) throw new BadRequestException(`Sprint with id ${project_id} not found`);
 
         return sprint;
     }

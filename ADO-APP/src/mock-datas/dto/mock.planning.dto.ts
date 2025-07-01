@@ -8,7 +8,7 @@ export const mockPlanningDto: CreatePlanningDto = {
     effort: 1,
     businessvalue: 1,
     timecriticality: 1,
-    startdate: new Date(''),
-    targetdate: new Date(''),
+    startdate: new Date('2020-02-02'),
+    targetdate: new Date('2020-02-02'),
 
 }

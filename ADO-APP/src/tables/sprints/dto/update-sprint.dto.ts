@@ -1,20 +1,23 @@
+import { Type } from "class-transformer";
 import { IsDate, IsOptional, IsString } from "class-validator";
 
 export class UpdateSprintDto {
     @IsOptional()
     @IsString()
-    sprint_name?: string;
+    sprint_name: string;
 
     @IsOptional()
     @IsString()
-    location?: string;
+    location: string;
 
     @IsOptional()
     @IsDate()
-    start_date?: Date;
+    @Type(() => Date)
+    start_date: Date;
 
     @IsOptional()
     @IsDate()
-    end_date?: Date;
+    @Type(() => Date)
+    end_date: Date;
 
 }

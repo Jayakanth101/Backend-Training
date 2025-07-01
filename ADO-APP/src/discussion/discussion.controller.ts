@@ -2,7 +2,7 @@ import { Body, Controller, Get, NotFoundException, Param, Post, Put } from "@nes
 import { Discussion } from "./discussion.entity";
 import { CreateDiscussionDto } from "./dto/create-discussion.dto";
 import { DiscussionService } from "./discussion.service";
-
+import { User } from "src/users/users.entity";
 
 @Controller('discussion')
 export class DiscussionController {

@@ -1,0 +1,111 @@
+![[Pasted image 20250630145436.png]]
+
+
+
+- [x] Users
+	- [x] POST: /user
+		- Should create a successful user.[201]
+		- Should exit when user already present. [409]
+		- Should exit when insufficient data. [400]
+	- [x] GET: /user
+		- Should get all available user.[200]
+		- Should exit when no user is available.[200]
+	- [x] GET: /user/:id
+		- Should get an a user by id. [200]
+		- Should exit if ID is not found. [404] 
+	- [x] DELETE: /user/:id
+		-  Should delete an user by ID. [204]
+		- Should exit if ID is not found (already deleted). [404] 
+- [x] Project
+	- [x] POST: /project 
+		- Should create a project successfully. [201]
+		- Should exit in missing field (invalid request). [400]
+	- [x] GET: /project/:id
+		-  Should get a project by ID. [200]
+		- Should exit if ID is not found. [404]
+	- [x] GET: /project/
+		- Should get all projects. [200]
+	- [x] PUT: /project/:projectId
+		- Should update the project successfully. [201]
+		- Should exit if ID is not found. [404]
+		- Should exit if project_name is not present (Invalid request). [400]  
+	- [x] DELETE: /project/:id
+		- Should delete a project by ID. [200]
+		- Should exit if ID is not found. [404]
+- [x] Project member
+	- [x] POST: /members
+		- Should create a project members successfully.[200] 
+		- Should exit a project member if it is already exist.[409] 
+	- [x] GET: /members/project/:projectId
+		 - Should get a project member by project ID. [200]
+		 - Should exit if a project ID is not found. [404]
+	- [x] PUT: /members/:userId
+		- Should get a project member by user ID. [200] 
+		- Should exit if user ID is not found. [404]
+	- [x] DELETE: /members/:userId/:projectId
+		- Should delete a project member by both user ID and project ID. [200]
+		- Should exit if User ID or Project ID or both not found. [404] 
+- [ ] Discussion
+	- [ ] POST: /discussion
+		- Should create a discussion successfully. [201] 
+	- [ ] GET: /discussion/:id
+		- Should get a discussion by comment id. [200]
+		 - Should exit if a comment ID is not found. [404]
+		 - Should exit if a comment ID is not present (Invalid request). [400]
+	- [ ] PUT: /discussion/:workItemId/:commentId
+		- Should update a discussion by commentId and workItemId. [201]
+		- Should exit if workItemId or commentId or both not found. [404] 
+		- Should exit if workItemId or commentId or both not present (Invalid request). [400]
+	- [ ] DELETE: /discussion/:workItemId/:commentId
+		- Should delete a comment by workItemId and commentId. [200]
+		- Should exit if workItemId or commentId or both not found. [404] 
+		- Should exit if workItemId or commentId or both not present (Invalid request). [400]
+- [ ] Sprints
+	- [ ] POST: /sprint/:projectId
+		- Should create a sprint by using project id. [200]
+		- Should exit if projectId is not found. [404]
+		- Should exit if projectId is not present (Invalid request). [400]  
+	- [ ] GET: /sprint/:projectId
+		- Should get all sprints in a project by projectId. [200] 
+		- Should exit if projectId is not found. [404]
+		- Should exit if projectId is not present (Invalid request). [400]  
+	- [ ] GET: /sprint/:projectId/:id
+		- Should get a sprint in a project by projectId. [200]
+		- Should exit if projectId or sprintId or both not found. [404] 
+		- Should exit if projectId or sprintId or both not present (Invalid request). [400]
+	- [ ] PUT: /sprint/:projectId/:id
+		- Should update a sprint by projectId and sprintId. [201]
+		- Should exit if projectId or sprintId or both not found. [404] 
+		- Should exit if projectId or sprintId or both not present (Invalid request). [400]
+	- [ ] DELETE: /sprint/:projectId/:id
+		- Should delete a sprint by projectId and sprintId. [200]
+		- Should exit if projectId or sprintId or both not found. [404] 
+		- Should exit if projectId or sprintId or both not present (Invalid request). [400]
+- [ ]  Work-Items
+	- [ ] POST: /workitems/
+		- Should create a work item successfully. [201]
+	- [ ] GET: /workitems/
+		- Should get all work items successfully. [200] 
+	- [ ] GET: /workitems/:id
+		- Should get a work item by workItemId successfully. [200]
+		- Should exit if workItemId is not found. [404]
+		- Should exit if workItemId is not preset. [400]
+	- [ ] PUT: /workitems/:id
+		 - Should update a work item by workItemId. [201]
+		- Should exit if workItemId is not found. [404]
+		- Should exit if workItemId is not preset. [400]
+	- [ ] DELETE: /workitems/:id	
+		- Should delete a work item by workItemId. [200l]
+		- Should exit if workItemId is not found. [404]
+		- Should exit if workItemId is not preset. [400]
+- [ ] Tags
+	- [ ] POST: /tag/
+		- Should create a tag successfully. [201]
+	- [ ] GET: /tag/:workItemId
+		- Should get a tag by workItemId.[200]
+		- Should exit if workItemId is not found. [404]
+		- Should exit if workItemId is not present (Invalid request). [400]
+	- [ ] DELETE: /tag/:tagId
+		- Should delete an tag by tagId. [200]
+		- Should exit if tag ID is not found. [404] 
+		- Should exit if tag ID is not present (Invalid request). [400]

@@ -4,12 +4,12 @@ import { ProjectMemberDto } from "../../../tables/project-member/dto/project-mem
 
 export class ProjectEntityDto {
 
-    @IsNotEmpty()
     @IsString()
+    @IsNotEmpty()
     project_name: string;
 
-    @IsOptional()
     @IsString()
+    @IsOptional()
     project_description?: string;
 
     @IsNotEmpty()

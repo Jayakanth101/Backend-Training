@@ -12,18 +12,19 @@ export class ProjectMemberController {
     constructor(private readonly projectMemberService: ProjectMemberService) { }
 
     @Post()
-    async createProjectMembership(@Body() dto: ProjectMemberDto): Promise<ProjectMemberEntity> {
+    async createProjectMembership(@Body() dto: ProjectMemberDto):
+        Promise<{ project_member: ProjectMemberEntity }> {
         return await this.projectMemberService.createProjectMember(dto);
     }
 
     @Get('project/:projectId')
-    async getAllProjectMembers(@Param('projectId') projectId: number): Promise<ProjectMemberResponseDto[]> {
+    async getAllProjectMembers(@Param('projectId') projectId: number): Promise<{ project_members: ProjectMemberResponseDto[] }> {
         return await this.projectMemberService.getAllProjectMembers(projectId);
 
     }
 
     @Get('user/:userId')
-    async getAllMembersProject(@Param('userId') userId: number): Promise<MembersProjectResponseDto[]> {
+    async getAllMembersProject(@Param('userId') userId: number): Promise<{ members_projects: MembersProjectResponseDto[] }> {
         return await this.projectMemberService.getAllMembersProject(userId);
     }
 
@@ -32,7 +33,7 @@ export class ProjectMemberController {
         @Param('projectId', ParseIntPipe) projectId: number,
         @Param('userId', ParseIntPipe) userId: number,
         @Body() roleDto: UpdateProjectMemberRoleDto
-    ): Promise<ProjectMemberDto> {
+    ): Promise<{ project_member: ProjectMemberDto }> {
         return await this.projectMemberService.updateProjectMembership(projectId, userId, roleDto);
     }
 
@@ -40,7 +41,7 @@ export class ProjectMemberController {
     async removeProjectMembership(
         @Param('projectId', ParseIntPipe) projectId: number,
         @Param('userId', ParseIntPipe) userId: number,
-    ) {
+    ): Promise<{ Message: string }> {
         return await this.projectMemberService.removeProjectMembership(projectId, userId);
     }
 

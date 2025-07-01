@@ -21,7 +21,7 @@ export class ProjectMemberService {
     ) { }
 
 
-    async createProjectMember(memberDto: ProjectMemberDto): Promise<ProjectMemberEntity> {
+    async createProjectMember(memberDto: ProjectMemberDto): Promise<{ project_member: ProjectMemberEntity }> {
 
         const user = await this.userRepo.findOneBy({ id: memberDto.user_id });
         if (!user) throw new NotFoundException(`User with id ${memberDto.user_id} not found`);
@@ -36,10 +36,10 @@ export class ProjectMemberService {
         });
 
         const res = await this.repo.save(result);
-        return res;
+        return { project_member: res };
     }
 
-    async getAllProjectMembers(projectId: number): Promise<ProjectMemberResponseDto[]> {
+    async getAllProjectMembers(projectId: number): Promise<{ project_members: ProjectMemberResponseDto[] }> {
         const project = await this.projectRepo.findOneBy({ project_id: projectId });
         if (!project) throw new NotFoundException(`Project with id ${projectId} not found`);
 
@@ -47,14 +47,16 @@ export class ProjectMemberService {
             where: { project: { project_id: projectId } },
             relations: ['user'],
         });
-        return members.map((member) => ({
+        const member_array = members.map((member) => ({
             user_id: member.user.id,
             user_name: member.user.displayname,
             role: member.role,
         }));
+
+        return { project_members: member_array }
     }
 
-    async getAllMembersProject(userId: number): Promise<MembersProjectResponseDto[]> {
+    async getAllMembersProject(userId: number): Promise<{ members_projects: MembersProjectResponseDto[] }> {
         const user = await this.userRepo.findOneBy({ id: userId });
         if (!user) throw new NotFoundException(`User with id ${userId} not found`);
         const members = await this.repo.find({
@@ -65,14 +67,16 @@ export class ProjectMemberService {
             },
             relations: ['project']
         });
-        return members.map((member) => ({
+        const member_array = members.map((member) => ({
             project_id: member.project.project_id,
             project_name: member.project.project_name
         }));
+
+        return { members_projects: member_array }
     }
 
     async updateProjectMembership(projectId: number, userId: number, roleDto: UpdateProjectMemberRoleDto):
-        Promise<ProjectMemberDto> {
+        Promise<{ project_member: ProjectMemberDto }> {
 
         const user = await this.userRepo.findOneBy({ id: userId });
         if (!user) throw new NotFoundException(`User with id ${userId} not found`);
@@ -100,15 +104,17 @@ export class ProjectMemberService {
         member.user = user;
         const updatedMember = await this.repo.save(member);
 
-        return {
+        const updatedProjectMember = {
             user_id: updatedMember.user.id,
             project_id: updatedMember.project.project_id,
             role: updatedMember.role,
         }
 
+        return { project_member: updatedProjectMember };
+
     }
 
-    async removeProjectMembership(projectId: number, userId: number): Promise<string> {
+    async removeProjectMembership(projectId: number, userId: number): Promise<{ Message: string }> {
         const user = await this.userRepo.findOneBy({ id: userId });
         if (!user) throw new NotFoundException(`User with id ${userId} not found`);
 
@@ -131,7 +137,8 @@ export class ProjectMemberService {
         }
 
         await this.repo.remove(member);
+        const msg = `Successfully a member ${userId} removed from a project ${projectId}`;
+        return { Message: msg };
 
-        return `Successfully a member ${userId} removed from a project ${projectId}`;
     }
 }

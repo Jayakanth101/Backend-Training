@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { WorkItem } from "./work-items.entity";
-import { Repository } from "typeorm";
+import { Repository, In } from "typeorm";
 import { Planning } from "../planning/planning.entity";
 import { Type } from "./enum/work-items-enum";
 import { FeatureEntity } from "../tables/feature/feature.entity";
@@ -23,6 +23,7 @@ import { ProjectEntity } from "../../src/tables/project/project.entity";
 import { Bug } from "../../src/tables/bug/bug.entity";
 import { WorkItemResponseDto } from "./dto/work-item-response.dto";
 import { plainToInstance } from "class-transformer";
+import { Tags } from "../../src/tags/tag.entity";
 @Injectable()
 export class WorkItemsService {
 
@@ -57,13 +58,28 @@ export class WorkItemsService {
         @InjectRepository(TaskEntity)
         private taskRepo: Repository<TaskEntity>,
 
+        @InjectRepository(Tags)
+        private tagRepo: Repository<Tags>,
+
     ) { }
 
-    async findAll(): Promise<WorkItem[]> {
-        return await this.WorkItemsRepository.find();
+    async findAllByProjectId(project_id: number): Promise<{ Work_item: WorkItem[] }> {
+        const project = await this.projectRepo.findOneBy({ project_id });
+        if (!project) {
+            throw new NotFoundException(`Project id ${project_id}is not found`);
+        }
+        const work_items = await this.WorkItemsRepository.find({
+            where: { project },
+        });
+
+        if (!work_items) {
+            throw new NotFoundException(`Work item not found`);
+        }
+
+        return { Work_item: work_items };
     }
 
-    async CreateWorkItem(dto: EpicDto | TaskDto | FeatureDto | UserStoryDto): Promise<WorkItem> {
+    async createWorkItem(dto: EpicDto | TaskDto | FeatureDto | UserStoryDto): Promise<{ Work_item: WorkItem, Message: string }> {
         const user = await this.userRepo.findOne({ where: { id: dto.created_by } });
         if (!user) throw new BadRequestException(`User not found`);
 
@@ -74,6 +90,10 @@ export class WorkItemsService {
             ? await this.memberRepo.findOne({ where: { id: dto.assigned_to } })
             : null;
 
+        const tags = dto.tag_ids?.length
+            ? await this.tagRepo.findBy({ id: In(dto.tag_ids) })
+            : [];
+
         const now = new Date();
         const base_props = {
             ...dto,
@@ -81,80 +101,122 @@ export class WorkItemsService {
             updated_at: now,
             completed_at: now,
             created_by: user,
-            project: project,
+            project,
+            tags,
             assignedTo: assignee ?? null,
         };
 
+        let createdWorkItem: WorkItem;
+
         switch (dto.type) {
-            case Type.Epic: {
-                const entity = this.epicRepo.create(base_props);
-                return await this.epicRepo.save(entity);
-            }
-            case Type.Feature: {
-                const entity = this.featureRepo.create(base_props);
-                return await this.featureRepo.save(entity);
-            }
-            case Type.UserStory: {
-                const entity = this.userStoryRepo.create(base_props);
-                return await this.userStoryRepo.save(entity);
-            }
-            case Type.Task: {
-                const entity = this.taskRepo.create(base_props);
-                return await this.taskRepo.save(entity);
-            }
-            case Type.Bug: {
-                const entity = this.bugRepo.create(base_props);
-                return await this.bugRepo.save(entity);
-            }
+            case Type.Epic:
+                createdWorkItem = await this.epicRepo.save(this.epicRepo.create(base_props));
+                break;
+            case Type.Feature:
+                createdWorkItem = await this.featureRepo.save(this.featureRepo.create(base_props));
+                break;
+            case Type.UserStory:
+                createdWorkItem = await this.userStoryRepo.save(this.userStoryRepo.create(base_props));
+                break;
+            case Type.Task:
+                console.log("About to save the task item");
+                createdWorkItem = await this.taskRepo.save(this.taskRepo.create(base_props));
+                break;
+            case Type.Bug:
+                createdWorkItem = await this.bugRepo.save(this.bugRepo.create(base_props));
+                break;
             default:
                 throw new BadRequestException("Invalid work item type");
         }
 
+        return {
+            Work_item: createdWorkItem,
+            Message: `Work item ${dto.type} created successfully`,
+        };
     }
 
     async UpdateWorkItem(
         id: number,
         dto: UpdateFeatureDto | UpdateEpicDto | UpdateUserStoryDto | UpdateTaskDto
-    ): Promise<WorkItem> {
-
-
-        const workItem = await this.WorkItemsRepository.
-            findOne({ where: { id }, relations: ['planning'] });
-
-        if (!workItem) {
+    ): Promise<{ work_item: WorkItem, Message: string }> {
+        // Step 1: Fetch only to get the type
+        const baseItem = await this.WorkItemsRepository.findOne({ where: { id } });
+        if (!baseItem) {
             throw new NotFoundException(`workitem with id ${id} not found`);
         }
-        Object.assign(workItem, dto);
+
+        // Step 2: Determine type and fetch full object from correct repo
+        let fullItem: WorkItem | null;
+        switch (baseItem.type) {
+            case Type.Task:
+                fullItem = await this.taskRepo.findOne({ where: { id }, relations: ['planning'] });
+                break;
+            case Type.Feature:
+                fullItem = await this.featureRepo.findOne({ where: { id }, relations: ['planning'] });
+                break;
+            case Type.UserStory:
+                fullItem = await this.userStoryRepo.findOne({ where: { id }, relations: ['planning'] });
+                break;
+            case Type.Epic:
+                fullItem = await this.epicRepo.findOne({ where: { id }, relations: ['planning'] });
+                break;
+            case Type.Bug:
+                fullItem = await this.bugRepo.findOne({ where: { id }, relations: ['planning'] });
+                break;
+            default:
+                throw new NotFoundException(`Unknown work item type for id ${id}`);
+        }
+
+        if (!fullItem) {
+            throw new NotFoundException(`workitem with id ${id} not found in derived repository`);
+        }
+
+
+        // Step 3: Apply updates
+        Object.assign(fullItem, dto);
+        fullItem.created_by = baseItem.created_by;
 
         if (dto.planning) {
-            if (workItem.planning) {
-                Object.assign(workItem.planning, dto.planning);
-            }
-            else {
-                workItem.planning = this.PlanningRepository.create({
-                    ...dto.planning,
-                });
+            if (fullItem.planning) {
+                Object.assign(fullItem.planning, dto.planning);
+            } else {
+                fullItem.planning = this.PlanningRepository.create({ ...dto.planning });
             }
         }
-        if (workItem instanceof TaskEntity) {
-            return this.taskRepo.save(workItem);
+
+        // Step 4: Save through correct repo
+        let savedWorkItem: any;
+        switch (baseItem.type) {
+            case Type.Task: {
+
+                savedWorkItem = await this.taskRepo.save(fullItem);
+                break;
+            }
+            case Type.Feature: {
+                savedWorkItem = await this.featureRepo.save(fullItem);
+                break;
+            }
+            case Type.UserStory: {
+                savedWorkItem = await this.userStoryRepo.save(fullItem);
+                break;
+            }
+            case Type.Epic: {
+                savedWorkItem = await this.epicRepo.save(fullItem);
+                break;
+            }
+            case Type.Bug: {
+                savedWorkItem = await this.bugRepo.save(fullItem);
+                break;
+            }
         }
-        if (workItem instanceof FeatureEntity) {
-            return this.featureRepo.save(workItem);
-        }
-        if (workItem instanceof UserStoryEntity) {
-            return this.userStoryRepo.save(workItem);
-        }
-        if (workItem instanceof EpicEntity) {
-            return this.epicRepo.save(workItem);
-        }
-        if (workItem instanceof Bug) {
-            return this.bugRepo.save(workItem);
-        }
-        return this.WorkItemsRepository.save(workItem);
+
+        return {
+            work_item: savedWorkItem,
+            Message: `Work item ${baseItem.type} type is updated successfully`
+        };
     }
 
-    async findOne(id: number): Promise<WorkItem | null> {
+    async findOne(id: number): Promise<{ Work_item: WorkItem }> {
         const workItem = await this.WorkItemsRepository.findOne({
             where: { id },
             relations: ['planning']
@@ -162,10 +224,12 @@ export class WorkItemsService {
         if (!workItem) {
             throw new NotFoundException(`workitem with id ${id} not found`);
         }
-        return workItem;
+        return { Work_item: workItem };
     }
 
-    async getFilteredWorkItems(filterDto: WorkItemFilterDto): Promise<WorkItemResponseDto[]> {
+    async getFilteredWorkItems(filterDto: WorkItemFilterDto): Promise<{
+        Work_item: WorkItemResponseDto[]
+    }> {
         const {
             id,
             type,
@@ -179,7 +243,6 @@ export class WorkItemsService {
             keyword
         } = filterDto;
 
-        console.log("--->", filterDto);
 
         const query = this.WorkItemsRepository.createQueryBuilder('workitem')
             .leftJoinAndSelect('workitem.assignedTo', 'assignedTo')
@@ -220,7 +283,7 @@ export class WorkItemsService {
             query.orderBy('workitem.created_at', 'DESC');
         }
         if (recently_updated) {
-            query.andWhere('workitem.updated_at> :updatedAfter',
+            query.andWhere('workitem.updated_at > :updatedAfter',
                 { updatedAfter: oneDayAgo });
             query.orderBy('workitem.updated_at', 'DESC');
         }
@@ -234,17 +297,18 @@ export class WorkItemsService {
         }
 
         const result = await query.getMany();
-        return plainToInstance(WorkItemResponseDto, result, { excludeExtraneousValues: true, });
+        const response = plainToInstance(WorkItemResponseDto, result, { excludeExtraneousValues: true, });
+        return { Work_item: response };
     }
 
-    async DeleteWorkItem(id: number): Promise<string> {
+    async DeleteWorkItem(id: number): Promise<{ Message: string }> {
         const existing = await this.WorkItemsRepository.findOneBy({ id });
         if (!existing) {
             throw new NotFoundException(`workitem with id ${id} not found`);
         }
         await this.WorkItemsRepository.delete(id);
 
-        return `Successfully deleted ${id}`;
+        return { Message: `Successfully deleted work item id ${id}` };
     }
 
 }

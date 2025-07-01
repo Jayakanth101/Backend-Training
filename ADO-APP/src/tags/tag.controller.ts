@@ -1,7 +1,19 @@
-import { Body, HttpStatus, Controller, Post, UsePipes, ValidationPipe, HttpException, Delete, Param, Put, Get } from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    Post,
+    UsePipes,
+    ValidationPipe,
+    Delete,
+    Param,
+    Get,
+    HttpCode,
+    ParseIntPipe
+} from "@nestjs/common";
 import { TagService } from "./tag.service";
 import { CreateTagDto } from "./dto/create-tag-dto";
 import { Tags } from "./tag.entity";
+import { WorkItem } from "../../src/work-items/work-items.entity";
 
 @Controller('tag')
 export class TagController {
@@ -10,32 +22,20 @@ export class TagController {
 
     @Post()
     @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
-    async createTag(@Body() tagDto: CreateTagDto): Promise<Tags> {
-        try {
-            return await this.tagService.createTag(tagDto);
-        }
-        catch (error) {
-            if (error.code === '23505' || error.message.includes('duplicate key')) {
-                throw new HttpException(
-                    'Tag name already exists',
-                    HttpStatus.CONFLICT
-                );
-            }
-            throw new HttpException(
-                'Failed to create tag',
-                HttpStatus.INTERNAL_SERVER_ERROR
-            );
-        }
+    async createTag(@Body() tagDto: CreateTagDto): Promise<{ Tags: Tags, Message: string }> {
+        return await this.tagService.createTag(tagDto);
     }
 
     @Get(':workitemId')
-    async getAllWorkitems(@Param('workItemId') workItemId: number): Promise<Tags[]> {
+    async getAllTags(@Param('workitemId', ParseIntPipe) workItemId: number): Promise<{ Tags: Tags[] }> {
         return await this.tagService.getAllTags(workItemId);
     }
 
     @Delete(':id')
-    async delete(@Param('id') id: number): Promise<string> {
+    @HttpCode(200)
+    async delete(@Param('id', ParseIntPipe) id: number): Promise<{ Message: string }> {
         return await this.tagService.deleteTag(id);
     }
 
 }
+

@@ -23,22 +23,20 @@ export class DiscussionService {
         private readonly userRepo: Repository<User>
     ) { }
 
-    async createComment(createDiscussionDto: CreateDiscussionDto): Promise<Discussion> {
+    async createComment(createDiscussionDto: CreateDiscussionDto): Promise<{ Discussion: Discussion, Message: string }> {
         const workItem = await this.workitemRepository.findOneBy({ id: createDiscussionDto.workitemid });
         if (!workItem) throw new NotFoundException(`WorkItem with id ${createDiscussionDto.workitemid} not found`);
 
         const creator = await this.userRepo.findOneBy({ id: createDiscussionDto.creatorid });
         if (!creator) throw new NotFoundException(`User with id ${createDiscussionDto.creatorid} not found`);
 
-        console.log("From discussion service: ", workItem.id, creator.id);
-        console.log("From discussion service: ", createDiscussionDto.workitemid, createDiscussionDto.creatorid);
         const comment = this.discussionRepository.create({ ...createDiscussionDto, workitem: workItem, creator: creator });
-        console.log("Comments form discussion service: ", comment);
 
-        return await this.discussionRepository.save(comment);
+        const saveComment = await this.discussionRepository.save(comment);
+        return { Discussion: saveComment, Message: `Comment created successfully with ID ${comment.commentid}` };
     }
 
-    async updateComment(workitemid: number, commentid: number, updateDto: UpdateDiscussionDto): Promise<Discussion> {
+    async updateComment(workitemid: number, commentid: number, updateDto: UpdateDiscussionDto): Promise<{ Discussion: Discussion, Message: string }> {
         const comment = await this.discussionRepository.findOne({
             where: {
                 commentid,
@@ -51,24 +49,26 @@ export class DiscussionService {
         }
 
         Object.assign(comment, updateDto);
-        return await this.discussionRepository.save(comment);
+        const updatedComment = await this.discussionRepository.save(comment);
+        return { Discussion: updatedComment, Message: `Comment updated successfully` };
     }
 
-    async findOne(commentid: number): Promise<Discussion> {
+    async findOne(commentid: number): Promise<{ Discussion: Discussion }> {
         const exist = await this.discussionRepository.findOneBy({ commentid });
         if (!exist) {
             throw new NotFoundException(`Comment with id ${commentid} not found`);
         }
-        return exist;
+        return { Discussion: exist };
     }
 
-    async findWorkItemDiscussion(workitemid: number): Promise<Discussion[]> {
-        console.log("work item id from discussion service: ", workitemid);
-        return await this.discussionRepository.find({
+    async findWorkItemDiscussion(workitemid: number): Promise<{ Discussion: Discussion[] }> {
+        const exist = await this.discussionRepository.find({
             where: { workitem: { id: workitemid } },
             relations: ['creator'],
             order: { createdat: 'ASC' }
         });
+
+        return { Discussion: exist };
     }
 }
 

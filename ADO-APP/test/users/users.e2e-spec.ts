@@ -84,7 +84,6 @@ describe("usersModule E2E", () => {
         it("should delete an user by ID", async () => {
             res = await TestHelper.createUser(app);
             res = await TestHelper.deleteUser(app, res.body.id);
-            console.log(res.body);
             expect(res.status).toBe(200);
         });
 

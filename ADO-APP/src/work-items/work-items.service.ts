@@ -179,7 +179,6 @@ export class WorkItemsService {
             keyword
         } = filterDto;
 
-        console.log("--->", filterDto);
 
         const query = this.WorkItemsRepository.createQueryBuilder('workitem')
             .leftJoinAndSelect('workitem.assignedTo', 'assignedTo')
@@ -220,7 +219,7 @@ export class WorkItemsService {
             query.orderBy('workitem.created_at', 'DESC');
         }
         if (recently_updated) {
-            query.andWhere('workitem.updated_at> :updatedAfter',
+            query.andWhere('workitem.updated_at > :updatedAfter',
                 { updatedAfter: oneDayAgo });
             query.orderBy('workitem.updated_at', 'DESC');
         }

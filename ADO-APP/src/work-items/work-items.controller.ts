@@ -33,7 +33,6 @@ export class WorkItemsController {
 
     @Get()
     async getFilteredWorkItems(@Query() filterDto: WorkItemFilterDto): Promise<WorkItemResponseDto[]> {
-        console.log("controller");
         return this.workItemsService.getFilteredWorkItems(filterDto);
     }
 

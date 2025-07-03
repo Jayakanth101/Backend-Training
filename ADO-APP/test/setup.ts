@@ -1,4 +1,5 @@
 import { INestApplication, ValidationPipe } from "@nestjs/common";
+import { AllExceptionsFilter } from "../src/all-exceptions.filter";
 import { Test, TestingModule } from "@nestjs/testing";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { WorkItem } from "../src/work-items/work-items.entity";
@@ -25,7 +26,7 @@ export async function createTestApp(modules: any[]): Promise<INestApplication> {
                 host: "localhost",
                 port: 5432,
                 username: "devuser",
-                password: "password",
+                password: "root",
                 database: "ado_app",
                 entities: entity_arr,
                 synchronize: true,
@@ -37,6 +38,7 @@ export async function createTestApp(modules: any[]): Promise<INestApplication> {
     const app = module.createNestApplication();
 
     app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true, forbidNonWhitelisted: true }));
+    app.useGlobalFilters(new AllExceptionsFilter());
     app.useLogger(['error', 'warn', 'log', 'debug', 'verbose']);
     await app.init();
     return app;

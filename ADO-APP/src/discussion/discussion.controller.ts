@@ -3,6 +3,7 @@ import { Discussion } from "./discussion.entity";
 import { CreateDiscussionDto } from "./dto/create-discussion.dto";
 import { DiscussionService } from "./discussion.service";
 import { User } from "src/users/users.entity";
+import { UpdateDiscussionDto } from "./dto/update-dicussion.dto";
 
 @Controller('discussion')
 export class DiscussionController {
@@ -10,19 +11,13 @@ export class DiscussionController {
     constructor(private readonly discussionService: DiscussionService) { }
 
     @Post()
-    async createDiscussion(@Body() createDiscussionDto: CreateDiscussionDto): Promise<Discussion> {
-        console.log("From discussion controller: ", createDiscussionDto.workitemid, createDiscussionDto.creatorid);
+    async createDiscussion(@Body() createDiscussionDto: CreateDiscussionDto): Promise<{ Discussion: Discussion, Message: string }> {
         return this.discussionService.createComment(createDiscussionDto);
     }
 
-
     @Get('workitem/:id')
-    async getCommentsByWorkItem(@Param('id') workitemid: number): Promise<Discussion[]> {
-        console.log("work item id from discussion controller: ", workitemid);
-        const comments: Discussion[] = await this.discussionService.findWorkItemDiscussion(workitemid);
-        if (comments.length == 0) {
-            throw new NotFoundException(`No comments found in this workitem ${workitemid}`);
-        }
+    async getCommentsByWorkItem(@Param('id') workitemid: number): Promise<{ Discussion: Discussion[] }> {
+        const comments = await this.discussionService.findWorkItemDiscussion(workitemid);
         return comments;
     }
 
@@ -30,10 +25,9 @@ export class DiscussionController {
     async editComment(
         @Param('workitemid') workitemid: number,
         @Param('commentid') commentid: number,
-        @Body() createDiscussionDto: CreateDiscussionDto
-    ): Promise<Discussion> {
-        return this.discussionService.updateComment(workitemid, commentid, createDiscussionDto);
-
+        @Body() updateDiscussion: UpdateDiscussionDto
+    ): Promise<{ Discussion: Discussion, Message: string }> {
+        return await this.discussionService.updateComment(workitemid, commentid, updateDiscussion);
     }
 
 }

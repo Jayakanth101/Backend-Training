@@ -9,6 +9,7 @@ import { Repository } from "typeorm";
 import { ProjectEntityDto } from "./dto/project.dto";
 import { ProjectUpdateDto } from "./dto/project-update.dto";
 import { User } from "../../users/users.entity";
+import { ProjectMemberService } from "../project-member/project-member.service";
 
 @Injectable()
 export class ProjectService {
@@ -17,6 +18,7 @@ export class ProjectService {
         private ProjectRepository: Repository<ProjectEntity>,
         @InjectRepository(User)
         private UserRepository: Repository<User>,
+        private readonly projectMemberService: ProjectMemberService
     ) { }
 
     async createProject(dto: ProjectEntityDto): Promise<{ project: ProjectEntity }> {
@@ -28,6 +30,8 @@ export class ProjectService {
 
             const project = this.ProjectRepository.create(dto);
             const savedProject = await this.ProjectRepository.save(project);
+
+            this.projectMemberService.createProjectMember({ user_id: user.id, project_id: project.project_id, role: "developers" });
             return { project: savedProject };
         } catch (err) {
             if (err instanceof NotFoundException) throw err;

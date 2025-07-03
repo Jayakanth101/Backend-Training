@@ -1,7 +1,9 @@
-import { Put, UsePipes, ValidationPipe, Body, Controller, Post, Get, Param, Delete } from "@nestjs/common";
+import { Put, UsePipes, ValidationPipe, Body, Controller, Post, Get, Param, Delete, UseGuards } from "@nestjs/common";
 import { ProjectEntity } from "./project.entity";
 import { ProjectService } from "./project.service";
 import { ProjectEntityDto } from "./dto/project.dto";
+import { Roles } from "../../../src/custom-decorators/roles.decorator";
+import { ProjectRolesGuard } from "../../../src/guards/project-role.guards";
 
 @Controller('project')
 export class ProjectController {
@@ -23,6 +25,10 @@ export class ProjectController {
         return this.projectService.findAllProjects();
     }
 
+    @UseGuards(UseGuards, ProjectRolesGuard)
+    @Roles('admin')
+    @Roles('developers')
+    @Roles('tester')
     @Put(':id')
     async updateProject(
         @Param('id') id: number,
@@ -31,6 +37,8 @@ export class ProjectController {
         return await this.projectService.updateProject(id, updated_project);
     }
 
+    @UseGuards(UseGuards, ProjectRolesGuard)
+    @Roles('admin')
     @Delete(':id')
     async deleteProject(@Param('id') id: number): Promise<{ message: string }> {
         return await this.projectService.deleteProject(id);

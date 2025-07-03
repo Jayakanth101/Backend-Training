@@ -21,8 +21,11 @@ import { SprintEntity } from './tables/sprints/sprints.entity';
 import { SprintsModule } from './tables/sprints/sprints.module';
 import { ProjectModule } from './tables/project/project.module';
 import { ProjectMemberModule } from './tables/project-member/project-member.module';
+import { TaskEntity } from './tables/task/task.entity';
+import { AuthModule } from './auth/auth.module';
+import { AuthGuard } from './auth/auth.guard';
 
-const entity_arr = [WorkItem, User, Planning, Discussion, Tags, ProjectEntity, ProjectMemberEntity, EpicEntity, FeatureEntity, UserStoryEntity, SprintEntity];
+const entity_arr = [WorkItem, User, Planning, Discussion, Tags, ProjectEntity, ProjectMemberEntity, EpicEntity, TaskEntity, FeatureEntity, UserStoryEntity, SprintEntity];
 
 @Module({
     imports: [
@@ -38,9 +41,15 @@ const entity_arr = [WorkItem, User, Planning, Discussion, Tags, ProjectEntity, P
             dropSchema: true,
             logging: true,
             logger: 'advanced-console'
-        }), WorkItemsModule, UsersModule, DiscussionModule, TagModule, SprintsModule, ProjectModule, ProjectMemberModule
+        }), WorkItemsModule, UsersModule, DiscussionModule, TagModule, SprintsModule, ProjectModule, ProjectMemberModule, AuthModule
     ],
     controllers: [AppController],
-    providers: [AppService],
+    providers: [
+        AppService,
+        {
+            provide: "APP_GUARD",
+            useClass: AuthGuard
+        }
+    ],
 })
 export class AppModule { }

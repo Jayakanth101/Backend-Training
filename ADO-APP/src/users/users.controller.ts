@@ -13,11 +13,14 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/users.dto';
 import { UpdateUserDto } from './dto/users-update.dto';
 import { User } from './users.entity';
+import { Public } from 'src/custom-decorators/public-decorators';
 
 @Controller('user')
 export class UsersController {
     constructor(private readonly usersService: UsersService) { }
 
+
+    @Public()
     @Post()
     async create(@Body() createUserDto: CreateUserDto): Promise<{ user: any }> {
         const existing = await this.usersService.findOneByName(createUserDto.displayname);

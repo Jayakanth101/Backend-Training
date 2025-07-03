@@ -2,7 +2,6 @@ import {
     Injectable,
     NotFoundException,
     InternalServerErrorException,
-    BadRequestException,
 } from "@nestjs/common";
 import { ProjectEntity } from "./project.entity";
 import { InjectRepository } from "@nestjs/typeorm";

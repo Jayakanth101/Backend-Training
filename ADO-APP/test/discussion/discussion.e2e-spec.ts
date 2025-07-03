@@ -82,8 +82,6 @@ describe('DiscussionModule - E2E', () => {
     });
 
     it("PUT /discussion/workitem/:workitemid/comment/:commentid - should update comment message", async () => {
-        console.log(commentid);
-        console.log(workItemId);
 
         const updatedContent = "Updated discussion content";
 
@@ -96,7 +94,6 @@ describe('DiscussionModule - E2E', () => {
             .put(`/discussion/workitem/${workItemId}/comment/${commentid}`)
             .send(updateDto);
 
-        console.log(res.body);
         expect(res.status).toBe(200);
         expect(res.body.Discussion.message).toBe(updatedContent);
     });

@@ -26,7 +26,7 @@ export async function createTestApp(modules: any[]): Promise<INestApplication> {
                 host: "localhost",
                 port: 5432,
                 username: "devuser",
-                password: "password",
+                password: "root",
                 database: "ado_app",
                 entities: entity_arr,
                 synchronize: true,

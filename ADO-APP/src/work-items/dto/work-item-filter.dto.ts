@@ -1,6 +1,7 @@
 import { IsOptional, IsString } from 'class-validator'
 import { State, Type } from '../enum/work-items-enum';
 import { Tags } from '../../tags/tag.entity';
+import { Type as TypeNumber } from 'class-transformer';
 
 export class WorkItemFilterDto {
     @IsOptional()
@@ -10,6 +11,7 @@ export class WorkItemFilterDto {
     type: Type;
 
     @IsOptional()
+    @TypeNumber(() => Number)
     assigned_to: number;
 
     @IsOptional()

@@ -9,17 +9,17 @@ export class ProjectController {
 
     @Post()
     @UsePipes(new ValidationPipe({ transform: true }))
-    async createProject(@Body() dto: ProjectEntityDto): Promise<ProjectEntity> {
+    async createProject(@Body() dto: ProjectEntityDto): Promise<{ project: ProjectEntity }> {
         return this.projectService.createProject(dto);
     }
 
     @Get(':id')
-    async findProject(@Param('id') id: number): Promise<ProjectEntity | null> {
+    async findProject(@Param('id') id: number): Promise<{ project: ProjectEntity }> {
         return this.projectService.findProject(id);
     }
 
     @Get()
-    async findAllProjects(): Promise<ProjectEntity[]> {
+    async findAllProjects(): Promise<{ projects: ProjectEntity[] }> {
         return this.projectService.findAllProjects();
     }
 
@@ -27,14 +27,13 @@ export class ProjectController {
     async updateProject(
         @Param('id') id: number,
         @Body() updated_project: ProjectEntityDto
-    ): Promise<ProjectEntity> {
+    ): Promise<{ project: ProjectEntity, message: string }> {
         return await this.projectService.updateProject(id, updated_project);
     }
 
     @Delete(':id')
-    async deleteProject(@Param('id') id: number): Promise<string> {
-        await this.projectService.deleteProject(id);
-        return `Successfully project id ${id} deleted`;
+    async deleteProject(@Param('id') id: number): Promise<{ message: string }> {
+        return await this.projectService.deleteProject(id);
     }
 
 }

@@ -1,8 +1,6 @@
-import { ProjectEntityDto } from "../../tables/project/dto/project.dto";
+import { ProjectUpdateDto } from "src/tables/project/dto/project-update.dto";
 
-export const mockUpdateProjectDto: ProjectEntityDto = {
-    project_name: "Mock Project",
+export const mockUpdateProjectDto: ProjectUpdateDto = {
+    project_name: "Real Project",
     project_description: "Mock Project Description",
-    project_creator_id: 1,
-    members: []
 }

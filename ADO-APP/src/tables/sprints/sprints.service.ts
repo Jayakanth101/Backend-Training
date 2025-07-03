@@ -48,7 +48,7 @@ export class SprintService {
         }
 
         const sprint = await this.repo.findOneBy({ id: sprint_id });
-        if (!sprint) throw new BadRequestException(`Sprint with id ${sprint_id} does not exist`);
+        if (!sprint) throw new NotFoundException(`Sprint with id ${sprint_id} does not exist`);
 
         await this.repo.delete(sprint_id);
         return { Message: `Successfully deleted sprint with id ${sprint_id}` };
@@ -60,7 +60,7 @@ export class SprintService {
         }
 
         const sprint = await this.repo.findOneBy({ id: sprint_id });
-        if (!sprint) throw new BadRequestException(`Sprint with id ${sprint_id} not found`);
+        if (!sprint) throw new NotFoundException(`Sprint with id ${sprint_id} not found`);
 
         return { Sprint: sprint };
     }
@@ -69,7 +69,7 @@ export class SprintService {
             throw new BadRequestException("Invalid project id");
         }
         const sprint = await this.repo.findOneBy({ project_id: project_id });
-        if (!sprint) throw new BadRequestException(`Sprint with id ${project_id} not found`);
+        if (!sprint) throw new NotFoundException(`Sprint with id ${project_id} not found`);
 
         return { Sprint: sprint };
     }
@@ -85,7 +85,7 @@ export class SprintService {
         });
 
         if (!sprint) {
-            throw new BadRequestException(`Sprint with id ${sprintId} not found`);
+            throw new NotFoundException(`Sprint with id ${sprintId} not found`);
         }
 
         if (

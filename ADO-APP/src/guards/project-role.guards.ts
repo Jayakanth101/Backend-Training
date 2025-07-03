@@ -22,7 +22,6 @@ export class ProjectRolesGuard implements CanActivate {
             context.getHandler(),
             context.getClass()
         ]);
-        console.log("Guard about to activate");
         if (!requiredRoles) return true;
 
         const request = context.switchToHttp().getRequest();
@@ -36,7 +35,6 @@ export class ProjectRolesGuard implements CanActivate {
                 project: { project_id: projectId },
             },
         });
-        console.log(membership);
 
         if (!membership) throw new ForbiddenException('User not part of project');
 

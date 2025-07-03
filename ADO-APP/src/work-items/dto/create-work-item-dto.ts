@@ -54,7 +54,6 @@ export class CreateWorkItemDto {
     completed_at: Date;
 
     @IsOptional()
-    @IsNotEmpty()
     @IsNumber()
     assigned_to: number;
 
@@ -68,7 +67,6 @@ export class CreateWorkItemDto {
     classification: string;
 
     @IsOptional()
-    @IsNotEmpty()
     @IsNumber()
     parentid: number | null;
 

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { ProjectMemberEntity } from "./project-member.entity";
 import { ProjectMemberDto } from "./dto/project-member.dto";
@@ -29,6 +29,17 @@ export class ProjectMemberService {
         const project = await this.projectRepo.findOneBy({ project_id: memberDto.project_id });
         if (!project) throw new NotFoundException(`Project with id ${memberDto.project_id} not found`);
 
+        const existing = await this.repo.findOne({
+            where: {
+                user: { id: memberDto.user_id },
+                project: { project_id: memberDto.project_id }
+            },
+            relations: ['user', 'project']
+        });
+
+        if (existing) {
+            throw new BadRequestException(`Member already exists in project ${memberDto.project_id}`);
+        }
         const result = this.repo.create({
             user,
             project,

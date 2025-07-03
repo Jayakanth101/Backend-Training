@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Tags } from "./tag.entity";
@@ -25,7 +25,7 @@ export class TagService {
             if (error.code === '23505') {
                 throw new BadRequestException(`Tag with name "${dto.tagname}" already exists`);
             }
-            throw error;
+            throw new InternalServerErrorException(`Unexpected error while creating tag ${error}`);
         }
     }
 

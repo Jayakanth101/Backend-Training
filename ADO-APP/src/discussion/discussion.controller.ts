@@ -3,6 +3,7 @@ import { Discussion } from "./discussion.entity";
 import { CreateDiscussionDto } from "./dto/create-discussion.dto";
 import { DiscussionService } from "./discussion.service";
 import { User } from "src/users/users.entity";
+import { UpdateDiscussionDto } from "./dto/update-dicussion.dto";
 
 @Controller('discussion')
 export class DiscussionController {
@@ -24,10 +25,9 @@ export class DiscussionController {
     async editComment(
         @Param('workitemid') workitemid: number,
         @Param('commentid') commentid: number,
-        @Body() createDiscussionDto: CreateDiscussionDto
+        @Body() updateDiscussion: UpdateDiscussionDto
     ): Promise<{ Discussion: Discussion, Message: string }> {
-        return await this.discussionService.updateComment(workitemid, commentid, createDiscussionDto);
-
+        return await this.discussionService.updateComment(workitemid, commentid, updateDiscussion);
     }
 
 }

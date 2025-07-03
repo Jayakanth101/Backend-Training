@@ -1,11 +1,15 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+    Injectable,
+    NotFoundException,
+    InternalServerErrorException,
+    BadRequestException,
+} from "@nestjs/common";
 import { ProjectEntity } from "./project.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { ProjectEntityDto } from "./dto/project.dto";
 import { ProjectUpdateDto } from "./dto/project-update.dto";
 import { User } from "../../users/users.entity";
-import { InternalServerErrorException } from '@nestjs/common';
 
 @Injectable()
 export class ProjectService {
@@ -18,21 +22,17 @@ export class ProjectService {
 
     async createProject(dto: ProjectEntityDto): Promise<{ project: ProjectEntity }> {
         try {
-            const id = dto.project_creator_id;
-            const user = this.UserRepository.findOneBy({ id });
+            const user = await this.UserRepository.findOneBy({ id: dto.project_creator_id });
             if (!user) {
                 throw new NotFoundException(`User not found`);
             }
 
             const project = this.ProjectRepository.create(dto);
             const savedProject = await this.ProjectRepository.save(project);
-            return { project: savedProject }
-        }
-        catch (err) {
-            if (err) {
-                throw new err;
-            }
-            throw new InternalServerErrorException(`Unexpected error during project creation: ${err}`);
+            return { project: savedProject };
+        } catch (err) {
+            if (err instanceof NotFoundException) throw err;
+            throw new InternalServerErrorException(`Unexpected error during project creation`);
         }
     }
 
@@ -47,77 +47,60 @@ export class ProjectService {
                 throw new NotFoundException(`Project not found`);
             }
 
-            return { project: project };
-        }
-        catch (err) {
-            if (err) {
-                throw new err;
-            }
-            throw new InternalServerErrorException(`Unexpected error while project by id: ${err}`);
+            return { project };
+        } catch (err) {
+            if (err instanceof NotFoundException) throw err;
+            throw new InternalServerErrorException(`Unexpected error while fetching project by id`);
         }
     }
 
     async updateProject(id: number, new_project: ProjectUpdateDto): Promise<{ project: ProjectEntity, message: string }> {
-
         try {
-
             const project = await this.ProjectRepository.findOneBy({ project_id: id });
-
             if (!project) {
                 throw new NotFoundException(`Project not found`);
             }
 
             Object.assign(project, new_project);
-
             await this.ProjectRepository.save(project);
+
             const savedProject = await this.ProjectRepository.findOneBy({ project_id: id });
             if (!savedProject) {
-                throw new NotFoundException(`Project not found`);
+                throw new NotFoundException(`Project not found after update`);
             }
 
             return { project: savedProject, message: "Project updated successfully" };
-        }
-        catch (err) {
-            if (err) {
-                throw err;
-            }
-            throw new InternalServerErrorException(`Unexpected error while updating project by id: ${err}`);
+        } catch (err) {
+            if (err instanceof NotFoundException) throw err;
+            throw new InternalServerErrorException(`Unexpected error while updating project`);
         }
     }
 
     async deleteProject(project_id: number): Promise<{ message: string }> {
-
         try {
-            const project = await this.ProjectRepository.findOneBy({ project_id: project_id });
+            const project = await this.ProjectRepository.findOneBy({ project_id });
             if (!project) {
                 throw new NotFoundException(`Project not found`);
             }
 
-            this.ProjectRepository.delete(project_id);
+            await this.ProjectRepository.delete(project_id);
 
             return {
                 message: `Project Id ${project_id} is deleted successfully`
             };
-        }
-        catch (err) {
-            if (err) {
-                throw new err;
-            }
-            throw new InternalServerErrorException(`Unexpected error while deleting project by id: ${err}`);
+        } catch (err) {
+            if (err instanceof NotFoundException) throw err;
+            throw new InternalServerErrorException(`Unexpected error while deleting project`);
         }
     }
 
     async findAllProjects(): Promise<{ projects: ProjectEntity[] }> {
         try {
             const projects = await this.ProjectRepository.find();
-            return { projects: projects };
-        }
-        catch (err) {
-            if (err) {
-                throw new err;
-            }
-            throw new InternalServerErrorException(`Unexpected error while deleting project by id: ${err}`);
+            return { projects };
+        } catch (err) {
+            throw new InternalServerErrorException(`Unexpected error while fetching all projects`);
         }
     }
-
 }
+

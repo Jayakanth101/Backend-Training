@@ -24,6 +24,7 @@ import { Bug } from "../../src/tables/bug/bug.entity";
 import { WorkItemResponseDto } from "./dto/work-item-response.dto";
 import { plainToInstance } from "class-transformer";
 import { Tags } from "../../src/tags/tag.entity";
+import { CreateWorkItemDto } from "./dto/create-work-item-dto";
 @Injectable()
 export class WorkItemsService {
 
@@ -79,16 +80,18 @@ export class WorkItemsService {
         return { Work_item: work_items };
     }
 
-    async createWorkItem(dto: EpicDto | TaskDto | FeatureDto | UserStoryDto): Promise<{ Work_item: WorkItem, Message: string }> {
+    async createWorkItem(dto: CreateWorkItemDto): Promise<{ Work_item: WorkItem, Message: string }> {
         const user = await this.userRepo.findOne({ where: { id: dto.created_by } });
         if (!user) throw new BadRequestException(`User not found`);
 
         const project = await this.projectRepo.findOne({ where: { project_id: dto.project_id } });
         if (!project) throw new BadRequestException(`Project not found`);
 
-        const assignee = dto.assigned_to
-            ? await this.memberRepo.findOne({ where: { id: dto.assigned_to } })
-            : null;
+        const assignedUser = await this.memberRepo.findOne({
+            where: { id: dto.assigned_to },
+            relations: ['user', 'project'],
+        });
+        if (!assignedUser) throw new BadRequestException(`Assignee not a member of the project`);
 
         const tags = dto.tag_ids?.length
             ? await this.tagRepo.findBy({ id: In(dto.tag_ids) })
@@ -103,8 +106,9 @@ export class WorkItemsService {
             created_by: user,
             project,
             tags,
-            assignedTo: assignee ?? null,
+            assignedTo: assignedUser ?? null
         };
+
 
         let createdWorkItem: WorkItem;
 
@@ -127,7 +131,6 @@ export class WorkItemsService {
             default:
                 throw new BadRequestException("Invalid work item type");
         }
-
         return {
             Work_item: createdWorkItem,
             Message: `Work item ${dto.type} created successfully`,
@@ -292,7 +295,7 @@ export class WorkItemsService {
             query.orderBy('workitem.completed_at', 'DESC');
         }
         if (keyword) {
-            query.andWhere('workitem.title ILIKE :keyword OR workitem.description ILIKE :keyword', { keyword: '%${keyword}%' });
+            query.andWhere('workitem.title ILIKE :keyword OR workitem.description ILIKE :keyword', { keyword: `%${keyword}%` });
         }
 
         const result = await query.getMany();

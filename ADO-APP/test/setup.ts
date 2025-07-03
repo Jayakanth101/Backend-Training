@@ -38,7 +38,7 @@ export async function createTestApp(modules: any[]): Promise<INestApplication> {
     const app = module.createNestApplication();
 
     app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true, forbidNonWhitelisted: true }));
-    app.use(new AllExceptionsFilter());
+    app.useGlobalFilters(new AllExceptionsFilter());
     app.useLogger(['error', 'warn', 'log', 'debug', 'verbose']);
     await app.init();
     return app;

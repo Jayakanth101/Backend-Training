@@ -27,6 +27,7 @@ export class DiscussionService {
         const workItem = await this.workitemRepository.findOneBy({ id: createDiscussionDto.workitemid });
         if (!workItem) throw new NotFoundException(`WorkItem with id ${createDiscussionDto.workitemid} not found`);
 
+
         const creator = await this.userRepo.findOneBy({ id: createDiscussionDto.creatorid });
         if (!creator) throw new NotFoundException(`User with id ${createDiscussionDto.creatorid} not found`);
 

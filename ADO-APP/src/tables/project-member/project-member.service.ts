@@ -122,7 +122,6 @@ export class ProjectMemberService {
         }
 
         return { project_member: updatedProjectMember };
-
     }
 
     async removeProjectMembership(projectId: number, userId: number): Promise<{ Message: string }> {

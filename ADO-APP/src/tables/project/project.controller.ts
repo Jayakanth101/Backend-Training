@@ -4,7 +4,9 @@ import { ProjectService } from "./project.service";
 import { ProjectEntityDto } from "./dto/project.dto";
 import { Roles } from "../../../src/custom-decorators/roles.decorator";
 import { ProjectRolesGuard } from "../../../src/guards/project-role.guards";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('3. Project')
 @Controller('project')
 export class ProjectController {
     constructor(private readonly projectService: ProjectService) { }

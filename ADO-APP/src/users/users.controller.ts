@@ -14,12 +14,15 @@ import { CreateUserDto } from './dto/users.dto';
 import { UpdateUserDto } from './dto/users-update.dto';
 import { User } from './users.entity';
 import { Public } from 'src/custom-decorators/public-decorators';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiTags('1. User')
 @Controller('user')
 export class UsersController {
     constructor(private readonly usersService: UsersService) { }
 
 
+    @ApiBearerAuth()
     @Public()
     @Post()
     async create(@Body() createUserDto: CreateUserDto): Promise<{ user: any }> {

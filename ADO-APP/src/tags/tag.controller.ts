@@ -15,7 +15,9 @@ import { TagService } from "./tag.service";
 import { CreateTagDto } from "./dto/create-tag-dto";
 import { Tags } from "./tag.entity";
 import { UpdateTagDto } from "./dto/update-tag-dto";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('8. Tags')
 @Controller('tag')
 export class TagController {
 

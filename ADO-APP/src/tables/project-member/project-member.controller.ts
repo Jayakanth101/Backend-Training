@@ -5,8 +5,10 @@ import { ProjectMemberResponseDto } from "./dto/project-member-response.dtp";
 import { MembersProjectResponseDto } from "./dto/members-project-response.dto";
 import { UpdateProjectMemberRoleDto } from "./dto/project-member-role.dto";
 import { ProjectMemberEntity } from "./project-member.entity";
+import { ApiTags } from "@nestjs/swagger";
 
 
+@ApiTags('4. Project member creation')
 @Controller('members')
 export class ProjectMemberController {
     constructor(private readonly projectMemberService: ProjectMemberService) { }

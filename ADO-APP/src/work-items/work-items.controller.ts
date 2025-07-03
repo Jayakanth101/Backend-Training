@@ -20,7 +20,9 @@ import { UpdateWorkItemDto } from "./dto/update-work-item-dto";
 import { WorkItemTransformInterceptor } from "./interceptor/work-item.interceptor";
 import { WorkItemFilterDto } from "./dto/work-item-filter.dto";
 import { WorkItemResponseDto } from "./dto/work-item-response.dto";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('6. Work item')
 @Controller('workitems')
 export class WorkItemsController {
 

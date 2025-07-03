@@ -21,7 +21,7 @@ export class ProjectService {
         private readonly projectMemberService: ProjectMemberService
     ) { }
 
-    async createProject(dto: ProjectEntityDto): Promise<{ project: ProjectEntity }> {
+    async createProject(dto: ProjectEntityDto): Promise<{ project: ProjectEntity, projectMemberId: number }> {
         try {
             const user = await this.UserRepository.findOneBy({ id: dto.project_creator_id });
             if (!user) {
@@ -31,8 +31,9 @@ export class ProjectService {
             const project = this.ProjectRepository.create(dto);
             const savedProject = await this.ProjectRepository.save(project);
 
-            this.projectMemberService.createProjectMember({ user_id: user.id, project_id: project.project_id, role: "developers" });
-            return { project: savedProject };
+            const newProjectMember = this.projectMemberService.createProjectMember({ user_id: user.id, project_id: project.project_id, role: "admin" });
+
+            return { project: savedProject, projectMemberId: (await newProjectMember).project_member.id };
         } catch (err) {
             if (err instanceof NotFoundException) throw err;
             throw new InternalServerErrorException(`Unexpected error during project creation`);

@@ -1,10 +1,11 @@
-import { Body, Controller, Get, NotFoundException, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
 import { Discussion } from "./discussion.entity";
 import { CreateDiscussionDto } from "./dto/create-discussion.dto";
 import { DiscussionService } from "./discussion.service";
-import { User } from "src/users/users.entity";
 import { UpdateDiscussionDto } from "./dto/update-dicussion.dto";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('7. Discussion')
 @Controller('discussion')
 export class DiscussionController {
 

@@ -12,7 +12,9 @@ import { SprintDto } from './dto/sprints.dto';
 import { SprintService } from './sprints.service';
 import { UpdateSprintDto } from './dto/update-sprint.dto';
 import { SprintEntity } from './sprints.entity';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('5. Sprint')
 @Controller('sprint')
 export class SprintsController {
     constructor(private readonly service: SprintService) { }

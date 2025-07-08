@@ -2,6 +2,7 @@ import { IsArray, IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Va
 import { Type as TransformType, Type as NestedType } from 'class-transformer'
 import { Type, State } from '../enum/work-items-enum';
 import { CreatePlanningDto } from '../../planning/dto/planning.dto';
+import { Tags } from '../../../src/tags/tag.entity';
 
 export class CreateWorkItemDto {
 
@@ -29,7 +30,6 @@ export class CreateWorkItemDto {
     @IsString()
     iteration: string;
 
-
     @IsNotEmpty()
     @IsNumber()
     created_by: number;
@@ -54,7 +54,6 @@ export class CreateWorkItemDto {
     completed_at: Date;
 
     @IsOptional()
-    @IsNotEmpty()
     @IsNumber()
     assigned_to: number;
 
@@ -68,7 +67,6 @@ export class CreateWorkItemDto {
     classification: string;
 
     @IsOptional()
-    @IsNotEmpty()
     @IsNumber()
     parentid: number | null;
 

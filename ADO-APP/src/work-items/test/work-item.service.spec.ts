@@ -67,7 +67,7 @@ describe('WorkItem', () => {
             mockWorkItemRepo.create.mockReturnValue(mockWorkitem);
             mockWorkItemRepo.save.mockReturnValue(mockWorkitem);
 
-            const result = await service.CreateWorkItem(mockWorkItemDto);
+            const result = await service.createWorkItem(mockWorkItemDto);
 
             expect(mockWorkItemRepo.create).toHaveBeenCalledWith(mockWorkItemDto);
             expect(mockWorkItemRepo.save).toHaveBeenCalledWith(mockWorkitem);

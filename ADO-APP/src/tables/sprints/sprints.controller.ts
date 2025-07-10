@@ -1,40 +1,62 @@
-import { Body, Controller, Post, Get, Delete, Put, Param, ParseIntPipe } from '@nestjs/common'
+import {
+    Body,
+    Controller,
+    Post,
+    Get,
+    Delete,
+    Put,
+    Param,
+    ParseIntPipe
+} from '@nestjs/common';
 import { SprintDto } from './dto/sprints.dto';
-import { SprintEntity } from './sprints.entity';
 import { SprintService } from './sprints.service';
 import { UpdateSprintDto } from './dto/update-sprint.dto';
-
+import { SprintEntity } from './sprints.entity';
 
 @Controller('sprint')
 export class SprintsController {
     constructor(private readonly service: SprintService) { }
+
     @Post(':id')
-    async createSprint(@Param('id') projectId: number, @Body() dto: SprintDto): Promise<SprintEntity> {
+    async createSprint(
+        @Param('id', ParseIntPipe) projectId: number,
+        @Body() dto: SprintDto
+    ): Promise<{ Sprint: SprintEntity; Message: string }> {
         return await this.service.createSprint(projectId, dto);
     }
 
     @Get()
-    async getAllSprint(): Promise<SprintEntity[]> {
+    async getAllSprint(): Promise<{ Sprint: SprintEntity[] }> {
         return await this.service.getAllSprint();
     }
 
     @Delete(':id')
-    async deleteSprint(@Param('id', ParseIntPipe) sprintid: number): Promise<string> {
-        return await this.service.deleteSprint(sprintid);
+    async deleteSprint(
+        @Param('id', ParseIntPipe) sprintId: number
+    ): Promise<{ Message: string }> {
+        return await this.service.deleteSprint(sprintId);
     }
 
     @Get(':id')
-    async getSprintById(@Param('id', ParseIntPipe) sprint_id: number): Promise<SprintEntity | null> {
-        return await this.service.getSprintById(sprint_id);
+    async getSprintById(
+        @Param('id', ParseIntPipe) sprintId: number
+    ): Promise<{ Sprint: SprintEntity }> {
+        return await this.service.getSprintById(sprintId);
     }
+
     @Get('/project/:id')
-    async getSprintByProjectId(@Param('id', ParseIntPipe) project_id: number): Promise<SprintEntity | null> {
-        return await this.service.getSprintByProjectId(project_id);
+    async getSprintByProjectId(
+        @Param('id', ParseIntPipe) projectId: number
+    ): Promise<{ Sprint: SprintEntity }> {
+        return await this.service.getSprintByProjectId(projectId);
     }
 
     @Put(':id')
-    async updateSprintName(@Param('id', ParseIntPipe) projectId: number,
-        @Body() dto: UpdateSprintDto): Promise<SprintEntity> {
-        return this.service.updateSprint(projectId, dto);
+    async updateSprint(
+        @Param('id', ParseIntPipe) sprintId: number,
+        @Body() dto: UpdateSprintDto
+    ): Promise<{ Sprint: SprintEntity; Message: string }> {
+        return await this.service.updateSprint(sprintId, dto);
     }
 }
+

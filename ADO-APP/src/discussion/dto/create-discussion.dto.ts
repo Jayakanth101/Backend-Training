@@ -1,6 +1,5 @@
-import { Type as TransformType } from "class-transformer";
-import { IsDate, IsInt, IsNotEmpty, IsString } from "class-validator";
-
+import { Transform } from 'class-transformer';
+import { IsDate, IsOptional, IsString, IsNotEmpty, IsInt } from 'class-validator';
 
 export class CreateDiscussionDto {
     @IsInt()
@@ -19,8 +18,8 @@ export class CreateDiscussionDto {
     message?: string;
 
     @IsNotEmpty()
-    @TransformType(() => Date)
+    @Transform(({ value }) => new Date(value))
     @IsDate()
-    createdat?: Date;
-
+    createdat: Date;
 }
+

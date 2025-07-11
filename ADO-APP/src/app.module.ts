@@ -24,11 +24,13 @@ import { ProjectMemberModule } from './tables/project-member/project-member.modu
 import { TaskEntity } from './tables/task/task.entity';
 import { AuthModule } from './auth/auth.module';
 import { AuthGuard } from './auth/auth.guard';
+import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 
 const entity_arr = [WorkItem, User, Planning, Discussion, Tags, ProjectEntity, ProjectMemberEntity, EpicEntity, TaskEntity, FeatureEntity, UserStoryEntity, SprintEntity];
 
 @Module({
     imports: [
+        CacheModule.register(),
         TypeOrmModule.forRoot({
             type: 'postgres',
             host: 'localhost',
@@ -49,6 +51,10 @@ const entity_arr = [WorkItem, User, Planning, Discussion, Tags, ProjectEntity, P
         {
             provide: "APP_GUARD",
             useClass: AuthGuard
+        },
+        {
+            provide: "APP_INTERCEPTOR",
+            useClass: CacheInterceptor
         }
     ],
 })

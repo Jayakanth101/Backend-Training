@@ -3,6 +3,7 @@ import {
     NotFoundException,
     ConflictException,
     InternalServerErrorException,
+    Inject,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -38,7 +39,6 @@ export class UsersService {
             );
         }
     }
-
     async updateUser(
         id: number,
         updatedUser: UpdateUserDto,

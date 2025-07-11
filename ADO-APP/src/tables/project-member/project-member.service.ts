@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from "@nestjs/comm
 import { Repository } from "typeorm";
 import { ProjectMemberEntity } from "./project-member.entity";
 import { ProjectMemberDto } from "./dto/project-member.dto";
-import { ProjectMemberResponseDto } from "./dto/project-member-response.dtp";
+import { ProjectMemberResponseDto } from "./dto/project-member-response.dto";
 import { MembersProjectResponseDto } from "./dto/members-project-response.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "../../../src/users/users.entity";

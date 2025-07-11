@@ -1,77 +1,140 @@
-import { WorkItem } from "../../src/work-items/work-items.entity";
-import { Repository } from "typeorm";
-import { createTestApp } from "../setup";
-import { INestApplication } from "@nestjs/common";
-import { WorkItemsModule } from "../../src/work-items/work-items.module";
-import { getRepositoryToken } from "@nestjs/typeorm";
-import { TestHelper } from "../utils/test-helper";
-import { mockWorkItemDto, mockWorkItemDto as mockWorkitemFilterDto } from "../../src/mock-datas";
-import { ProjectModule } from "../../src/tables/project/project.module";
-import { UsersModule } from "../../src/users/users.module";
-import { SprintsModule } from "../../src/tables/sprints/sprints.module";
-import * as request from "supertest";
-import { ProjectMemberModule } from "../../src/tables/project-member/project-member.module";
-describe("workItemModule E2E", () => {
+import * as request from 'supertest';
+import { Test } from '@nestjs/testing';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { AppModule } from '../../src/app.module';
+import { WorkItem } from '../../src/work-items/work-items.entity';
+import { Tags } from '../../src/tags/tag.entity';
+import { TestHelper } from '../utils/test-helper';
+import { mockProjectdto, mockWorkItemDto } from '../../src/mock-datas';
+import { DataSource } from 'typeorm';
+import { clearDatabase } from '../../test/utils/database-helper';
 
+describe('WorkItemsController (e2e) - All Filters', () => {
     let app: INestApplication;
-    let server: any;
-    let workitemRepo: Repository<WorkItem>;
+    let workItem: any;
+    let projectMemberId: number;
+    let dataSource: DataSource;
 
+    const endpoint = '/workitems';
 
     beforeAll(async () => {
-        app = await createTestApp([WorkItemsModule, ProjectModule, UsersModule, ProjectMemberModule, SprintsModule]);
-        server = app.getHttpServer();
-        workitemRepo = app.get<Repository<WorkItem>>(getRepositoryToken(WorkItem));
+        const moduleRef = await Test.createTestingModule({
+            imports: [AppModule],
+        }).compile();
+
+        app = moduleRef.createNestApplication();
+        app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+        await app.init();
+
+        dataSource = app.get(DataSource);
     });
 
     afterAll(async () => {
         await app.close();
     });
 
-    describe("POST/ /workitems/", () => {
-        it("should create a workitem successfully", async () => {
-            const res = await TestHelper.createWorkitem(app, mockWorkItemDto);
-            expect(res.status).toBe(201);
-        });
-    });
-
-    describe("GET/ /workitems", () => {
-
-
-        it("should get all workitems", async () => {
-            const workItem = await TestHelper.createWorkitem(app, mockWorkitemFilterDto);
-            const res = await request(server).get('/workitems');
-            expect(res.status).toBe(200);
-        });
-        it("should return a workitems based on type", async () => {
-            const workItem = await TestHelper.createWorkitem(app, mockWorkitemFilterDto);
-            const res = await request(server).get("/workitems").query({ type: "Epic" });
-            expect(res.status).toBe(200);
-            expect(res.body[0].type).toBe("Epic");
-        });
-        it("should return a workitem by state", async () => {
-            const workItem = await TestHelper.createWorkitem(app, mockWorkitemFilterDto);
-            const res = await request(server).get("/workitems").query({ state: "New" });
-            console.log("---> ", res.body[0]);
-            expect(res.status).toBe(200);
-            expect(res.body[0].state).toBe("New");
-        });
-        it("should return a workitem by assignee", async () => {
-            const workItem = await TestHelper.createWorkitem(app, mockWorkitemFilterDto);
-            const res = await request(server).get("/workitems").query({ assigned_to: mockWorkitemFilterDto.assigned_to });
-            // console.log("---> ", res.body[0]);
-            expect(res.status).toBe(200);
-            expect(res.body.length).toBeGreaterThan(0);
-            expect(Array.isArray(res.body)).toBe(true);
-            expect(res.body[0]?.assignedTo?.id).toBe(mockWorkitemFilterDto.assigned_to);
-        });
-        it("should return a workitem by keyword", async () => {
-            const workItem = await TestHelper.createWorkitem(app, mockWorkitemFilterDto);
-            const res = await request(server).get("/workitems").query({ keyword: "Epic" });
-            expect(res.status).toBe(200);
-            expect(res.body[0].title.toLowerCase()).toContain("first workitem");
-        });
+    beforeEach(async () => {
+        await clearDatabase(dataSource);
     });
 
 
-})
+    beforeEach(async () => {
+        // 1. Create a user
+        const user = await TestHelper.createUser(app);
+        const userId = user.body.user.id;
+
+        // 2. Create a project
+        const project = await TestHelper.createProject(app, mockProjectdto);
+        const projectId = project.body.project.project_id;
+
+        // 3. Add user to project
+        const member = await TestHelper.addUserToProject(app, {
+            user_id: userId,
+            project_id: projectId
+        });
+        projectMemberId = member.body.project_member.id;
+
+        // 4. Create work item
+        const workItemRes = await TestHelper.createWorkitem(app, {
+            project_id: projectId,
+            created_by: userId,
+            assigned_to: projectMemberId,
+        });
+
+        workItem = workItemRes.body.Work_item;
+    });
+
+    it('should filter by assigned_to', async () => {
+        const res = await request(app.getHttpServer())
+            .get(endpoint)
+            .query({ assigned_to: projectMemberId })
+            .expect(200);
+
+        expect(res.body.Work_item.some((w) => w.id === workItem.id)).toBeTruthy();
+    });
+
+    it('should filter by state', async () => {
+        const res = await request(app.getHttpServer())
+            .get(endpoint)
+            .query({ state: workItem.state }) // e.g. 'New'
+            .expect(200);
+
+        expect(res.body.Work_item.some(w => w.id === workItem.id)).toBeTruthy();
+    });
+
+    it('should filter by area_path', async () => {
+        const res = await request(app.getHttpServer())
+            .get(endpoint)
+            .query({ area_path: workItem.area_path })
+            .expect(200);
+
+        expect(res.body.Work_item.some(w => w.id === workItem.id)).toBeTruthy();
+    });
+
+    it('should filter by recently_created', async () => {
+        const res = await request(app.getHttpServer())
+            .get(endpoint)
+            .query({ recently_created: true })
+            .expect(200);
+
+        expect(res.body.Work_item.some(w => w.id === workItem.id)).toBeTruthy();
+    });
+
+    it('should filter by recently_updated', async () => {
+        const res = await request(app.getHttpServer())
+            .get(endpoint)
+            .query({ recently_updated: true })
+            .expect(200);
+
+        expect(res.body.Work_item.some(w => w.id === workItem.id)).toBeTruthy();
+    });
+
+    it('should filter by recently_completed', async () => {
+        const res = await request(app.getHttpServer())
+            .get(endpoint)
+            .query({ recently_completed: true })
+            .expect(200);
+
+        expect(res.body.Work_item.some(w => w.id === workItem.id)).toBeTruthy();
+    });
+
+    it('should filter by keyword (title/description)', async () => {
+        const res = await request(app.getHttpServer())
+            .get(endpoint)
+            .query({ keyword: workItem.title }) // or workItem.description
+            .expect(200);
+
+        expect(res.body.Work_item.some(w => w.id === workItem.id)).toBeTruthy();
+    });
+
+    // Tags test — assuming `workItem.tags = [{ tagname: 'urgent' }]`
+    it('should filter by tags', async () => {
+        const res = await request(app.getHttpServer())
+            .get(endpoint)
+            .query({ 'tags[0].tagname': 'urgent' }) // serialize like this
+            .expect(200);
+
+        expect(res.body.Work_item.some(w => w.id === workItem.id)).toBeTruthy();
+    });
+});
+

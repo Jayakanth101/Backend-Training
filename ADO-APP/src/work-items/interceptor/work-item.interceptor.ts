@@ -17,7 +17,6 @@ export class WorkItemTransformInterceptor implements NestInterceptor {
     }
 
     private filterFields(item: any) {
-        console.log("---->", item.type);
         switch (item.type) {
             case 'Epic':
             case 'Bug':

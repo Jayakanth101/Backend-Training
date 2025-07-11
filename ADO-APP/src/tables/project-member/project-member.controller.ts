@@ -19,6 +19,7 @@ import {
     ApiOperation,
     ApiOkResponse,
     ApiCreatedResponse,
+    ApiBearerAuth
 } from '@nestjs/swagger';
 import {
     CreateProjectMemberSwaggerDto,
@@ -35,6 +36,7 @@ export class ProjectMemberController {
 
     @ApiOperation({ summary: 'Create a new project member' })
     @ApiCreatedResponse({ description: 'Project member created', type: CreateProjectMemberSwaggerDto })
+    @ApiBearerAuth('access-token')
     @Post()
     async createProjectMembership(
         @Body() dto: ProjectMemberDto,
@@ -42,6 +44,7 @@ export class ProjectMemberController {
         return await this.projectMemberService.createProjectMember(dto);
     }
 
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Get all members of a project' })
     @ApiOkResponse({ description: 'Project members fetched', type: ProjectMembersByProjectSwaggerDto })
     @Get('project/:projectId')
@@ -51,6 +54,7 @@ export class ProjectMemberController {
         return await this.projectMemberService.getAllProjectMembers(projectId);
     }
 
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Get all projects a user is part of' })
     @ApiOkResponse({ description: 'Projects for user fetched', type: MembersProjectsByUserSwaggerDto })
     @Get('user/:userId')
@@ -60,6 +64,7 @@ export class ProjectMemberController {
         return await this.projectMemberService.getAllMembersProject(userId);
     }
 
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Update role of a project member' })
     @ApiOkResponse({ description: 'Project member role updated', type: UpdateProjectMemberSwaggerDto })
     @Put(':projectId/:userId')
@@ -71,6 +76,7 @@ export class ProjectMemberController {
         return await this.projectMemberService.updateProjectMembership(projectId, userId, roleDto);
     }
 
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Remove a user from a project' })
     @ApiOkResponse({ description: 'Project membership removed', type: DeleteProjectMemberSwaggerDto })
     @Delete(':projectId/:userId')

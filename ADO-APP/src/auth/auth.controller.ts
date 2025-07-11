@@ -20,10 +20,11 @@ import { SignInResponseDto } from './dto/auth-response.dto';
 export class AuthController {
     constructor(private authService: AuthService) { }
 
+
+    @Public()
     @ApiOperation({ summary: 'Login and get JWT token' })
     @ApiOkResponse({ description: 'JWT access token', type: SignInResponseDto })
     @HttpCode(HttpStatus.OK)
-    @Public()
     @Post('login')
     signIn(@Body() signInDto: SignInDto): Promise<{ access_token: string }> {
         return this.authService.signIn(signInDto.username, signInDto.password);

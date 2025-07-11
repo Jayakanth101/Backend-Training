@@ -48,7 +48,7 @@ export class UsersController {
 
     @ApiOperation({ summary: 'Find all the users' })
     @ApiOkResponse({ description: 'All users', type: FindAllUsersResponseDto })
-    @ApiBearerAuth()
+    @ApiBearerAuth('access-token')
     @Get()
     async findAll(): Promise<{ users: User[] }> {
         return this.usersService.findAll();
@@ -56,7 +56,7 @@ export class UsersController {
 
     @ApiOperation({ summary: 'Find a user by ID' })
     @ApiOkResponse({ description: 'User found', type: FindOneUserResponseDto })
-    @ApiBearerAuth()
+    @ApiBearerAuth('access-token')
     @Get(':id')
     async findOne(@Param('id', ParseIntPipe) id: number): Promise<{ user: User }> {
         return this.usersService.findOneById(id);
@@ -64,7 +64,7 @@ export class UsersController {
 
     @ApiOperation({ summary: 'Update a user by ID' })
     @ApiOkResponse({ description: 'User updated', type: UpdateUserResponseDto })
-    @ApiBearerAuth()
+    @ApiBearerAuth('access-token')
     @Put(':id')
     async updateUser(
         @Param('id', ParseIntPipe) id: number,
@@ -75,7 +75,7 @@ export class UsersController {
 
     @ApiOperation({ summary: 'Delete a user by ID' })
     @ApiOkResponse({ description: 'User deleted', type: DeleteUserResponseDto })
-    @ApiBearerAuth()
+    @ApiBearerAuth('access-token')
     @Delete(':id')
     async delete(@Param('id', ParseIntPipe) id: number): Promise<{ message: string }> {
         return this.usersService.deleteUser(id);

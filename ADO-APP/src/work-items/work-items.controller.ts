@@ -24,6 +24,7 @@ import {
     ApiOperation,
     ApiCreatedResponse,
     ApiOkResponse,
+    ApiBearerAuth
 } from '@nestjs/swagger';
 import {
     CreateWorkItemSwaggerDto,
@@ -39,6 +40,7 @@ import {
 export class WorkItemsController {
     constructor(private readonly workItemsService: WorkItemsService) { }
 
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Get all work items by project ID' })
     @ApiOkResponse({ description: 'All work items fetched', type: AllWorkItemsSwaggerDto })
     @Get('/project/:id')
@@ -48,6 +50,7 @@ export class WorkItemsController {
         return this.workItemsService.findAllByProjectId(id);
     }
 
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Filter work items by multiple criteria' })
     @ApiOkResponse({ description: 'Filtered work items fetched', type: FilteredWorkItemsSwaggerDto })
     @Get()
@@ -57,6 +60,7 @@ export class WorkItemsController {
         return this.workItemsService.getFilteredWorkItems(filterDto);
     }
 
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Get a work item by ID' })
     @ApiOkResponse({ description: 'Work item found', type: WorkItemByIdSwaggerDto })
     @UseInterceptors(WorkItemTransformInterceptor)
@@ -67,6 +71,7 @@ export class WorkItemsController {
         return this.workItemsService.findOne(id);
     }
 
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Create a new work item' })
     @ApiCreatedResponse({ description: 'Work item created', type: CreateWorkItemSwaggerDto })
     @Post()
@@ -77,6 +82,7 @@ export class WorkItemsController {
         return await this.workItemsService.createWorkItem(createWorkItemDto);
     }
 
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Update an existing work item' })
     @ApiOkResponse({ description: 'Work item updated', type: UpdateWorkItemSwaggerDto })
     @Put(':id')
@@ -87,6 +93,8 @@ export class WorkItemsController {
         return await this.workItemsService.UpdateWorkItem(id, updateWorkItemDto);
     }
 
+
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Delete a work item' })
     @ApiOkResponse({ description: 'Work item deleted', type: DeleteWorkItemSwaggerDto })
     @Delete(':id')

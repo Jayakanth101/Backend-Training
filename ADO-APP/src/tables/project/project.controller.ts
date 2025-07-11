@@ -35,6 +35,7 @@ import {
 export class ProjectController {
     constructor(private readonly projectService: ProjectService) { }
 
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Create a new project' })
     @ApiCreatedResponse({ description: 'Project created', type: CreateProjectResponseDto })
     @Post()
@@ -43,6 +44,7 @@ export class ProjectController {
         return this.projectService.createProject(dto);
     }
 
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Find project by ID' })
     @ApiOkResponse({ description: 'Project found', type: FindProjectResponseDto })
     @Get(':id')
@@ -50,6 +52,7 @@ export class ProjectController {
         return this.projectService.findProject(id);
     }
 
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Get all projects' })
     @ApiOkResponse({ description: 'All projects', type: FindAllProjectsResponseDto })
     @Get()
@@ -57,6 +60,7 @@ export class ProjectController {
         return this.projectService.findAllProjects();
     }
 
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Update a project by ID' })
     @ApiOkResponse({ description: 'Project updated', type: UpdateProjectResponseDto })
     @UseGuards(ProjectRolesGuard)
@@ -69,6 +73,7 @@ export class ProjectController {
         return await this.projectService.updateProject(id, updated_project);
     }
 
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Delete a project by ID' })
     @ApiOkResponse({ description: 'Project deleted', type: DeleteProjectResponseDto })
     @UseGuards(ProjectRolesGuard)

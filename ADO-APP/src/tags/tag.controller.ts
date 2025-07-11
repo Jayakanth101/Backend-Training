@@ -19,6 +19,7 @@ import {
     ApiOperation,
     ApiCreatedResponse,
     ApiOkResponse,
+    ApiBearerAuth
 } from '@nestjs/swagger';
 import {
     CreateTagSwaggerDto,
@@ -32,6 +33,7 @@ import {
 export class TagController {
     constructor(private readonly tagService: TagService) { }
 
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Create a new tag' })
     @ApiCreatedResponse({ description: 'Tag created', type: CreateTagSwaggerDto })
     @Post()
@@ -42,6 +44,7 @@ export class TagController {
         return await this.tagService.createTag(tagDto);
     }
 
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Get all tags for a work item' })
     @ApiOkResponse({ description: 'Tags fetched', type: GetAllTagsSwaggerDto })
     @Get(':workitemId')
@@ -51,6 +54,7 @@ export class TagController {
         return await this.tagService.getAllTags(workItemId);
     }
 
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Update a tag' })
     @ApiOkResponse({ description: 'Tag updated', type: UpdateTagSwaggerDto })
     @Put(':id')
@@ -61,6 +65,7 @@ export class TagController {
         return await this.tagService.updateTag(tagId, mockTagdata);
     }
 
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Remove a tag from a work item' })
     @ApiOkResponse({ description: 'Tag removed from work item', type: RemoveTagSwaggerDto })
     @Delete(':tagId/workitem/:workItemId')

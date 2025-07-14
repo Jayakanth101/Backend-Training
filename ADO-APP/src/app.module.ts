@@ -21,11 +21,18 @@ import { SprintEntity } from './tables/sprints/sprints.entity';
 import { SprintsModule } from './tables/sprints/sprints.module';
 import { ProjectModule } from './tables/project/project.module';
 import { ProjectMemberModule } from './tables/project-member/project-member.module';
+import { TaskEntity } from './tables/task/task.entity';
+import { AuthModule } from './auth/auth.module';
+import { AuthGuard } from './auth/auth.guard';
+import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
+import { AttachmentModule } from './tables/attachments/attachments.module';
+import { Attachment } from './tables/attachments/attachments.entity';
 
-const entity_arr = [WorkItem, User, Planning, Discussion, Tags, ProjectEntity, ProjectMemberEntity, EpicEntity, FeatureEntity, UserStoryEntity, SprintEntity];
+const entity_arr = [WorkItem, User, Planning, Discussion, Tags, ProjectEntity, ProjectMemberEntity, EpicEntity, TaskEntity, FeatureEntity, UserStoryEntity, SprintEntity, Attachment];
 
 @Module({
     imports: [
+        CacheModule.register(),
         TypeOrmModule.forRoot({
             type: 'postgres',
             host: 'localhost',
@@ -38,9 +45,19 @@ const entity_arr = [WorkItem, User, Planning, Discussion, Tags, ProjectEntity, P
             dropSchema: true,
             logging: true,
             logger: 'advanced-console'
-        }), WorkItemsModule, UsersModule, DiscussionModule, TagModule, SprintsModule, ProjectModule, ProjectMemberModule
+        }), WorkItemsModule, UsersModule, DiscussionModule, TagModule, SprintsModule, ProjectModule, ProjectMemberModule, AuthModule, AttachmentModule
     ],
     controllers: [AppController],
-    providers: [AppService],
+    providers: [
+        AppService,
+        {
+            provide: "APP_GUARD",
+            useClass: AuthGuard
+        },
+        {
+            provide: "APP_INTERCEPTOR",
+            useClass: CacheInterceptor
+        }
+    ],
 })
 export class AppModule { }

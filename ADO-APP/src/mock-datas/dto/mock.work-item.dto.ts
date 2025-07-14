@@ -22,5 +22,6 @@ export const mockWorkItemDto: CreateWorkItemDto = {
     planning: null,
     sprint_id: 1,
     tag_ids: [1, 2],
+    attachment_ids: [1, 2]
 };
 

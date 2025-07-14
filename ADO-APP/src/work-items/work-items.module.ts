@@ -15,6 +15,7 @@ import { FeatureEntity } from "../../src/tables/feature/feature.entity";
 import { UserStoryEntity } from "../../src/tables/user-story/user-story.entity";
 import { Bug } from "../../src/tables/bug/bug.entity";
 import { TaskEntity } from "../../src/tables/task/task.entity";
+import { WorkItemsGateway } from "./work-items.gateway";
 
 @Module({
     imports: [
@@ -34,7 +35,7 @@ import { TaskEntity } from "../../src/tables/task/task.entity";
             TaskEntity,
         ])
     ],
-    providers: [WorkItemsService],
+    providers: [WorkItemsService, WorkItemsGateway],
     controllers: [WorkItemsController],
     exports: [WorkItemsService],
 })

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Work Item WebSocket Test</title>
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <style>
+    body { font-family: monospace; background: #f9f9f9; padding: 20px; }
+    .log { white-space: pre-wrap; background: #fff; padding: 15px; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h2> WebSocket Test Console</h2>
+  <div class="log" id="log">Connecting...</div>
+
+  <script>
+    const logEl = document.getElementById('log');
+    const log = (msg) => logEl.textContent += msg + '\n';
+
+    const socket = io('http://localhost:3000'); // Adjust if needed
+
+    socket.on('connect', () => {
+      log('Connected: ' + socket.id);
+    });
+
+    socket.on('disconnect', () => {
+      log('Disconnected');
+    });
+
+    socket.on('workItemCreated', (data) => {
+      log('Work Item Created:\n' + JSON.stringify(data, null, 2));
+    });
+
+    socket.on('workItemUpdated', (data) => {
+      log('Work Item Updated:\n' + JSON.stringify(data, null, 2));
+    });
+  </script>
+</body>
+</html>
+

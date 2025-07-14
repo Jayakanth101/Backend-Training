@@ -25,6 +25,7 @@ import { WorkItemResponseDto } from "./dto/work-item-response.dto";
 import { plainToInstance } from "class-transformer";
 import { Tags } from "../../src/tags/tag.entity";
 import { CreateWorkItemDto } from "./dto/create-work-item-dto";
+import { WorkItemsGateway } from "./work-items.gateway";
 @Injectable()
 export class WorkItemsService {
 
@@ -62,6 +63,7 @@ export class WorkItemsService {
         @InjectRepository(Tags)
         private tagRepo: Repository<Tags>,
 
+        private readonly gateway: WorkItemsGateway,
     ) { }
 
     async findAllByProjectId(project_id: number): Promise<{ Work_item: WorkItem[] }> {
@@ -131,6 +133,7 @@ export class WorkItemsService {
             default:
                 throw new BadRequestException("Invalid work item type");
         }
+        this.gateway.onWorkItemCreated(createdWorkItem);
         return {
             Work_item: createdWorkItem,
             Message: `Work item ${dto.type} created successfully`,
@@ -212,6 +215,7 @@ export class WorkItemsService {
             }
         }
 
+        this.gateway.onWorkItemUpdated(savedWorkItem);
         return {
             work_item: savedWorkItem,
             Message: `Work item ${baseItem.type} type is updated successfully`

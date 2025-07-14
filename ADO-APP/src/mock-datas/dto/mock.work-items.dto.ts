@@ -5,6 +5,7 @@ import { mockUser } from "../data/mock.user.data"
 import { mockProjectMemberEntity } from "../data/mock.project-member.data"
 import { mockSprint } from "../data/mock.sprint.data"
 import { mockProject } from "../data/mock.project.data"
+import { mockAttachment } from "../data/mock.attachment.data"
 
 export const mockWorkitems: WorkItem[] = [{
     id: 1,
@@ -28,5 +29,5 @@ export const mockWorkitems: WorkItem[] = [{
     project: mockProject,
     parent: null,
     classification: "business",
-    planning: null
+    planning: null,
 }]

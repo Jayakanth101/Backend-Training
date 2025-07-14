@@ -5,6 +5,7 @@ import { mockUser } from "./mock.user.data"
 import { mockSprint } from "./mock.sprint.data"
 import { mockProjectMemberEntity } from "./mock.project-member.data"
 import { State } from "../../work-items/enum/work-items-enum"
+import { mockAttachment } from "./mock.attachment.data"
 
 export const mockWorkitem: WorkItem = {
     id: 1,
@@ -28,5 +29,5 @@ export const mockWorkitem: WorkItem = {
     project: mockProject,
     parent: null,
     classification: "business",
-    planning: null
+    planning: null,
 }

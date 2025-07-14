@@ -1,21 +1,37 @@
-import { trace } from "console";
-import { Discussion } from "../../discussion/discussion.entity";
-import { ChildEntity, Column, PrimaryGeneratedColumn, ManyToMany } from "typeorm"
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    CreateDateColumn,
+} from 'typeorm';
 
-
-@ChildEntity()
-export class AttachmentsEntity {
-
+@Entity('attachments')
+export class Attachment {
     @PrimaryGeneratedColumn()
-    attachment_id: number;
+    id: number;
 
     @Column()
-    attachment_name: string;
+    filename: string;
 
     @Column()
-    attachment_link_s3: string;
+    mimetype: string;
 
-    @ManyToMany(() => Discussion, (discussion) => discussion.commentid, { cascade: true })
-    discussion: Discussion;
+    @Column()
+    size: number;
 
+    @Column()
+    path: string;
+
+    @Column({ default: 'pending' })
+    status: string;
+
+    @Column()
+    workItemId: number;
+
+    @Column()
+    uploadedById: number;
+
+    @CreateDateColumn()
+    createdAt: Date;
 }
+

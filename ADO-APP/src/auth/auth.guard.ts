@@ -23,7 +23,6 @@ export class AuthGuard implements CanActivate {
         ])
 
         if (isPublic) {
-            console.log("This is public route");
             return true;
         }
 

@@ -106,6 +106,15 @@ export class CreateWorkItemDto {
     @IsNumber({}, { each: true })
     tag_ids: number[];
 
+    // ... existing properties above ...
+
+    @ApiProperty({ example: [101, 102], required: false, description: 'IDs of existing attachments' })
+    @IsOptional()
+    @IsArray()
+    @IsNumber({}, { each: true })
+    attachment_ids: number[];
+
+
     constructor(partial: Partial<CreateWorkItemDto>) {
         Object.assign(this, partial);
         if (!this.iteration) {

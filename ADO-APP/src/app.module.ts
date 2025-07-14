@@ -25,8 +25,10 @@ import { TaskEntity } from './tables/task/task.entity';
 import { AuthModule } from './auth/auth.module';
 import { AuthGuard } from './auth/auth.guard';
 import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
+import { AttachmentModule } from './tables/attachments/attachments.module';
+import { Attachment } from './tables/attachments/attachments.entity';
 
-const entity_arr = [WorkItem, User, Planning, Discussion, Tags, ProjectEntity, ProjectMemberEntity, EpicEntity, TaskEntity, FeatureEntity, UserStoryEntity, SprintEntity];
+const entity_arr = [WorkItem, User, Planning, Discussion, Tags, ProjectEntity, ProjectMemberEntity, EpicEntity, TaskEntity, FeatureEntity, UserStoryEntity, SprintEntity, Attachment];
 
 @Module({
     imports: [
@@ -43,7 +45,7 @@ const entity_arr = [WorkItem, User, Planning, Discussion, Tags, ProjectEntity, P
             dropSchema: true,
             logging: true,
             logger: 'advanced-console'
-        }), WorkItemsModule, UsersModule, DiscussionModule, TagModule, SprintsModule, ProjectModule, ProjectMemberModule, AuthModule
+        }), WorkItemsModule, UsersModule, DiscussionModule, TagModule, SprintsModule, ProjectModule, ProjectMemberModule, AuthModule, AttachmentModule
     ],
     controllers: [AppController],
     providers: [

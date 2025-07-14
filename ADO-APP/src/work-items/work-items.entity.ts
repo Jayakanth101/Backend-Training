@@ -21,6 +21,7 @@ import { ProjectMemberEntity } from "../tables/project-member/project-member.ent
 import { User } from "../users/users.entity";
 import { SprintEntity } from "../tables/sprints/sprints.entity";
 import { Type as TransformType } from "class-transformer";
+import { Attachment } from "../../src/tables/attachments/attachments.entity";
 
 @Entity('workitem')
 @TableInheritance({ column: { type: "varchar", name: "inheritance_type" } })
@@ -114,6 +115,5 @@ export class WorkItem {
 
     @Column({ nullable: true })
     sprint_id: number;
-
 
 }

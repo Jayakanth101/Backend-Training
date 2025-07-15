@@ -6,9 +6,11 @@ import { SprintEntity } from "../sprints/sprints.entity";
 import { ProjectService } from "./project.service";
 import { ProjectController } from "./project.controller";
 import { ProjectEntity } from "./project.entity";
+import { ProjectMemberService } from "../project-member/project-member.service";
+import { ProjectMemberModule } from "../project-member/project-member.module";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([WorkItem, User, SprintEntity, ProjectEntity])],
+    imports: [TypeOrmModule.forFeature([WorkItem, User, SprintEntity, ProjectEntity]), ProjectMemberModule],
     controllers: [ProjectController],
     providers: [ProjectService]
 })

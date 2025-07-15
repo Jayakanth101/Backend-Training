@@ -34,7 +34,9 @@ import {
     UpdateWorkItemSwaggerDto,
     DeleteWorkItemSwaggerDto,
 } from './dto/work-item-swagger.dto';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
+@UseInterceptors(CacheInterceptor)
 @ApiTags('6. Work item')
 @Controller('workitems')
 export class WorkItemsController {

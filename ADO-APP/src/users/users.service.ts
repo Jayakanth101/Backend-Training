@@ -19,6 +19,7 @@ export class UsersService {
     ) { }
 
     async findAll(): Promise<{ users: User[] }> {
+        console.log("Getting from database");
         const users = await this.userRepository.find();
         return { users };
     }

@@ -5,10 +5,6 @@ import { Repository, In } from "typeorm";
 import { Planning } from "../planning/planning.entity";
 import { Type } from "./enum/work-items-enum";
 import { FeatureEntity } from "../tables/feature/feature.entity";
-import { FeatureDto } from "../tables/feature/dto/feature.dto";
-import { EpicDto } from "../tables/epic/dto/epic.dto";
-import { UserStoryDto } from "../tables/user-story/dto/user-story.dto";
-import { TaskDto } from "../tables/task/dto/task.dto";
 import { EpicEntity } from "../tables/epic/epic.entity";
 import { UserStoryEntity } from "../tables/user-story/user-story.entity";
 import { TaskEntity } from "../tables/task/task.entity";
@@ -69,6 +65,7 @@ export class WorkItemsService {
         if (!project) {
             throw new NotFoundException(`Project id ${project_id}is not found`);
         }
+        console.log("Finding all the project by id in database");
         const work_items = await this.WorkItemsRepository.find({
             where: { project },
         });
@@ -219,6 +216,7 @@ export class WorkItemsService {
     }
 
     async findOne(id: number): Promise<{ Work_item: WorkItem }> {
+        console.log("Finding project by id in database");
         const workItem = await this.WorkItemsRepository.findOne({
             where: { id },
             relations: ['planning']

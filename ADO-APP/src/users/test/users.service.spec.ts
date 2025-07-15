@@ -40,8 +40,8 @@ describe('UsersService', () => {
                 password: 'password',
             };
 
-            jest.spyOn(repo, 'create').mockReturnValue(mockUser as any);
-            jest.spyOn(repo, 'save').mockResolvedValue(mockUser as any);
+            jest.spyOn(repo, 'create').mockReturnValue(mockUser as User);
+            jest.spyOn(repo, 'save').mockResolvedValue(mockUser as User);
 
             const result = await service.create(dto);
             expect(repo.create).toHaveBeenCalledWith(dto);
@@ -50,12 +50,12 @@ describe('UsersService', () => {
         });
         it('it should throw ConflictException on duplicate', async () => {
             jest.spyOn(repo, 'save').mockRejectedValueOnce({ code: '23505' });
-            await expect(service.create({} as any)).rejects.toThrow(ConflictException);
+            await expect(service.create({} as CreateUserDto)).rejects.toThrow(ConflictException);
         });
 
         it('it should throw InternalServerErrorException on other errors', async () => {
             jest.spyOn(repo, 'save').mockRejectedValueOnce({ code: 'UNKNOWN' });
-            await expect(service.create({} as any)).rejects.toThrow(InternalServerErrorException);
+            await expect(service.create({} as CreateUserDto)).rejects.toThrow(InternalServerErrorException);
         });
     });
 

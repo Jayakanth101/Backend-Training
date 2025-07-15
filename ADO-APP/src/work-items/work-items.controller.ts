@@ -11,6 +11,7 @@ import {
     UseInterceptors,
     Query,
     ParseIntPipe,
+    HttpStatus,
 } from '@nestjs/common';
 import { WorkItem } from './work-items.entity';
 import { WorkItemsService } from './work-items.service';

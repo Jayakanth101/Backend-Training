@@ -11,7 +11,7 @@ import { clearDatabase } from '../../test/utils/database-helper';
 
 describe('WorkItemsController (e2e) - All Filters', () => {
     let app: INestApplication;
-    let workItem: any;
+    let workItem: WorkItem;
     let projectMemberId: number;
     let dataSource: DataSource;
 

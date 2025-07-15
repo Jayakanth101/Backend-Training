@@ -9,6 +9,7 @@ import {
     UsePipes,
     ValidationPipe,
     UseGuards,
+    HttpStatus,
 } from '@nestjs/common';
 import { ProjectEntity } from './project.entity';
 import { ProjectService } from './project.service';

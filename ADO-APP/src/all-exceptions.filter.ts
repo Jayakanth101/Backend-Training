@@ -24,7 +24,14 @@ export class AllExceptionsFilter implements ExceptionFilter {
             if (typeof responseBody === 'string') {
                 message = responseBody;
             } else if (typeof responseBody === 'object' && responseBody !== null) {
-                message = (responseBody as any).message ?? message;
+                const msg = (responseBody as Record<string, unknown>).message;
+                if (Array.isArray(msg)) {
+                    message = msg.join(', ');
+                } else if (typeof msg === 'string') {
+                    message = msg;
+                } else {
+                    message = message;
+                }
             }
         }
 

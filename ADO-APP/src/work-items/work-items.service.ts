@@ -184,10 +184,9 @@ export class WorkItemsService {
         }
 
         // Step 4: Save through correct repo
-        let savedWorkItem: any;
+        let savedWorkItem: WorkItem;
         switch (baseItem.type) {
             case Type.Task: {
-
                 savedWorkItem = await this.taskRepo.save(fullItem);
                 break;
             }

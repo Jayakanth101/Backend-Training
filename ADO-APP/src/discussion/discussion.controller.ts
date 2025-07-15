@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put, HttpStatus } from "@nestjs/common";
 import { Discussion } from "./discussion.entity";
 import { CreateDiscussionDto } from "./dto/create-discussion.dto";
 import { UpdateDiscussionDto } from "./dto/update-dicussion.dto";
@@ -13,7 +13,7 @@ export class DiscussionController {
     @ApiBearerAuth('access-token')
     @Post()
     @ApiOperation({ summary: 'Create a new discussion comment' })
-    @ApiResponse({ status: 201, description: 'Comment created', type: Discussion })
+    @ApiResponse({ status: HttpStatus.CREATED, description: 'Comment created', type: Discussion })
     async createDiscussion(
         @Body() createDiscussionDto: CreateDiscussionDto
     ): Promise<{ Discussion: Discussion; Message: string }> {
@@ -23,7 +23,7 @@ export class DiscussionController {
     @ApiBearerAuth('access-token')
     @Get('workitem/:id')
     @ApiOperation({ summary: 'Get all comments for a work item' })
-    @ApiResponse({ status: 200, description: 'Comments retrieved', type: [Discussion] })
+    @ApiResponse({ status: HttpStatus.OK, description: 'Comments retrieved', type: [Discussion] })
     async getCommentsByWorkItem(
         @Param('id') workitemid: number
     ): Promise<{ Discussion: Discussion[] }> {
@@ -33,7 +33,7 @@ export class DiscussionController {
     @ApiBearerAuth('access-token')
     @Put('workitem/:workitemid/comment/:commentid')
     @ApiOperation({ summary: 'Edit a comment' })
-    @ApiResponse({ status: 200, description: 'Comment updated', type: Discussion })
+    @ApiResponse({ status: HttpStatus.OK, description: 'Comment updated', type: Discussion })
     async editComment(
         @Param('workitemid') workitemid: number,
         @Param('commentid') commentid: number,

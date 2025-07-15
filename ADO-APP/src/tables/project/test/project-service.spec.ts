@@ -6,6 +6,8 @@ import { getRepositoryToken } from "@nestjs/typeorm";
 import { ProjectEntityDto } from "../dto/project.dto";
 import { mockUser, mockProject } from "../../../mock-datas";
 import { User } from "../../../users/users.entity";
+import { ProjectUpdateDto } from '../dto/project-update.dto';
+import { DeleteResult } from 'typeorm';
 
 
 describe('ProjectService', () => {
@@ -67,8 +69,8 @@ describe('ProjectService', () => {
             }
 
             jest.spyOn(userRepo, 'findOneBy').mockResolvedValue(mockUser);
-            jest.spyOn(repo, 'create').mockReturnValue(mockProject as any);
-            jest.spyOn(repo, 'save').mockResolvedValue(mockProject as any);
+            jest.spyOn(repo, 'create').mockReturnValue(mockProject as ProjectEntity);
+            jest.spyOn(repo, 'save').mockResolvedValue(mockProject as ProjectEntity);
 
             const result = await service.createProject(dto);
 
@@ -80,7 +82,7 @@ describe('ProjectService', () => {
 
 
         it('it should get a project by Id', async () => {
-            jest.spyOn(repo, 'findOne').mockResolvedValueOnce(mockProject as any);
+            jest.spyOn(repo, 'findOne').mockResolvedValueOnce(mockProject as ProjectEntity);
             const result = await service.findProject(mockProject.project_id);
             expect(repo.findOne).toHaveBeenCalledWith({
                 where: {
@@ -92,25 +94,25 @@ describe('ProjectService', () => {
         });
 
         it('it should update the project by id', async () => {
-            jest.spyOn(repo, 'findOne').mockResolvedValueOnce(mockProject as any);
-            jest.spyOn(repo, 'save').mockResolvedValue(mockProject as any);
+            jest.spyOn(repo, 'findOne').mockResolvedValueOnce(mockProject as ProjectEntity);
+            jest.spyOn(repo, 'save').mockResolvedValue(mockProject as ProjectEntity);
 
-            const result = await service.updateProject(updatedMockProject.project_id, updatedMockProject as any);
+            const result = await service.updateProject(updatedMockProject.project_id, updatedMockProject as unknown as ProjectUpdateDto);
             expect(repo.save).toHaveBeenCalledWith(updatedMockProject);
             expect(result).toEqual(updatedMockProject);
 
         });
 
         it('it shoud find all projects', async () => {
-            jest.spyOn(repo, 'find').mockResolvedValue(mockProject as any);
+            jest.spyOn(repo, 'find').mockResolvedValue([mockProject as ProjectEntity]);
             const result = await service.findAllProjects();
             expect(repo.find).toHaveBeenCalled();
             expect(result).toEqual(mockProjects);
         });
 
         it('it should delete a project by id', async () => {
-            jest.spyOn(service, 'findProject').mockResolvedValue(mockProject as any);
-            jest.spyOn(repo, 'delete').mockResolvedValue({ affected: 1 } as any);
+            jest.spyOn(service, 'findProject').mockResolvedValue({ project: mockProject as ProjectEntity });
+            jest.spyOn(repo, 'delete').mockResolvedValue({ affected: 1, raw: {} } as DeleteResult);
             const result = await service.deleteProject(mockProject.project_id);
             expect(repo.delete).toHaveBeenCalledWith(mockProject.project_id);
             expect(result).toEqual(`${mockProject.project_id} is deleted successfully`);
